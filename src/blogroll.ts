@@ -45,7 +45,7 @@ export const Blogroll = {
       entries: all_entries,
     };
 
-    if (Deno.env.get("GITHUB_ACTIONS") === "false") {
+    if (Deno.env.get("GITHUB_ACTIONS") !== "true") {
       await Deno.writeTextFile(
         BLOGROLL_CACHE_FILE,
         JSON.stringify(cache, null, 2),

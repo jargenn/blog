@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-04-23T14:22:09.161Z",
+  "createdAt": "2026-04-30T23:25:10.613Z",
   "entries": [
     {
       "title": "AI cybersecurity is not proof of work",
@@ -53,14 +53,14 @@
       "date": "2026-04-20T00:00:00.000Z"
     },
     {
-      "title": "Who even uses jemalloc in 2026 anyway? (many major projects)",
-      "url": "http://notes.eatonphil.com/2026-04-16-who-even-uses-jemalloc-anyway.html",
-      "date": "2026-04-16T00:00:00.000Z"
+      "title": "Branimir Lambov from IBM on Cassandra",
+      "url": "http://notes.eatonphil.com/2026-04-26-branimir-lambov-from-ibm-on-cassandra.html",
+      "date": "2026-04-26T00:00:00.000Z"
     },
     {
-      "title": "dcmake: a new CMake debugger UI",
-      "url": "https://nullprogram.com/blog/2026/04/07/",
-      "date": "2026-04-07T03:04:02.000Z"
+      "title": "I have officially retired from Emacs",
+      "url": "https://nullprogram.com/blog/2026/04/26/",
+      "date": "2026-04-26T00:00:00.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -70,9 +70,9 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Spec Driven Development isn't Waterfall",
-      "url": "http://brooker.co.za/blog/2026/04/09/waterfall-vs-spec.html",
-      "date": "2026-04-09T00:00:00.000Z"
+      "title": "It's time to be right.",
+      "url": "http://brooker.co.za/blog/2026/04/30/be-right.html",
+      "date": "2026-04-30T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -114,9 +114,9 @@
     },
     {
       "author": "Thomas Gazagnaire",
-      "title": "Tailwind Without Node",
-      "url": "https://gazagnaire.org/blog/2026-04-21-tailwind-ocaml.html",
-      "date": "2026-04-21T00:00:00.000Z"
+      "title": "Library Operating Systems for the Desktop",
+      "url": "https://gazagnaire.org/blog/2026-04-23-docker-story.html",
+      "date": "2026-04-23T00:00:00.000Z"
     },
     {
       "title": "LLM time",
@@ -125,9 +125,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-16: Chennai, Cambridge, Belfast: a week on the wing",
-      "url": "https://anil.recoil.org/notes/2026w16",
-      "date": "2026-04-19T00:00:00.000Z"
+      "title": "Helping tropical forest protection keep up with a fast-changing world",
+      "url": "https://anil.recoil.org/notes/redd-overcrediting",
+      "date": "2026-04-30T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
