@@ -1,15 +1,15 @@
 {
-  "createdAt": "2026-04-30T23:25:10.613Z",
+  "createdAt": "2026-05-06T14:49:03.550Z",
   "entries": [
     {
-      "title": "AI cybersecurity is not proof of work",
-      "url": "http://antirez.com/news/163",
-      "date": "2026-04-16T10:46:46.000Z"
+      "title": "Redis array type: short story of a long development",
+      "url": "http://antirez.com/news/164",
+      "date": "2026-05-04T14:21:45.000Z"
     },
     {
-      "title": "Examples for the tcpdump and dig man pages",
-      "url": "https://jvns.ca/blog/2026/03/10/examples-for-the-tcpdump-and-dig-man-pages/",
-      "date": "2026-03-10T00:00:00.000Z"
+      "title": "Links to CSS colour palettes",
+      "url": "https://jvns.ca/blog/2026/05/04/css-colour-palettes/",
+      "date": "2026-05-04T00:00:00.000Z"
     },
     {
       "title": "Generators with UnpinCell",
@@ -42,25 +42,25 @@
       "date": "2025-11-30T00:00:00.000Z"
     },
     {
-      "title": "Matrix-matrix multiplication, from less conventional points of view:",
-      "url": "https://okmij.org/ftp/Algorithms/matmul.html",
-      "date": "2026-04-07T00:01:00.000Z"
+      "title": "Bibliographic `web service' in VAX/VMS times: or shell scripting done right.",
+      "url": "https://okmij.org/ftp/Babel/Babel.html#vax-scripting",
+      "date": "2026-05-05T00:01:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "256 Lines or Less: Test Case Minimization",
-      "url": "https://matklad.github.io/2026/04/20/test-case-minimization.html",
-      "date": "2026-04-20T00:00:00.000Z"
+      "title": "Minimal Viable Zig Error Contexts",
+      "url": "https://matklad.github.io/2026/05/03/zig-error-context.html",
+      "date": "2026-05-03T00:00:00.000Z"
     },
     {
-      "title": "Branimir Lambov from IBM on Cassandra",
-      "url": "http://notes.eatonphil.com/2026-04-26-branimir-lambov-from-ibm-on-cassandra.html",
-      "date": "2026-04-26T00:00:00.000Z"
+      "title": "Automating Hermitage to see how transactions differ in MySQL and MariaDB",
+      "url": "http://notes.eatonphil.com/2026-05-02-automating-hermitage.html",
+      "date": "2026-05-02T00:00:00.000Z"
     },
     {
-      "title": "I have officially retired from Emacs",
-      "url": "https://nullprogram.com/blog/2026/04/26/",
-      "date": "2026-04-26T00:00:00.000Z"
+      "title": "Concurrent, atomic MSI hash tables",
+      "url": "https://nullprogram.com/blog/2026/05/06/",
+      "date": "2026-05-06T02:01:17.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -102,15 +102,15 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
-      "title": "Agents, Code Reviews, and the Bottleneck Shift, Oh My!",
-      "url": "https://ayende.com/blog/203939-C/agents-code-reviews-and-the-bottleneck-shift-oh-my?Key=a4aac51e-45ff-426d-8340-9c2056e743f0",
-      "date": "2026-04-17T12:00:00.000Z"
+      "title": "Learning to code, 1990s vs 2026",
+      "url": "http://ayende.com/203975-a/learning-to-code-1990s-vs-2026?Key=4bf78bb8-056a-412e-adcc-758ff6f269f1",
+      "date": "2026-05-05T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
-      "title": "On The Simplicity of Humanness",
-      "url": "https://alperenkeles.com/posts/on-the-simplicity-of-humanness/",
-      "date": "2026-04-13T00:00:00.000Z"
+      "title": "Have we won, what now?",
+      "url": "https://alperenkeles.com/posts/have-we-won/",
+      "date": "2026-05-01T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
@@ -125,9 +125,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Helping tropical forest protection keep up with a fast-changing world",
-      "url": "https://anil.recoil.org/notes/redd-overcrediting",
-      "date": "2026-04-30T00:00:00.000Z"
+      "title": ".plan-26-18: From tropical forest protection to oi swallowing its oxcaml tail",
+      "url": "https://anil.recoil.org/notes/2026w18",
+      "date": "2026-05-03T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",

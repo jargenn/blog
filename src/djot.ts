@@ -37,44 +37,31 @@ export type RenderCtx = {
   faviconMap?: Map<string, Map<string, string>>;
 };
 
-export function estimate_reading_time(doc: Doc): {reading_time_mins: number, number_of_words: number} {
+export function word_count(doc: Doc): number {
   let words = 0;
-  let images = 0;
-  let code_blocks = 0;
 
   function visit(node: AstNode) {
-    switch (node.tag) {
-      case "str": {
-        const t = node.text.trim();
-        if (t) words += t.split(/\s+/).length;
-        break;
-      }
-      case "image":
-        images += 1;
-        break;
-      case "code_block":
-        code_blocks += 1;
-        return;
+    if (node.tag === "str") {
+      const t = node.text.trim();
+      if (t) words += t.split(/\s+/).length;
     }
 
-    if ("children" in node) {
-      for (const c of node.children) visit(c);
+    if ("children" in node && Array.isArray(node.children)) {
+      for (const child of node.children) {
+        visit(child);
+      }
     }
   }
 
   visit(doc);
 
-  return {reading_time_mins: Math.ceil(
-    words / 225 +
-      images * 0.17 +
-      code_blocks * 0.5,
-  ), number_of_words:words}
+  return words;
 }
 
 export function render(
   doc: Doc,
   ctx: RenderCtx,
-  reading_time_mins?: number,
+  word_count?: number,
 ): HtmlString {
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
@@ -97,15 +84,15 @@ export function render(
 
         const date_html = ctx.date ? time_html(ctx.date, "meta") : "";
 
-        const reading_html = reading_time_mins
-          ? `<span class="reading-time">
-           ${reading_time_mins} min read
+        const word_count_html = word_count
+          ? `<span class="word-count">
+           ${word_count} words
          </span>`
           : "";
 
         return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
-      ${date_html}${reading_html}
+      ${date_html}${word_count_html}
     </header>`;
       }
 
@@ -206,8 +193,9 @@ export function render(
             },
           };
 
-          const html =
-            `<div${r.renderAttributes(node)}>${r.renderChildren(node)}</div>`;
+          const html = `<div${r.renderAttributes(node)}>${
+            r.renderChildren(node)
+          }</div>`;
 
           r.options.overrides = { ...r.options.overrides, link: originalLink };
 
@@ -472,4 +460,3 @@ function getFavicon(url: string): string {
   const { hostname } = new URL(url);
   return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
 }
-

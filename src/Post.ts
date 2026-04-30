@@ -5,8 +5,7 @@ export type Post = {
   year: number;
   month: number;
   day: number;
-  reading_time_mins: number;
-  words: number;
+  word_count: number;
   iso_date: Date;
   published: boolean;
   slug: string;

@@ -257,24 +257,31 @@ export function BlogRoll({ posts }: { posts: FeedEntryData[] }) {
     }
   }
 
-  posts.sort((p1,p2) => p2.date.getTime() - p1.date.getTime());
+  posts.sort((p1, p2) => p2.date.getTime() - p1.date.getTime());
 
   const list_items = posts.map((post) => {
     const domain = get_domain(post.url);
-    const favicon= `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
 
     return (
-    <li>
-      <h2>
-        <img class="link-favicon" src={favicon} width="16" height="16" loading="lazy" alt=""/>
-        <a href={post.url}>{post.title}</a>
-      </h2>
-      <div class="meta-row">
-        <Time date={post.date} /> {domain}
-      </div>
-    </li>
-  )});
-
+      <li>
+        <h2>
+          <img
+            class="link-favicon"
+            src={favicon}
+            width="16"
+            height="16"
+            loading="lazy"
+            alt=""
+          />
+          <a href={post.url}>{post.title}</a>
+        </h2>
+        <div class="meta-row">
+          <Time date={post.date} /> {domain}
+        </div>
+      </li>
+    );
+  });
 
   return (
     <Base
@@ -283,7 +290,7 @@ export function BlogRoll({ posts }: { posts: FeedEntryData[] }) {
       description={blurb}
       src="/src/templates.tsx"
     >
-    <p>Blogs I like reading and have posted in the last 2 years.</p>
+      <p>Blogs I like reading and have posted in the last 2 years.</p>
       <ul class="blogroll">
         {list_items}
       </ul>
@@ -316,8 +323,8 @@ export function PostList(
 
         <div class="meta-row">
           <Time className="meta" date={post.iso_date} />
-          <span class="reading-time">
-            {post.reading_time_mins} min read ({post.words} words)
+          <span class="word-count">
+            {post.word_count} words
           </span>
           <div class="tags">
             {tags}

@@ -174,13 +174,13 @@
     text-decoration: underline;
   }
 
-  .reading-time::before {
+  .word-count::before {
     content: " - ";
     margin: 0 0.5rem;
     color: inherit;
   }
 
-  .reading-time {
+  .word-count {
     display: inline-flex;
     align-items: center;
   }

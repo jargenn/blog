@@ -271,12 +271,17 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     ctx.parse_ms += performance.now() - t;
 
     t = performance.now();
-    const render_ctx: djot.RenderCtx = { date: iso_date, summary: undefined, title: undefined };
+    const render_ctx: djot.RenderCtx = {
+      date: iso_date,
+      summary: undefined,
+      title: undefined,
+    };
 
-    const { reading_time_mins, number_of_words }= djot.estimate_reading_time(ast);
-
+    const word_count = djot.word_count(
+      ast,
+    );
     render_ctx.faviconMap = djot.buildFaviconMap(ast);
-    const html = djot.render(ast, render_ctx, reading_time_mins);
+    const html = djot.render(ast, render_ctx, word_count);
 
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
@@ -295,8 +300,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     posts.push({
       year,
       month,
-      reading_time_mins,
-      words: number_of_words,
+      word_count,
       day,
       slug,
       iso_date,
