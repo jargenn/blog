@@ -329,7 +329,7 @@ Up to this point, it's clear what a sound language offers you: it makes programs
 
 Most languages are not perfectly sound, and it's often the case that it is due to tradeoffs. Typescript sacrifices soundness for expressiveness and to be able to type one big mess of a language[^type-safe], C does it for performance, Go for simplicity and the list goes on. Even languages famously known for an emphasis on type safety have their own escape hatches, like `Obj.magic` in Ocaml or `std::transmute` in Rust. Not to mention the fact that _you will_ have to interface with code written in C or C++ (for example, when working with Python, Ruby or Node.js, somewhat popular choices).
 
-[^type-safe]: Curiously, in this community, the term "type safe" is very often used incorrectly since it is used to refer to static checking.
+[^type-safe]: Curiously, in this community, the term "type safe" is often misused to refer to static checking, which is not the same thing
 
 And yet, the degree to which a language commits to soundness genuinely matters, since its benefits compound over time:[^note]
 
