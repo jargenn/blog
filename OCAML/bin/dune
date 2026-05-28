@@ -1,0 +1,6 @@
+(executable
+ (public_name blog)
+ (name main)
+ (preprocess
+  (pps ppx_deriving_yojson))
+ (libraries blog cmarkit dream yojson))
