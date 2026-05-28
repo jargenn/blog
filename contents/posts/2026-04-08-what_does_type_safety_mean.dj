@@ -51,6 +51,8 @@ Given this, we should have a mental framework of what a sound language looks lik
 
 Let's play with some examples to illustrate what we have introduced so far. Imagine this function defined in a fictitious language which has the property of being sound, meaning that well-typed programs are well-behaved at runtime.
 
+::: code-block
+
 ``` rust
 fn add(a: Int, b: Int) Int {
     return a + b;
@@ -62,10 +64,13 @@ let res = add(10, 314);
 // This would result in an ill-typed program.
 let res = add(10, "Some");
 ``` 
+:::
 
 The expression `add(10, 314)` _is_ sound because `add` requires its arguments to be of type `Int` and both `10` and `314` satisfy this requirement; therefore the program is well-typed. The statics for `Int` would guarantee that the `+` operator will not get _stuck_ and because of this, the program is thought of as falling within the guarantees of the language.
 
 By comparison, `add(10, "Some")` is ill-typed because `"Some"` does not have type `Int` nor can it be reasonably coerced to it, so it doesn't satisfy the context. If we allowed this program to be executed it would fail to uphold the guarantees of the language and we wouldn't know what it could happen when it gets stuck. Another example would be:
+
+::: code-block
 
 ``` rust
 fn add(a: Int, b: Str) Int {
@@ -74,6 +79,8 @@ fn add(a: Int, b: Str) Int {
 
 let res = add(10, "Some");
 ```
+:::
+
 The program may or may not be well-typed depending on the statics of the language. There are two possibilities:
 
 - There is a rule defined for `+` with `Int` and `Str` as operands, the program is well-typed and guaranteed not to get stuck.
@@ -81,6 +88,7 @@ The program may or may not be well-typed depending on the statics of the languag
 
 Let's look at this example, thinking of our language as no longer proven to be sound:
 
+::: code-block
 ``` rust
 fn div(a: Int, b: Int) : Int {
     return a / b
@@ -88,6 +96,7 @@ fn div(a: Int, b: Int) : Int {
 
 let res = div(10, 0);
 ```
+:::
 
 This program is clearly well-typed, but stating that the language is sound now depends on the dynamics. More precisely, we can determine if it is sound by how it handles errors, in this case a division by zero:
 
@@ -108,6 +117,7 @@ Consequently, evaluation of a well-typed expression _cannot get stuck_! It can n
 
 Let's first introduce some notation to express these theorems precisely:
 
+::: code-block
 ```bash
 'Γ'     the static environment or typing context. 
 '⊢'     the turnstile; reads as "under the assumption of".
@@ -121,15 +131,18 @@ Let's first introduce some notation to express these theorems precisely:
 'val'   denotes that e is a value.
 '.'     the binder operator and reads as “such that”.
 ```
+:::
 
 Where Γ represents all the variables that are in the scope alongside their types. It's used in the relation Γ ⊢ e : τ that can be read as "the typing context _shows_ that `e` has type τ".
 
 The theorems can be expressed as:
 
+::: code-block
 ```bash
 1. If Γ ⊢ e : τ ∧ e -> e', then Γ ⊢ e': τ       # Preservation
 2. If ∅ ⊢ e : τ then (e val) ∨ (∃ e'. e -> e')  # Progress
 ```
+:::
 
 The first theorem is called _Preservation_ and it can be read as _"if under the typing context Γ, e has type τ, and e steps to e' in one step, then e' also has type τ under Γ"_. It ensures that each step of evaluation preserves the type.
 
@@ -157,9 +170,11 @@ Knowing this, what happens to the theorems of Preservation and Progress? How do 
 
 Harper presents the theorem of _Progress_ as:
 
+::: code-block
 ``` bash
 If d ok, then (d val) ∨ (d err) ∨ (∃ d' . d->d')
 ```
+::: 
 
 This reads as "If `d` is a closed expression, then it's either a value, results in a runtime error or it can be further evaluated". He also defines _Exclusivity_, which states that, for any `d` in the language, _exactly one_ of these outcomes must be true at any given time.
 
@@ -175,6 +190,7 @@ There have been great efforts made towards introducing static typing to dynamic 
 
 We'll look at simple enough snippet in Rust and C to compare what their specifications have to say and what different implementations end up doing, in order to illustrate why soundness is a property of a language semantics and not of it implementations.
 
+::: code-block
 ``` rust
 fn div(a: u32, b: u32) -> u32 {
     a / b
@@ -185,8 +201,11 @@ fn main() {
     println!("{res}");
 }
 ```
+:::
+
 Here, we are using [`rustc`](https://doc.rust-lang.org/rustc/what-is-rustc.html) and executing the output binary results in a panic:
 
+::: code-block
 ```bash 
 $ rustc -o main main.rs; ./main
 
@@ -195,10 +214,12 @@ attempt to divide by zero
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 with a full backtrace in:
 ```
+:::
 
 If we add the `RUST_BACKTRACE=1` environment variable we can see the language's built-in error handling machinery at work:
 
 {highlight=10}
+::: code-block
 ``` bash
 $ rustc -o main main.rs; RUST_BACKTRACE=1 ./main
 
@@ -215,6 +236,7 @@ stack backtrace:
    4: main::main
    5: core::ops::function::FnOnce::call_once
 ```
+:::
 
 Rust does not yet have a formal specification; the closest thing is the [Rust Reference](https://doc.rust-lang.org/reference/), and in there, we can see that this behavior is [*defined by the language*](https://doc.rust-lang.org/nightly/reference/expressions/operator-expr.html?highlight=division#arithmetic-and-logical-binary-operators:~:text=%E2%80%A0%20For%20integer%20types%2C%20division%20by%20zero%20panics): division by zero does not result in undefined behavior but instead transitions the program to a specified error state where computation is stopped immediately. Although the program ends abruptly, it doesn't reach an undefined state, panicking is a defined outcome[^alternative-api]. This is why Rust is considered sound in the presence of such an error.
 
@@ -222,6 +244,7 @@ Rust does not yet have a formal specification; the closest thing is the [Rust Re
 
 Now on the C program, we first use GCC:
 
+::: code-block
 ``` c
 #include <stdio.h>
 
@@ -234,17 +257,21 @@ int main() {
     printf("%d", res);
 }
 ```
+:::
 
 We do `gcc -Wall -Wextra -Wpedantic -O0 -o main main.c` and it compiles successfully, but then:
 
+::: code-block
 ``` bash
 $ ./main
 Floating point exception   (core dumped) ./main
 ```
+:::
 
 We can use `gdb` to learn more about what happened:
 
 {highlight="4,7,14"}
+::: code-block
 ```bash
 $ gdb -q ./main -ex run -ex "set disassembly-flavor intel" \
      -ex disassemble -ex quit
@@ -264,6 +291,7 @@ Dump of assembler code for function div:
    0x000055555555514b <+18>:    ret
 End of assembler dump.
 ```
+:::
 
 We see that the fault came from our `div` function. Notice how at address `0x0000555555555147` the division is performed with the `idiv` instruction on x86_64. Since the divisor is zero, the CPU raises a `#DE` (Division Error) exception. The OS handles it by sending a `SIGFPE` signal to the program. 
 
@@ -277,6 +305,8 @@ This behavior is a *design decision*. It allows compilers more freedom to do opt
 
 To showcase what can happen with these optimizations, let's see three different implementations of C: [`GCC`](https://gcc.gnu.org/), [`Clang`](https://clang.llvm.org/) and [`Fil-C`](https://fil-c.org/):
 
+::: code-block
+
 {highlight="4, 8"}
 ```bash
 $ gcc -g -O3 -o main main.c && gdb -q ./main -ex run \
@@ -289,8 +319,11 @@ Dump of assembler code for function main:
 => 0x0000555555555020 <+0>:     ud2
 End of assembler dump.
 ```
+:::
 
 Now the fault comes from our `main` function. Inspecting the assembly we see that the compiler optimized the whole program to a `ud2` instruction which generates a `#UD` (Invalid Opcode) exception. Now the program receives a `SIGILL` from the OS.
+
+::: code-block
 
 {highlight="2, 11"}
 ```bash
@@ -310,6 +343,7 @@ Dump of assembler code for function main:
    0x0000000000001162 <+18>:    ret
 End of assembler dump.
 ```
+:::
 
 This is interesting: without optimizations it behaves similarly to the GCC-compiled one. With optimizations enabled, Clang also deletes `div`; however, it doesn't replace main's body with a `ud2` and instead continues execution normally, printing an arbitrary value!
 
@@ -317,10 +351,14 @@ Fil-C[^Fil-C] is a fork of `Clang 20.1.8` that adds static and runtime memory sa
 
 [^Fil-C]: At the time of writing, it is at version 0.678. 
 
+::: code-block
+
 ```bash
 $ ./build/bin/clang -g -O3 -o main main.c && ./main
 0
 ```
+:::
+
 This time, the Fil-C compiler ends up rewriting our program to always return `0`.
 
 ## Why It Matters

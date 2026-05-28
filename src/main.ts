@@ -1,101 +1,21 @@
 import { Blog } from "./Blog.ts";
-import { initTreeSitter } from "./tree_sitter.ts";
-
-type CliSchema = {
-  draft: { args: ["title"]; options: { published?: boolean } };
-  build: {
-    args: [];
-    options: { profile?: boolean; blogroll?: boolean; clean?: boolean };
-  };
-  watch: { args: []; options: { profile?: boolean; clean?: boolean } };
-  serve: { args: []; options: { port?: string } };
-  spell: { args: []; options: Record<string, never> };
-};
-
-function printHelp(): void {
-  console.log(`Available commands:
-
-  draft <title>     Create a new .dj file in the /posts folder
-  build             Does a lot of things to publish
-  watch             Rebuilds the whole blog on change
-  serve             Spawns miniserver to preview the results
-  spell             Spell checks the newest post with wiz
-
-Run <command> --help for more information about a command`);
-}
-
-function printCommandHelp(cmd: keyof CliSchema): void {
-  switch (cmd) {
-    case "draft":
-      console.log(`Usage: draft <title> [options]
-
-Create a new .dj file in the /posts folder to start writing an article
-
-Arguments:
-  title              The title of the post
-
-Options:
-  --published        Set published to true (default: false)`);
-      break;
-    case "build":
-      console.log(`Usage: build [options]
-
-Does a lot of things to publish
-
-Options:
-  --Blogroll         Include blogroll
-  --clean            Clean dist folder first (default: true)`);
-      break;
-    case "watch":
-      console.log(`Usage: watch [options]
-
-Rebuilds the whole blog on change
-
-Options:
-  --clean            Clean dist folder first`);
-      break;
-    case "serve":
-      console.log(`Usage: serve [options]
-
-Spawns miniserver to preview the results of the build.
-
-Options:
-  --port             Port to listen on (default: 8080)`);
-      break;
-    case "spell":
-      console.log(`Usage: spell
-
-Spell checks the newest post with wiz`);
-      break;
-  }
-}
+// import { initTreeSitter } from "./tree_sitter.ts";
 
 function parseArgs(
   argv: string[],
 ): {
-  command: keyof CliSchema;
+  command: string;
   args: string[];
   options: Record<string, string | boolean>;
 } {
-  const rawCommand = argv[0];
-
-  if (!rawCommand || rawCommand === "--help" || rawCommand === "-h") {
-    printHelp();
-    Deno.exit(0);
-  }
-
   const validCommands = ["draft", "build", "watch", "serve", "spell"] as const;
-  if (!validCommands.includes(rawCommand as typeof validCommands[number])) {
-    console.error(`Unknown command: ${rawCommand}`);
-    console.error(`Run with --help to see available commands`);
+  const command = argv[0];
+  if (
+    !command ||
+    !validCommands.includes(command as typeof validCommands[number])
+  ) {
+    console.log(`Unknown command, use one of ${validCommands}`);
     Deno.exit(1);
-  }
-
-  const command = rawCommand as keyof CliSchema;
-
-  if (argv.includes("--help") || argv.includes("-h")) {
-    printCommandHelp(command);
-    Deno.exit(0);
   }
 
   const options: Record<string, string | boolean> = {};
@@ -146,7 +66,7 @@ async function main() {
     }
 
     case "build": {
-      await initTreeSitter();
+      // await initTreeSitter();
       const clean = options.clean !== false;
       const blogroll = options.blogroll === true;
       await Blog.build(clean, blogroll);
@@ -154,21 +74,16 @@ async function main() {
     }
 
     case "watch": {
-      await initTreeSitter();
+      // await initTreeSitter();
       const clean = options.clean !== false;
       await Blog.watch(clean);
       return;
     }
 
     case "serve": {
-      await initTreeSitter();
+      // await initTreeSitter();
       const port = parseInt(options.port as string ?? "8080");
       await Blog.serve(port);
-      return;
-    }
-
-    case "spell": {
-      await Blog.spell();
       return;
     }
   }

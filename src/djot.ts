@@ -1,5 +1,6 @@
 // Based on https://github.com/matklad/matklad.github.io/blob/caf0614156a379abffc4491b46aae8a872ac939f/src/djot.tsdjot
-import { highlight } from "./tree_sitter.ts";
+// import { highlight } from "./tree_sitter.ts";
+
 import { HtmlString } from "./HtmlString.ts";
 import { time_html } from "./templates.tsx";
 
@@ -111,27 +112,6 @@ export function render(
       if (node.style === "1)") add_class(node, "callout");
       return r.renderAstNodeDefault(node);
     },
-    link: (node: Link, r: HTMLRenderer) => {
-      const destination = node.destination;
-      if (destination) {
-        const isInternal = destination.startsWith("/") ||
-          destination.startsWith("#") ||
-          destination.startsWith("./") ||
-          destination.startsWith("../") ||
-          (!destination.startsWith("http://") &&
-            !destination.startsWith("https://"));
-
-        if (isInternal) {
-          const attrs = node.attributes || {};
-          attrs.class = attrs.class
-            ? `${attrs.class} internal-link`
-            : "internal-link";
-          node.attributes = attrs;
-        }
-      }
-
-      return r.renderAstNodeDefault(node);
-    },
     para: (node: Para, r: HTMLRenderer) => {
       if (node.children.length == 1 && node.children[0].tag == "image") {
         let cap = extract_cap(node);
@@ -173,9 +153,6 @@ export function render(
 `;
     },
     div: (node: Div, r: HTMLRenderer): string => {
-      let admon_icon = "";
-      if (has_class(node, "warn")) admon_icon = "warn";
-      if (has_class(node, "danger")) admon_icon = "danger";
       if (has_class(node, "links")) {
         const favicons = ctx.faviconMap?.get(node.attributes?._linksKey ?? "");
 
@@ -203,49 +180,7 @@ export function render(
         }
       }
 
-      if (admon_icon) {
-        return `<aside${
-          r.renderAttributes(node, { "class": "admn" })
-        }><svg class="icon"><use href="/assets/icons.svg#${admon_icon}"/></svg><div>${
-          r.renderChildren(node)
-        }</aside>`;
-      }
-
-      if (has_class(node, "block")) {
-        let cap = extract_cap(node);
-        if (cap) {
-          cap = `<div class="title">${cap}</div>`;
-        } else {
-          cap = "";
-        }
-        return `<aside${r.renderAttributes(node)}>${cap}${
-          r.renderChildren(node)
-        }</aside>`;
-      }
-
-      if (has_class(node, "details")) {
-        return `<details><summary>${extract_cap(node)}</summary>${
-          r.renderChildren(node)
-        }</details>`;
-      }
-
       return r.renderAstNodeDefault(node);
-    },
-    code_block: (node: CodeBlock) => {
-      let cap = extract_cap(node);
-      if (cap) {
-        cap = `<figcaption class="title">${cap}</figcaption>\n`;
-      } else {
-        cap = "";
-      }
-
-      const pre = highlight(
-        node.text,
-        node.lang,
-        attr(node, "highlight"),
-      ).value.trim();
-
-      return `<figure class="code-block" data-lang="${node.lang}">${cap}${pre}</figure>`;
     },
     image: (node: Image, r: HTMLRenderer): string => {
       if (has_class(node, "video")) {
@@ -324,7 +259,7 @@ export function render(
 
       return result;
     },
-
+    // Since I am replacing this for sidenotes
     footnote: (_node: Footnote, _r: HTMLRenderer) => {
       return "";
     },

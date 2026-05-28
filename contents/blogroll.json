@@ -1,15 +1,15 @@
 {
-  "createdAt": "2026-05-06T14:49:03.550Z",
+  "createdAt": "2026-06-12T01:23:51.833Z",
   "entries": [
     {
-      "title": "Redis array type: short story of a long development",
-      "url": "http://antirez.com/news/164",
-      "date": "2026-05-04T14:21:45.000Z"
+      "title": "A new era for software testing",
+      "url": "http://antirez.com/news/168",
+      "date": "2026-06-07T09:46:06.000Z"
     },
     {
-      "title": "Links to CSS colour palettes",
-      "url": "https://jvns.ca/blog/2026/05/04/css-colour-palettes/",
-      "date": "2026-05-04T00:00:00.000Z"
+      "title": "Moving away from Tailwind, and learning to structure my CSS",
+      "url": "https://jvns.ca/blog/2026/05/15/moving-away-from-tailwind--and-learning-to-structure-my-css-/",
+      "date": "2026-05-15T00:00:00.000Z"
     },
     {
       "title": "Generators with UnpinCell",
@@ -17,9 +17,9 @@
       "date": "2024-10-25T00:00:00.000Z"
     },
     {
-      "title": "Borrow-checking without type-checking",
-      "url": "https://www.scattered-thoughts.net/writing/borrow-checking-without-type-checking/",
-      "date": "2026-04-22T00:00:00.000Z"
+      "title": "0059: NYC and SF?",
+      "url": "https://www.scattered-thoughts.net/log/0059/",
+      "date": "2026-06-05T00:00:00.000Z"
     },
     {
       "title": "Steve Ballmer was an underrated CEO",
@@ -27,9 +27,9 @@
       "date": "2024-10-28T00:00:00.000Z"
     },
     {
-      "title": "In defense of lock poisoning in Rust",
-      "url": "https://sunshowers.io/posts/on-poisoning/?utm_source=atom_feed",
-      "date": "2025-12-02T00:00:00.000Z"
+      "title": "iddqd, or the hardest kind of unsafe Rust",
+      "url": "https://sunshowers.io/posts/iddqd-unsafe/?utm_source=atom_feed",
+      "date": "2026-06-02T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -42,20 +42,20 @@
       "date": "2025-11-30T00:00:00.000Z"
     },
     {
-      "title": "Bibliographic `web service' in VAX/VMS times: or shell scripting done right.",
-      "url": "https://okmij.org/ftp/Babel/Babel.html#vax-scripting",
-      "date": "2026-05-05T00:01:00.000Z"
+      "title": "Generators: the API for traversal, iteration and non-determinism:",
+      "url": "https://okmij.org/ftp/Computation/generators.html",
+      "date": "2026-06-08T00:01:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "Minimal Viable Zig Error Contexts",
-      "url": "https://matklad.github.io/2026/05/03/zig-error-context.html",
-      "date": "2026-05-03T00:00:00.000Z"
+      "title": "CSS: Unavoidable Bad Parts",
+      "url": "https://matklad.github.io/2026/06/04/css-unavoidable-bad-parts.html",
+      "date": "2026-06-04T00:00:00.000Z"
     },
     {
-      "title": "Automating Hermitage to see how transactions differ in MySQL and MariaDB",
-      "url": "http://notes.eatonphil.com/2026-05-02-automating-hermitage.html",
-      "date": "2026-05-02T00:00:00.000Z"
+      "title": "Python 3.14 garbage collection rigamarole",
+      "url": "http://notes.eatonphil.com/2026-06-06-python-3-14-garbage-collection-rigamarole.html",
+      "date": "2026-06-06T00:00:00.000Z"
     },
     {
       "title": "Concurrent, atomic MSI hash tables",
@@ -70,21 +70,21 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "It's time to be right.",
-      "url": "http://brooker.co.za/blog/2026/04/30/be-right.html",
-      "date": "2026-04-30T00:00:00.000Z"
+      "title": "Agentic software development hypothesis",
+      "url": "http://brooker.co.za/blog/2026/05/20/hypothesis.html",
+      "date": "2026-05-20T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
-      "title": "The Three Durable Function Forms",
-      "url": "https://jack-vanlightly.com/blog/2025/12/10/the-three-durable-function-forms",
-      "date": "2025-12-10T13:52:52.000Z"
+      "title": "Kafka Share Groups and Parallelizing Consumption - Part 3: Client-local parallelism",
+      "url": "https://jack-vanlightly.com/blog/2026/6/10/kafka-share-groups-and-parallelizing-consumption-part-3-client-local-parallelism",
+      "date": "2026-06-10T14:14:36.000Z"
     },
     {
       "author": "Julian Hyde",
-      "title": "Datalog in Morel",
-      "url": "http://blog.hydromatic.net/2026/03/09/datalog-in-morel.html",
-      "date": "2026-03-09T20:00:00.000Z"
+      "title": "Why can’t SQL average date values?",
+      "url": "http://blog.hydromatic.net/2026/06/08/avg-date.html",
+      "date": "2026-06-08T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -108,15 +108,15 @@
     },
     {
       "author": "Alperen Keles",
-      "title": "Have we won, what now?",
-      "url": "https://alperenkeles.com/posts/have-we-won/",
-      "date": "2026-05-01T00:00:00.000Z"
+      "title": "What is random generation?",
+      "url": "https://alperenkeles.com/posts/what-is-random-generation/",
+      "date": "2026-05-10T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
-      "title": "Library Operating Systems for the Desktop",
-      "url": "https://gazagnaire.org/blog/2026-04-23-docker-story.html",
-      "date": "2026-04-23T00:00:00.000Z"
+      "title": "O(x)Caml in Space",
+      "url": "https://gazagnaire.org/blog/2026-05-14-borealis.html",
+      "date": "2026-05-14T00:00:00.000Z"
     },
     {
       "title": "LLM time",
@@ -125,9 +125,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-18: From tropical forest protection to oi swallowing its oxcaml tail",
-      "url": "https://anil.recoil.org/notes/2026w18",
-      "date": "2026-05-03T00:00:00.000Z"
+      "title": ".plan-26-23: Earth Embeddings, Emails Everywhere, and ERRNOOOs",
+      "url": "https://anil.recoil.org/notes/2026w23",
+      "date": "2026-06-07T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",

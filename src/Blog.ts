@@ -197,51 +197,6 @@ export const Blog = {
   async serve(port: number): Promise<void> {
     await ServeBlog(port, "localhost");
   },
-
-  async spell(): Promise<void> {
-    const postsDir = "./contents/posts";
-    const entries: { path: string; date: Date }[] = [];
-
-    for await (const entry of Deno.readDir(postsDir)) {
-      if (entry.isFile && entry.name.endsWith(".dj")) {
-        const match = entry.name.match(/^(\d{4}-\d{2}-\d{2})-/);
-        if (match) {
-          entries.push({
-            path: `${postsDir}/${entry.name}`,
-            date: new Date(match[1]),
-          });
-        }
-      }
-    }
-
-    if (entries.length === 0) {
-      console.error("No dated posts found in content/posts");
-      return;
-    }
-
-    entries.sort((a, b) => b.date.getTime() - a.date.getTime());
-
-    const newest = entries[0].path;
-
-    console.log(`Running wiz spell on: ${newest}\n`);
-
-    const cmd = new Deno.Command("wiz", {
-      args: ["spell", newest],
-      stdout: "piped",
-      stderr: "piped",
-    });
-
-    const { code, stdout, stderr } = await cmd.output();
-
-    const decoder = new TextDecoder();
-
-    if (code !== 0) {
-      console.error(decoder.decode(stderr));
-      return;
-    }
-
-    console.log(decoder.decode(stdout));
-  },
 };
 
 async function collect_posts(ctx: Ctx): Promise<Post[]> {
@@ -280,6 +235,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const word_count = djot.word_count(
       ast,
     );
+
     render_ctx.faviconMap = djot.buildFaviconMap(ast);
     const html = djot.render(ast, render_ctx, word_count);
 
