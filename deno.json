@@ -8,7 +8,6 @@
     "build": "deno run --lock --cached-only  --allow-write=./dist --allow-read --allow-run --allow-net --allow-import --allow-env ./src/main.ts build",
     "watch": "deno run --lock=deno.lock --allow-write=./ --allow-read --allow-run --allow-net --allow-import --watch ./src/main.ts watch",
     "serve": "deno task watch & deno run --lock=deno.lock --allow-write=./dist --allow-read --allow-run --allow-net --allow-import ./src/main.ts serve",
-    "spell": "deno run --lock --cached-only  --allow-read=./contents/posts --allow-write=./content/posts --allow-env --allow-run ./src/main.ts spell"
   },
   "imports": {
     "@djot/": "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/",

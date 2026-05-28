@@ -8,7 +8,7 @@ function parseArgs(
   args: string[];
   options: Record<string, string | boolean>;
 } {
-  const validCommands = ["draft", "build", "watch", "serve", "spell"] as const;
+  const validCommands = ["draft", "build", "watch", "serve"] as const;
   const command = argv[0];
   if (
     !command ||
