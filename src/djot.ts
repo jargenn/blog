@@ -9,17 +9,14 @@ import { HTMLRenderer, renderHTML } from "@djot/html.ts";
 import {
   AstNode,
   BlockQuote,
-  CodeBlock,
   Div,
   Doc,
   Footnote,
   FootnoteReference,
   HasAttributes,
   Heading,
-  Image,
   Link,
   OrderedList,
-  Para,
   Section,
   Span,
   Str,
@@ -112,22 +109,28 @@ export function render(
       if (node.style === "1)") add_class(node, "callout");
       return r.renderAstNodeDefault(node);
     },
-    para: (node: Para, r: HTMLRenderer) => {
-      if (node.children.length == 1 && node.children[0].tag == "image") {
-        let cap = extract_cap(node);
-        if (cap) {
-          cap = `<figcaption class="title">${cap}</figcaption>\n`;
-        } else {
-          cap = "";
-        }
+    para: (node, r) => {
+      const isImageOnly = node.children.length === 1 &&
+        node.children[0].tag === "image";
 
-        return `<figure${r.renderAttributes(node)}>${cap}${
-          r.renderChildren(node)
-        }</figure>`;
+      if (!isImageOnly) {
+        const result = r.renderAstNodeDefault(node);
+        if (!ctx.summary) ctx.summary = get_string_content(node);
+        return result;
       }
-      const result = r.renderAstNodeDefault(node);
-      if (!ctx.summary) ctx.summary = get_string_content(node);
-      return result;
+
+      const cap = extract_cap(node);
+
+      if (!cap) {
+        return r.renderAstNodeDefault(node);
+      }
+      console.log(cap);
+
+      return `
+<figure class="with-caption"${r.renderAttributes(node)}>
+  ${r.renderChildren(node)}
+  <figcaption><cite>${cap}</cite></figcaption>
+</figure>`;
     },
     block_quote: (node: BlockQuote, r: HTMLRenderer) => {
       let source = undefined;
@@ -182,7 +185,7 @@ export function render(
 
       return r.renderAstNodeDefault(node);
     },
-    image: (node: Image, r: HTMLRenderer): string => {
+    image: (node): string => {
       if (has_class(node, "video")) {
         if (!node.destination) throw "missing destination";
         if (has_class(node, "loop")) {
@@ -191,7 +194,27 @@ export function render(
           return `<video src="${node.destination}" controls muted=true></video>`;
         }
       }
-      return r.renderAstNodeDefault(node);
+      if (!node.destination) throw "missing image src";
+
+      const attrs = {
+        "data-kind": "media",
+        loading: "lazy",
+      };
+
+      const attrsStr = Object.entries(attrs)
+        .map(([k, v]) => ` ${k}="${v}"`)
+        .join("");
+
+      return `
+<picture>
+  <img src="${node.destination}"${attrsStr} />
+</picture>`;
+    },
+    code_block: (node, r: HTMLRenderer) => {
+      const aria_label = `${node.lang} code block`;
+      return `<figure class="code-block" role="region" aria-label="${aria_label}">${
+        r.renderAstNodeDefault(node)
+      }</figure>`;
     },
     span: (node: Span, r: HTMLRenderer) => {
       if (has_class(node, "code")) {
