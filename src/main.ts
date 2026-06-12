@@ -1,91 +1,85 @@
 import { Blog } from "./Blog.ts";
-// import { initTreeSitter } from "./tree_sitter.ts";
 
-function parseArgs(
+import { parseArgs } from "@std/cli/parse-args";
+
+const VALID_COMMANDS = ["draft", "build", "watch", "serve"] as const;
+
+type Command = typeof VALID_COMMANDS[number];
+
+export function parseCli(
   argv: string[],
 ): {
-  command: string;
+  command: Command;
   args: string[];
   options: Record<string, string | boolean>;
 } {
-  const validCommands = ["draft", "build", "watch", "serve"] as const;
-  const command = argv[0];
-  if (
-    !command ||
-    !validCommands.includes(command as typeof validCommands[number])
-  ) {
-    console.log(`Unknown command, use one of ${validCommands}`);
+  const [rawCommand, ...rest] = argv;
+
+  if (!rawCommand || !VALID_COMMANDS.includes(rawCommand as Command)) {
+    console.error(
+      `Unknown command, use one of: ${VALID_COMMANDS.join(", ")}`,
+    );
     Deno.exit(1);
   }
 
-  const options: Record<string, string | boolean> = {};
-  const args: string[] = [];
+  const command = rawCommand as Command;
 
-  for (let i = 1; i < argv.length; i++) {
-    const arg = argv[i];
-    if (arg.startsWith("--")) {
-      const [key, value] = arg.slice(2).split("=");
-      if (value !== undefined) {
-        options[key] = value === "true" || value === "1"
-          ? true
-          : value === "false" || value === "0"
-          ? false
-          : value;
-      } else if (argv[i + 1] && !argv[i + 1].startsWith("--")) {
-        options[key] = argv[++i];
-      } else {
-        options[key] = true;
-      }
-    } else if (arg.startsWith("-")) {
-      const key = arg.slice(1);
-      if (argv[i + 1] && !argv[i + 1].startsWith("--")) {
-        options[key] = argv[++i];
-      } else {
-        options[key] = true;
-      }
-    } else {
-      args.push(arg);
+  const parsed = parseArgs(rest);
+
+  const options: Record<string, string | boolean> = {};
+
+  for (const [key, value] of Object.entries(parsed)) {
+    if (key === "_") continue;
+
+    if (
+      typeof value === "string" ||
+      typeof value === "boolean"
+    ) {
+      options[key] = value;
     }
   }
 
-  return { command, args, options };
+  return {
+    command,
+    args: parsed._.map(String),
+    options,
+  };
 }
 
 async function main() {
-  const { command, args, options } = parseArgs(Deno.args);
+  const { command, args, options } = parseCli(Deno.args);
 
   switch (command) {
     case "draft": {
       const title = args[0];
+
       if (!title) {
         console.error("Error: Missing required argument: title");
         Deno.exit(1);
       }
+
       await Blog.draft(title, options.published === true);
-      return;
+      break;
     }
 
-    case "build": {
-      // await initTreeSitter();
-      const clean = options.clean !== false;
-      const blogroll = options.blogroll === true;
-      await Blog.build(clean, blogroll);
-      return;
-    }
+    case "build":
+      await Blog.build(
+        options.clean !== false,
+        options.blogroll === true,
+      );
+      break;
 
-    case "watch": {
-      // await initTreeSitter();
-      const clean = options.clean !== false;
-      await Blog.watch(clean);
-      return;
-    }
+    case "watch":
+      await Blog.watch(
+        options.clean !== false,
+      );
+      break;
 
-    case "serve": {
-      // await initTreeSitter();
-      const port = parseInt(options.port as string ?? "8080");
-      await Blog.serve(port);
-      return;
-    }
+    case "serve":
+      await Blog.serve(
+        Number(options.port ?? 8080),
+      );
+      break;
   }
 }
 

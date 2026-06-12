@@ -4,6 +4,8 @@
     "https://raw.githubusercontent.com/jgm/djot.js/": "raw.githubusercontent.com/jgm/#djot.js_af886"
   },
   "modules": {
+    "https://jsr.io/@std/cli/1.0.30/unstable_progress_bar_stream.ts": {},
+    "https://jsr.io/@std/cli/1.0.30/unstable_prompt_multiple_select.ts": {},
     "https://jsr.io/@std/http/1.0.24/unstable_formdata_decoder_stream.ts": {},
     "https://jsr.io/@std/http/1.0.24/unstable_formdata_encoder_stream.ts": {},
     "https://jsr.io/@std/http/1.0.24/unstable_server_sent_event_stream.ts": {},

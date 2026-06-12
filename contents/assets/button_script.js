@@ -6,8 +6,8 @@ const arboriumScript = document.querySelector(
 );
 
 const CODE_THEMES = {
-  light: "github-light",
-  dark: "gruvbox-dark",
+  light: "ayu-light",
+  dark: "ayu-dark",
 };
 
 function updateArboriumTheme(theme) {

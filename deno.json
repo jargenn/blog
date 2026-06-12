@@ -11,6 +11,7 @@
   },
   "imports": {
     "@djot/": "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/",
+    "@std/cli": "jsr:@std/cli@^1.0.30",
     "@std/http": "jsr:@std/http@^1.0.24",
     "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/ast": "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/ast.ts",
     "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/attributes": "https://raw.githubusercontent.com/jgm/djot.js/@djot/djot@0.3.2/src/attributes.ts",
