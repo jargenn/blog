@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-06-12T01:23:51.833Z",
+  "createdAt": "2026-06-18T15:22:21.576Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -53,9 +53,9 @@
       "date": "2026-06-04T00:00:00.000Z"
     },
     {
-      "title": "Python 3.14 garbage collection rigamarole",
-      "url": "http://notes.eatonphil.com/2026-06-06-python-3-14-garbage-collection-rigamarole.html",
-      "date": "2026-06-06T00:00:00.000Z"
+      "title": "Doing the rounds",
+      "url": "http://notes.eatonphil.com/2026-06-15-doing-the-rounds.html",
+      "date": "2026-06-15T00:00:00.000Z"
     },
     {
       "title": "Concurrent, atomic MSI hash tables",
@@ -102,15 +102,15 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
-      "title": "Learning to code, 1990s vs 2026",
-      "url": "http://ayende.com/203975-a/learning-to-code-1990s-vs-2026?Key=4bf78bb8-056a-412e-adcc-758ff6f269f1",
-      "date": "2026-05-05T12:00:00.000Z"
+      "title": "Non obvious optimization with divide and conquer",
+      "url": "http://ayende.com/204003-a/non-obvious-optimization-with-divide-and-conquer?Key=1fc2405c-08de-4e3e-90ec-79bbb4bab33a",
+      "date": "2026-06-16T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
-      "title": "What is random generation?",
-      "url": "https://alperenkeles.com/posts/what-is-random-generation/",
-      "date": "2026-05-10T00:00:00.000Z"
+      "title": "Representation-Free Editing",
+      "url": "https://alperenkeles.com/posts/representation-free-editing/",
+      "date": "2026-06-16T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
@@ -125,9 +125,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-23: Earth Embeddings, Emails Everywhere, and ERRNOOOs",
-      "url": "https://anil.recoil.org/notes/2026w23",
-      "date": "2026-06-07T00:00:00.000Z"
+      "title": "The Royal Society Environmental Prize lecture on feeding the world without costing the earth",
+      "url": "https://anil.recoil.org/notes/ab-rs-env-medal",
+      "date": "2026-06-16T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",

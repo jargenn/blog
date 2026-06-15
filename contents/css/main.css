@@ -18,10 +18,11 @@
 
   :root[data-theme="dark"] {
     --background: #181a1b;
+    /* --lang-bg: #181818; */
+    --lang-bg: #232628;
     --text: #dcd8d0;
-    --accent: #279af1;
+    --accent: #ee6a1a;
     --emphasis: #f5f5f5;
-    --lang-bg: #181818;
     --muted: #2a2f36;
   }
 
@@ -339,7 +340,7 @@
     }
 
     svg {
-      fill: currentColor;
+      fill: blue;
     }
   }
 }

@@ -151,7 +151,7 @@ function Base(
           data-cdn="unpkg"
         >
         </script>
-        <script defer src="/assets/button_script.js"></script>
+        <script defer src="/assets/scripts.js"></script>
       </head>
       <body>
         {date && (
@@ -230,7 +230,7 @@ function Base(
             </a>
             <a href="mailto:me+blog@lautaroacosta.com">
               <FooterIcon name="email" />
-              Reach out
+              Contact
             </a>
 
             <a href="https://linkedin.com/in/lautaro-acosta-quintana">
