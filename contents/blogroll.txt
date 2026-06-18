@@ -25,3 +25,4 @@ https://gazagnaire.org/feed.xml
 https://graydon2.dreamwidth.org/data/rss
 https://anil.recoil.org/news.xml
 https://words.filippo.io/rss/
+https://www.iankduncan.com/rss.xml

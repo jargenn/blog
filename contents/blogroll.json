@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-06-18T15:22:21.576Z",
+  "createdAt": "2026-06-18T23:06:17.403Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -125,15 +125,21 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "The Royal Society Environmental Prize lecture on feeding the world without costing the earth",
-      "url": "https://anil.recoil.org/notes/ab-rs-env-medal",
-      "date": "2026-06-16T00:00:00.000Z"
+      "title": "Sir David Attenborough joins us to celebrate the Cambridge Conservation Initiative",
+      "url": "https://anil.recoil.org/notes/ten-years-of-cci",
+      "date": "2026-06-18T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
       "title": "Quantum Computers Are Not a Threat to 128-bit Symmetric Keys",
       "url": "https://words.filippo.io/128-bits/",
       "date": "2026-04-20T15:21:12.000Z"
+    },
+    {
+      "author": "Ian Duncan",
+      "title": "Brief aan de Eerste Kamer over box 3 · A letter to the Dutch Senate on Box 3",
+      "url": "https://iankduncan.com/personal/2026-06-12-box3-eerste-kamer/",
+      "date": "2026-06-12T00:00:00.000Z"
     }
   ]
 }
