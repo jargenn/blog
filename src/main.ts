@@ -47,7 +47,7 @@ export function parseCli(
 }
 
 async function main() {
-  const { command, args, options } = parseCli(Deno.args);
+  const { command, args, options: opts } = parseCli(Deno.args);
 
   switch (command) {
     case "draft": {
@@ -58,26 +58,27 @@ async function main() {
         Deno.exit(1);
       }
 
-      await Blog.draft(title, options.published === true);
+      await Blog.draft(title, opts.published === true);
       break;
     }
 
     case "build":
+      console.log(opts);
       await Blog.build(
-        options.clean !== false,
-        options.blogroll === true,
+        opts.clean !== false,
+        opts.blogroll === true,
       );
       break;
 
     case "watch":
       await Blog.watch(
-        options.clean !== false,
+        opts.clean !== false,
       );
       break;
 
     case "serve":
       await Blog.serve(
-        Number(options.port ?? 8080),
+        Number(opts.port ?? 8080),
       );
       break;
   }

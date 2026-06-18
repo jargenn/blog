@@ -124,7 +124,6 @@ export function render(
       if (!cap) {
         return r.renderAstNodeDefault(node);
       }
-      console.log(cap);
 
       return `
 <figure class="with-caption"${r.renderAttributes(node)}>
@@ -188,18 +187,29 @@ export function render(
     image: (node): string => {
       if (has_class(node, "video")) {
         if (!node.destination) throw "missing destination";
-        if (has_class(node, "loop")) {
-          return `<video src="${node.destination}" autoplay muted=true loop=true></video>`;
-        } else {
-          return `<video src="${node.destination}" controls muted=true></video>`;
-        }
+
+        return has_class(node, "loop")
+          ? `<video src="${node.destination}" autoplay muted loop></video>`
+          : `<video src="${node.destination}" controls muted></video>`;
       }
+
       if (!node.destination) throw "missing image src";
 
       const attrs = {
         "data-kind": "media",
         loading: "lazy",
+        ...node.attributes,
       };
+
+      const title = node.children[0]?.text ?? "";
+      const src = node.destination;
+
+      const darkSrc = src.replace(
+        /\.([^.?#]+)(\?.*)?$/,
+        "-dark.$1$2",
+      );
+
+      const type = mimeType(src);
 
       const attrsStr = Object.entries(attrs)
         .map(([k, v]) => ` ${k}="${v}"`)
@@ -207,14 +217,34 @@ export function render(
 
       return `
 <picture>
-  <img src="${node.destination}"${attrsStr} />
+  <source
+    ${type ? `type="${type}"` : ""}
+    srcset="${darkSrc}"
+    media="(prefers-color-scheme: dark)"
+    >
+  <source
+    ${type ? `type="${type}"` : ""}
+    srcset="${src}"
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+    >
+
+  <img
+    alt="${title}"
+    title="${title}"
+    src="${src}"
+    ${attrsStr}>
 </picture>`;
     },
     code_block: (node, r: HTMLRenderer) => {
       const aria_label = `${node.lang} code block`;
-      return `<figure class="code-block" role="region" aria-label="${aria_label}">${
-        r.renderAstNodeDefault(node)
-      }</figure>`;
+
+      return `<figure class="code-block" role="region" aria-label="${aria_label}">
+        ${
+        node.lang
+          ? `<span class="language-tag" title="${node.lang}">${node.lang}</span>`
+          : ""
+      }
+        ${r.renderAstNodeDefault(node)}</figure>`;
     },
     span: (node: Span, r: HTMLRenderer) => {
       if (has_class(node, "code")) {
@@ -417,4 +447,28 @@ export function buildFaviconMap(doc: Doc): Map<string, Map<string, string>> {
 function getFavicon(url: string): string {
   const { hostname } = new URL(url);
   return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
+}
+
+function mimeType(src: string): string | undefined {
+  const ext = src.split("?")[0].match(/\.([^.]+)$/)?.[1]?.toLowerCase();
+
+  switch (ext) {
+    case "avif":
+      return "image/avif";
+    case "webp":
+      return "image/webp";
+    case "png":
+      return "image/png";
+    case "jpg":
+    case "jpeg":
+      return "image/jpeg";
+    case "jxl":
+      return "image/jxl";
+    case "svg":
+      return "image/svg+xml";
+    case "gif":
+      return "image/gif";
+    default:
+      return undefined;
+  }
 }
