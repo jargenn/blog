@@ -236,7 +236,7 @@ export function render(
 </picture>`;
     },
     code_block: (node, r: HTMLRenderer) => {
-      const aria_label = `${node.lang} code block`;
+      const aria_label = node.lang ? `${node.lang} code block` : "text block";
 
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
         ${

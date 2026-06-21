@@ -12,7 +12,8 @@
     --term-bg: #181818;
     --muted: #dbdbd6;
     --text: #3b4252;
-    --accent: #279af1;
+    --accent: #75AADB;
+    /* --accent: #279af1; */
     --figure-width: 69ch;
     --figure-block-margin: 1.8em;
   }
@@ -22,7 +23,8 @@
       --background: #181a1b;
       --lang-bg: #232628;
       --text: #dcd8d0;
-      --accent: #ee6a1a;
+      /* --accent: #ee6a1a; */
+      --accent: #FCBF49;
       --emphasis: #f5f5f5;
       --muted: #2a2f36;
     }
