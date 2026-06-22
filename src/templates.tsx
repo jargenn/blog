@@ -303,7 +303,7 @@ export function PostList(
         .replace(/\s+/g, "-");
 
       return (
-        <a href={`/t/${tag_slug}.html`} class="tag">
+        <a class="tag" href={`/t/${tag_slug}.html`}>
           {tag}
         </a>
       );
@@ -320,12 +320,12 @@ export function PostList(
           <span class="word-count">
             {post.word_count} words
           </span>
-          <div class="tags">
-            {tags}
-          </div>
         </div>
         <div class="abstract">
           <p>{post.abstract}</p>
+        </div>
+        <div class="tags">
+          {tags}
         </div>
       </li>
     );
