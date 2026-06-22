@@ -91,7 +91,6 @@ fn div(a: Int, b: Int) : Int {
 
 let res = div(10, 0);
 ```
-
 This program is clearly well-typed, but stating that the language is sound now depends on the dynamics. More precisely, we can determine if it is sound by how it handles errors, in this case a division by zero:
 
 - The dynamics do not define what happens in this failure case, undefined behavior takes place: the language is unsound.
