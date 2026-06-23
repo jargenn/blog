@@ -456,6 +456,11 @@
     font-variant: small-caps;
   }
 
+
+  a.statement {
+    font-variant: normal;
+  }
+
   a.post_title,
   a.tag {
     font-variant: normal;
@@ -757,6 +762,7 @@
     color: var(--emphasis);
     font-style: italic;
   }
+
 
   .emphasis:hover {
     text-decoration: underline;
