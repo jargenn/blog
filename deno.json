@@ -24,7 +24,8 @@
     "@std/assert": "jsr:@std/assert@1",
     "@highlightjs/": "https://unpkg.com/@highlightjs/cdn-assets@11.6.0/es/",
     "@std/async/debounce": "https://raw.githubusercontent.com/denoland/std/refs/tags/release-2025.03.04/async/debounce.ts",
-    "@rss": "https://raw.githubusercontent.com/MikaelPorttila/rss/refs/tags/1.0.3/mod.ts"
+    "@rss": "https://raw.githubusercontent.com/MikaelPorttila/rss/refs/tags/1.0.3/mod.ts",
+    "katex": "npm:katex@^0.17.0"
   },
   "fmt": {
     "lineWidth": 80

@@ -178,20 +178,19 @@ function Base(
         </main>
 
         <footer>
-          {date && (
-            <p class="meta-links">
-              (<a
-                class="emphasis"
-                href={`${github_url}/blog/commits/master${src}`}
-              >
-                revision history
-              </a>{" "}
-              &{" "}
-              <a class="emphasis" href="/ai_transparency.html">
-                AI transparency
-              </a>)
-            </p>
-          )}
+          {date &&
+            (
+              <p class="meta-links">
+                ({" "}
+                <a
+                  class="emphasis"
+                  href={`${github_url}/blog/commits/master${src}`}
+                >
+                  revision history
+                </a>{" "}
+                )
+              </p>
+            )}
           <p>
             <a href="/feed.xml">
               <FooterIcon name="rss" />
@@ -214,6 +213,9 @@ function Base(
           </p>
           <p class="copyr">
             © 2026 Lautaro Acosta Quintana. All rights reserved.
+            <a class="emphasis statement" href="/ai_transparency.html">
+              AI transparency statement
+            </a>
           </p>
         </footer>
       </body>

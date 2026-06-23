@@ -18,7 +18,6 @@
       packages = [
         pkgs.deno
         pkgs.vscode-css-languageserver
-
       ];
     };
   };
