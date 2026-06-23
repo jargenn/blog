@@ -3,6 +3,7 @@
 
 import { HtmlString } from "./HtmlString.ts";
 import { time_html } from "./templates.tsx";
+import katex from "npm:katex";
 
 import { parse as djot_parse } from "@djot/parse.ts";
 import { HTMLRenderer, renderHTML } from "@djot/html.ts";
@@ -15,6 +16,7 @@ import {
   FootnoteReference,
   HasAttributes,
   Heading,
+  InlineMath,
   Link,
   OrderedList,
   Section,
@@ -108,6 +110,19 @@ export function render(
     ordered_list: (node: OrderedList, r: HTMLRenderer): string => {
       if (node.style === "1)") add_class(node, "callout");
       return r.renderAstNodeDefault(node);
+    },
+    inline_math(node) {
+      return katex.renderToString(node.text, {
+        displayMode: false,
+        output: "mathml",
+      });
+    },
+
+    display_math(node) {
+      return katex.renderToString(node.text, {
+        displayMode: true,
+        output: "mathml",
+      });
     },
     para: (node, r) => {
       const isImageOnly = node.children.length === 1 &&
