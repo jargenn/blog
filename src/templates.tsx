@@ -8,7 +8,7 @@ import { FeedEntry as FeedEntryData } from "./blogroll.ts";
 import { HtmlString } from "./HtmlString.ts";
 
 const site_url = "https://lautaroacosta.com";
-const github_url = "https://github.com/lauacosta";
+const github_url = "https://github.com/jargenn";
 const blurb = "Lautaro's Coppermind";
 const not_published_html =
   `<div class="private"><p>If you found this you are a beta reader or really lucky! This article is not yet ready to be made public :)</p></div>`;
@@ -146,6 +146,7 @@ function Base(
         <link rel="stylesheet" href="/css/main.css" />
         {extra_css && <link rel="stylesheet" href={`/css/${extra_css}`} />}
         <script
+          defer
           src="https://cdn.jsdelivr.net/npm/@arborium/arborium@1/dist/arborium.iife.js"
           data-manual
           data-cdn="unpkg"
@@ -208,7 +209,7 @@ function Base(
 
             <a href={github_url}>
               <FooterIcon name="github" />
-              lauacosta
+              jargenn
             </a>
           </p>
           <p class="copyr">
