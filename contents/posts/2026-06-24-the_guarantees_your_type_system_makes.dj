@@ -1,7 +1,7 @@
 ---
 {
  "title":"The Guarantees Your Type System Makes",
- "published":false,
+ "published":true,
  "tags":["Rust", "OCaml", "Typescript", "Python", "Type Systems"],
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
@@ -27,7 +27,7 @@ The first from _"[The Practical Foundations of Programming Languages](https://ww
 >
 > _The static phase is specified by a statics comprising a collection of rules for deriving typing judgments stating that an expression is well-formed of a certain type. Types mediate the interaction between the constituent parts of a program by “predicting” some aspects of the execution behavior of the parts so that we may ensure they fit together properly at run-time. Type safety tells us that these predictions are accurate; if not, the statics is considered to be improperly defined, and the language is deemed unsafe for execution."_
 
-From here, we learn that:
+From here, we roughly learn that:
 
 - Processing a language can be divided into two stages: 1) the statics, it derives typing judgments to check if what you said is of a certain type actually is that type and 2) the dynamics, which is concerned with the evaluation of those programs. 
 - Types are there to predict aspects of the execution and ensure they make sense at runtime. 
@@ -36,7 +36,7 @@ From here, we learn that:
 
 Now we know the first thing about type safety: it _guarantees_ that the predictions made by the types are right.
 
-But now I have more doubts! How are typing judgements done? What is all of that ill and well behaved jargon?
+But now I have more doubts! What are typing judgements? What is all of that well and ill behaved jargon?
 
 Well, luckily for us, Harper defines a language as "safe language" if *all* well-typed programs are well-behaved, meaning they exhibit only behaviors predicted by the statics. The fulfillment of this property is what marks a language as *safe* or *unsafe*.[^disclaimer]
 
@@ -348,20 +348,484 @@ It's useful to look at an example in the wild. This single recursive type we men
 
 By now I believe we know enough of what type soundness is, and that most languages are designed around trade-offs between soundness and other features, so it's more useful to think of subsets in a language where it _is_ sound.
 
- To name a few: 
-Typescript sacrifices it to be able to be a superset of Javascript, C does it as a product of it's spartan design around performance, Go decided that a type system is too complex for the user and aimed to be "simple"[^burn].
+I would like to now shift the focus on what properties can be enforced in languages that take advantage of a nice type system.
 
-[^burn]: This _is_ me complaining. I'm one of the victims.  
 
-I would like to now shift the focus on what useful properties can be enforced in languages that take advantage of what nice type systems can offer.
+## Exhibit 2: Subtyping
 
-## Exhibit 2: Send/Sync
+A *subtype* relation between types validates the *subsumption principle*:
+
+> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whener a value of type $`τ` is required.
+
+This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
+
+[^complex]: It also makes proving safety more difficult, since an expression doesn't fully reveal the information about the underlying value, changing the proofs of preservation and progress.
+
+This can sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and is key when making sense of class hierarchies.
+
+To understand subtyping is useful to think in matters of _behaviours_. We'll use $`T <: S`  to show that $`T` is a subtype of $`S`.
+
+To work some quick examples, in languages with nominal typing like Java, one often needs to declare the relation explicitly:
+
+``` java
+class Spren {
+    void fly() {}
+}
+
+class Bridgeman {
+   void fly() {}
+  
+}
+
+// We explicitly declare Herald as subtype of Spren.
+// Herald <: Spren
+class Herald extends Spren {
+  void fly() { }
+
+  void do_nothing() {}
+}
+
+// This works
+Spren Jezrien = new Herald();
+
+// Bridgeman has `fly()` but because we don't declare it
+// as a subtype of Spren, it will fail to compile.
+Spren Rock = new Bridgeman();
+
+```
+
+In contrast, Typescript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
+
+``` typescript
+type Bridgeman = {
+  run(): void;
+};
+
+type Herald = {
+  fly(): void;
+  do_nothing(): void;
+  run(): void;
+};
+
+const jezrien: Herald = {
+  fly() {},
+  do_nothing() {},
+  run() {},
+};
+
+const run = (b: Bridgeman) => {
+  b.run();
+};
+
+// This works because subtyping is based solely on the type's members.
+run(jezrien);
+
+// This also works because the point of having structural typing in TS
+// is to still be able to write Javascript.
+run({
+  run() {},
+});
+
+```
+
+You can check more examples, even where Typescript's features are unsound, [here](https://www.typescriptlang.org/docs/handbook/type-compatibility.html).
+
+This may look the same as duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to call the required method function at runtime, and will fail and burn if it isn't there: [^static-duck]
+
+```python
+from io import BytesIO
+
+class FakeFile:
+    def __init__(self, content: bytes, name: str):
+        self._buf = BytesIO(content)
+        self.name = name
+
+    def seek(self, pos):
+        self._buf.seek(pos)
+
+
+# I don't really care what file_like is, as long as it has a `read()` method.
+def save_file(file_like, destination: str):
+    with open(destination, "wb") as out:
+        out.write(file_like.read())
+
+
+with open("real.txt", "wb") as f:
+    f.write(b"i am a real file")
+
+with open("real.txt", "rb") as real:
+    save_file(real, "out_real.txt")
+
+fake = FakeFile(b"i am a duck", "duck.txt")
+save_file(fake, "out_duck.txt")
+
+# Traceback (most recent call last):
+#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
+#  in <module>
+#     save_file(fake, "out_duck.txt")
+#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
+#  save_file
+#     out.write(file_like.read())
+              ^^^^^^^^^^^^^^
+# AttributeError: 'FakeFile' object has no attribute 'read'
+
+```
+
+[^static-duck]: Python actually supports structural subtyping (named static duck-typing) in the shape of `protocols`. [Check PEP 544](https://peps.python.org/pep-0544/)
+
+Subtyping is really there to make programs easier to write, but at the same time, makes it difficult to be sure that an expression has _exactly_ the type it declares.
+
+Due to this, in languages that support generics [^param], we'll also talk about *variance*, which in layman's terms, basically means _how_ the subtyping relations translates to the type constructor.
+
+[^param]: The precise term is [parametric polymorphism](https://en.wikipedia.org/wiki/Parametric_polymorphism).
+
+Harper states that:
+
+> A type constructor is said to be *covariant* in an argument if subtyping in that argument is preserved by the constructor. It is said to be *contravariant* if subtyping in that argument is reversed by the constructor. It
+is said to be *invariant* in an argument if subtyping for the constructed type is not affected by subtyping in that argument.
+
+To make any sense of that, let's define some generic types:
+
+``` typescript
+
+// Typescript actually tries to automatically infer the variance given the
+// position where the type parameter T appears in the signatures.
+//
+// The `out` keyword exists to explicitly tell the compiler that the relation
+// is a _covariance_, so this:
+type Iterable<T> = {
+  //  would be equivalent to:
+  // type Iterable<out T>
+  get: () => T;
+};
+
+type Secret = {
+  name: string;
+};
+
+type SecretCode = Secret & {
+  inner: number[];
+};
+
+const secret: SecretCode = {
+  name: "Tale of Jiraiya the Gallant",
+  inner: [9, 31, 8, 106, 7, 207, 15],
+};
+
+const shuffling_iterator: Iterable<SecretCode> = {
+  get() {
+    const list = secret.inner;
+    let cIdx = list.length;
+    let rIdx;
+
+    while (cIdx != 0) {
+      rIdx = Math.floor(Math.random() * cIdx);
+      cIdx -= 1;
+
+      [list[cIdx], list[rIdx]] = [list[rIdx], list[cIdx]];
+    }
+
+    secret.inner = list;
+
+    return secret;
+  },
+};
+
+// Here, we see the constructor is _covariant_ because
+// the subtyping "direction" remains the same:
+//
+// SecretCode <: Secret
+//             |
+//             V
+// Iterable<SecretCode> <: Iterable<Secret>
+const iter: Iterable<Secret> = shuffling_iterator;
+
+console.log(iter.get());
+// {
+//   name: "Tale of Jiraiya the Gallant",
+//   inner: [
+//     7, 15, 207, 31,
+//     9,  8, 106
+//   ]
+// }
+
+``` 
+
+Since we retain the subtyping relation, we can design API's that allows us to easily use more *specialized* implementations, since all it takes is to implement `Secret`, encapsulating any specific details.
+
+With contravariance, the idea is that it enables us to design APIs that are more *general* in the values they can operate on:
+
+``` typescript
+// The `in` keyword exists to explicitly tell the compiler that the relation
+// is a _contravariance_, so this:
+type Logger<T> = {
+  //  would be equivalent to:
+  // type Logger<in T>
+  log: (a: T) => void;
+};
+
+type Event = {
+  timestamp: number;
+  source: string;
+};
+
+type Login = Event & {
+  username: string;
+  ip: string;
+};
+
+type Crash = Event & {
+  signature: string;
+  count: number;
+};
+
+const default_logger: Logger<Event> = {
+  log(event) {
+    const date = new Date(event.timestamp)
+      .toISOString();
+
+    console.log([date, event]);
+  },
+};
+
+// Here, the constructor is _contravariant_ because the subtyping
+// "direction" gets reversed:
+//
+// Login <: Event
+//        |
+//        V
+// Logger<Event> <: Logger<Login>
+const login_logger: Logger<Login> = default_logger;
+
+// Crash <: Event
+//        |
+//        V
+// Logger<Event> <: Logger<Crash>
+const crash_logger: Logger<Crash> = default_logger;
+
+login_logger.log({
+  timestamp: Date.now(),
+  source: "auth-service",
+  username: "johnny",
+  ip: "10.0.0.42",
+});
+
+crash_logger.log({
+  timestamp: Date.now(),
+  source: " ",
+  count: 2040,
+  signature: "JS::Value::isGCThing",
+});
+``` 
+
+We could create any kind of new `Event` and still be able to inspect it with the same implementation.
+
+We could see a pattern here: covariance is often used when trying to _produce_ a value, contravariant when we want to _consume_ a value, and invariant is actually use when we want to do both, so the safest way to avoid type errors is to have no subtyping relation.
+
+```typescript
+/// Since now we both produce and consume `V`, we have an _invariant_.
+// This:
+type KVStore<V> = {
+  //  would be equivalent to:
+  // type KVStore<in out V>
+
+  data: Map<string, V>;
+  get: (key: string) => V | undefined;
+  set: (value: V) => string;
+};
+
+// This works just fine
+const login_store: KVStore<Login> = {
+  data: new Map<string, Login>(),
+
+  get(key) {
+    return this.data.get(key);
+  },
+
+  set(value) {
+    const uuid_key = randomUUID();
+    this.data.set(uuid_key, value);
+
+    return uuid_key;
+  },
+};
+
+// But this _will_ fail.
+const event_store: KVStore<Event> = login_store;
+
+```
+
+Trying to create a `KVStore<Event>` this way or the other way around, declaring fist a event store and then trying to build a `KVStore<Login>` by assignment, creates an error because the compiler already inferred that the variance of the type constructor is invariant:
+
+```
+// I cleaned it up a little bit:
+
+$> deno check main.ts
+
+TS2322 [ERROR]: Type 'KVStore<Login>' is not assignable to
+type 'KVStore<Event>'.
+  Types of property 'set' are incompatible.
+    Type 'Event' is not assignable to type 'Login'.
+// We can see that we no longer can do what we did when it was covariant:
+     Type 'Event' is missing the following properties from type
+     '{ username: string; ip: string; }': username, ip
+```
+
+If we really wanted the same type constructor to support both kinds of variance, the solution is to create two new generic types for producing and reading:
+
+```typescript
+type KVReader<out V> = {
+  get: (key: string) => V | undefined;
+};
+
+type KVWriter<in V> = {
+  set: (value: V) => string;
+};
+
+// KVStore remains invariant, but now we read and write on the
+// same mutable state, but without having type errors by creating
+// Readers and Writers!
+type KVStore<V> = KVReader<V> & KVWriter<V> & {
+  data: Map<string, V>;
+};
+
+const event_store: KVStore<Event> = {
+  data: new Map<string, Event>(),
+
+  get(key) {
+    return this.data.get(key);
+  },
+
+  set(value) {
+    const uuid_key = randomUUID();
+    this.data.set(uuid_key, value);
+
+    return uuid_key;
+  },
+};
+
+function recordLogin(writer: KVWriter<Login>): string {
+  return writer.set({
+    timestamp: 0,
+    source: "",
+    username: "",
+    ip: "",
+  });
+}
+
+// Remember that Login <: Event and here we have:
+//
+// function registerLogin(writer: KVWriter<Login>): string
+//
+// KVWriter<Event> <: KVWriter<Login>
+//
+// We have Contravariance!
+const key = recordLogin(
+  event_store,
+);
+
+function debugEvent(key: string, reader: KVReader<Event>) {
+  console.log(reader.get(key));
+}
+
+const login_store: KVStore<Login> = {
+  data: new Map<string, Login>(),
+
+  get(key) {
+    return this.data.get(key);
+  },
+
+  set(value) {
+    const uuid_key = randomUUID();
+    this.data.set(uuid_key, value);
+
+    return uuid_key;
+  },
+};
+
+// KVReader<Login> <: KVReader<Event>
+//
+// Here we have Covariance!
+debugEvent(key, login_store);
+```
+
+Imagine now that we create a lot more subtypes of `Event`, they all can reuse the `debugEvent` function, and any storage accepting `Event` can also reuse `recordLogin`. This way we can use each variance where it is safe to do so, all on the same implementation! 
+
+This code used a syntax named `declaration-site`, _declaring_ the intended variance on the type definition, C# also does it and OCaml too with the `+a, -a and 'a` annotations in module definitions. Java famously uses the wildcard `? extends/super` syntax which is called `use-site`, because it appears when using the type.
+
+*Bivariance* exists too, but we don't do that around here.
+
+****
+
+In Rust, you could be tempted to think that an example of subtyping is when `impl Trait for T` so `T` becomes a subtype `Trait`, but that would be incorrect because traits are not types, and in Rust terms a function signature or struct field expecting a [trait object](https://doc.rust-lang.org/reference/types/trait-object.html) `dyn Trait` is handled by a coercion rule, there is no subtyping relation taking place.[^sub-rust]
+
+```rust
+trait Rollable {
+    fn roll(&self) -> u32;
+}
+
+struct Dice {
+    name: &'static str,
+    faces: u32,
+}
+
+impl Rollable for Dice {
+    fn roll(&self) -> u32 {
+        rand::random_range(1..=self.faces)
+    }
+}
+
+// The trait object `dyn Rollable` is an _opaque_ value of a type that
+// implements a certain set of traits. Because of its unknown size
+// at compile time it is considered a _dinamically sized type_ and
+// has to be used behind some type of pointer, in this case a `Box`.
+
+// Each pointer of a trait object includes a pointer to an instance
+// of the type `T` implementing the trait and a virtual method table
+// (vtable) containing, for each method of `T`, a function pointer
+// to `T`s implementation.
+fn roll(r: Box<dyn Rollable>) -> u32 {
+    // Using a Trait object like `dyn Rollable` allows a late binding
+    // of methods.
+
+    // Calling `roll()` results in a dynamic dispatch at runtime.
+    //A function pointer is loaded from the trait object vtable and executed.
+    r.roll()
+}
+
+// Not to be confused with the `impl Trait` syntax, which works on _concrete_
+// types so the usual static dispatch is used and causes no overhead.
+fn roll_impl(r: impl Rollable) -> u32 {
+    r.roll()
+}
+
+fn main() {
+    for _ in 0..=3 {
+        let dice = Dice {
+            name: "D6",
+            faces: 6,
+        };
+        let name = dice.name;
+        println!("{} rolled: {}", name, roll(Box::new(dice)));
+        // D6 rolled: 2
+        // D6 rolled: 5
+        // D6 rolled: 6
+        // D6 rolled: 3
+    }
+}
+```
+
+[^sub-rust]: Subtyping in Rust is limited to [two cases](https://doc.rust-lang.org/reference/subtyping.html).
+
+## Exhibit 3: Send/Sync
 
 Maybe two of the most famous traits[^trait] in Rust, if you ever tried to do anything related to concurrency you must know them by heart. [The Nomicon](https://doc.rust-lang.org/nomicon/send-and-sync.html) tells us that [`Send`](https://doc.rust-lang.org/core/marker/trait.Send.html) and [`Sync`](https://doc.rust-lang.org/core/marker/trait.Sync.html) are two special traits that govern how types are handled between threads.
 
-`Send` declares that a type `T` can be transferred across thread boundaries (meaning it is acceptable for another thread to have a mutable reference `&mut T`), and `T` is `Sync` if and only if a reference to it (`&T`) is `Send` (meaning it's okay for another thread to hold a reference `&T`). Mix that with Rust's ownership system which prevents aliasing a mutable reference, and you have a recipe to *make data races impossible*. [^os-scheduler]
+`Send` declares that a type `T` can be transferred across thread boundaries (meaning it is acceptable for another thread to have a mutable reference `&mut T`), and `T` is `Sync` if and only if a reference to it (`&T`) is `Send` (meaning it's okay for another thread to hold a reference `&T`).
 
-Most types from the standard library are `Send`, the exception being ones that can't cross thread boundaries safely. A textbook example: [`Rc<T>`](https://doc.rust-lang.org/std/rc/index.html), a reference-counting pointer, is `!Send` and `!Sync` because the count for how many references are there for `T` is non-atomic, so the compiler doesn't allow you to use it across threads boundaries because it could cause data races.
+Mix that with Rust's ownership system that prevents a mutable reference to have more than one owner at once, and you have a recipe to *make data races impossible*. [^os-scheduler]
+
+Most types from the standard library are automatically `Send`, the exception being ones that can't cross thread boundaries safely. A textbook example: [`Rc<T>`](https://doc.rust-lang.org/std/rc/index.html), a reference-counting pointer, is `!Send` and `!Sync` because the count for how many references are there for `T` is non-atomic, so the compiler doesn't allow you to use it across threads boundaries because it could cause data races.
 
 ```rust
 fn main() {
@@ -374,11 +838,7 @@ fn main() {
         do_something(&rc_bank);
     });
 }
-```
 
-Will result in an error message like:
-
-```
 error[E0277]: `Rc<i32>` cannot be shared between threads safely
  --> src/main.rs:7:19
   |
@@ -472,187 +932,6 @@ pub trait Future {
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
 }
 ```
-## Exhibit 3: Subtyping
-
-A *subtype* relation between types validates the *subsumption principle*:
-> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whener a value of type $`τ` is required.
-
-This relation essentialy enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
-
-[^complex]: It also makes proving safety more difficult, since an expression doesn't fully reveal the information about the underlying value, changing the proofs of preservation and progress.
-
-This can sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and is key when making sense of class hierarchies.
-
-This essentially relaxes the type system to allow values of one type to be treated as values of another, so it enlarges the set of well-typed programs. To understand subtyping is useful to think in matters of _behaviours_.
-
-To work some quick examples, in languages with nominal typing like Java, one often needs to declare the relation explicitly:
-
-``` java
-class Spren {
-    void fly() {}
-}
-
-class Bridgeman {
-   void fly() {}
-  
-}
-
-// We explicitly declare Herald as subtype of Spren
-class Herald extends Spren {
-  void fly() { }
-
-  void do_nothing() {}
-}
-
-// This works
-Spren Jezrien = new Herald();
-
-// Bridgeman has `fly()` but because we don't declare it
-// as a subtype of Spren, it will fail to compile.
-Spren Rock = new Bridgeman();
-
-```
-
-In contrast, Typescript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
-
-``` typescript
-type Spren = {
-    fly(): void
-}
-
-type Bridgeman = {
-    fly(): void
-}
-
-type Herald = {
-    fly(): void
-    doNothing(): void
-}
-
-const herald: Herald = {
-    fly() {},
-    doNothing() {}
-}
-
-// This will work because subtyping is based solely on the type's members.
-const jezrien: Spren = herald;
-
-const pattern = {
-    fly() {}
-};
-
-const rock: Bridgeman = {
-    fly() {}
-}
-
-console.assert(jezrien === herald);
-console.assert(jezrien === pattern);
-console.assert(rock === pattern);
-```
-
-You can check more examples, even where Typescript's features are unsound, [here](https://www.typescriptlang.org/docs/handbook/type-compatibility.html).
-
-This may look the same as duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to call the required method function at runtime, and will fail and burn if it isn't there: [^static-duck]
-
-```python
-from io import BytesIO
-
-class FakeFile:
-    def __init__(self, content: bytes, name: str):
-        self._buf = BytesIO(content)
-        self.name = name
-
-    def seek(self, pos):
-        self._buf.seek(pos)
-
-
-# I don't really care what file_like is, as long as it has a `read()` method.
-def save_file(file_like, destination: str):
-    with open(destination, "wb") as out:
-        out.write(file_like.read())
-
-
-with open("real.txt", "wb") as f:
-    f.write(b"i am a real file")
-
-with open("real.txt", "rb") as real:
-    save_file(real, "out_real.txt")
-
-fake = FakeFile(b"i am a duck", "duck.txt")
-save_file(fake, "out_duck.txt")
-
-# Traceback (most recent call last):
-#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
-#  in <module>
-#     save_file(fake, "out_duck.txt")
-#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
-#  save_file
-#     out.write(file_like.read())
-              ^^^^^^^^^^^^^^
-# AttributeError: 'FakeFile' object has no attribute 'read'
-
-```
-
-[^static-duck]: Python actually supports structural subtyping (named static duck-typing) in the shape of `protocols`. [Check PEP 544](https://peps.python.org/pep-0544/)
-
-In Rust, you could be tempted to think that an example of subtyping is when `impl Trait for T` so `T` becomes a subtype `Trait`, but that would be incorrect because traits are not types, and in Rust terms a function signature or struct field expecting a [trait object](https://doc.rust-lang.org/reference/types/trait-object.html) `dyn Trait` is handled by a coercion rule, there is no subtyping relation taking place.[^sub-rust]
-
-```rust
-trait Rollable {
-    fn roll(&self) -> u32;
-}
-
-struct Dice {
-    name: &'static str,
-    faces: u32,
-}
-
-impl Rollable for Dice {
-    fn roll(&self) -> u32 {
-        rand::random_range(1..=self.faces)
-    }
-}
-
-// The trait object `dyn Rollable` is an _opaque_ value of a type that
-// implements a certain set of traits. Because of its unknown size
-// at compile time it is considered a _dinamically sized type_ and
-// has to be used behind some type of pointer, in this case a `Box`.
-
-// Each pointer of a trait object includes a pointer to an instance
-// of the type `T` implementing the trait and a virtual method table
-// (vtable) containing, for each method of `T`, a function pointer
-// to `T`s implementation.
-fn roll(r: Box<dyn Rollable>) -> u32 {
-    // Using a Trait object like `dyn Rollable` allows a late binding
-    // of methods.
-
-    // Calling `roll()` results in a dynamic dispatch at runtime.
-    //A function pointer is loaded from the trait object vtable and executed.
-    r.roll()
-}
-
-// Not to be confused with the `impl Trait` syntax, which works on _concrete_
-// types so the usual static dispatch is used and causes no overhead.
-fn roll_impl(r: impl Rollable) -> u32 {
-    r.roll()
-}
-
-fn main() {
-    for _ in 0..=3 {
-        let dice = Dice {
-            name: "D6",
-            faces: 6,
-        };
-        let name = dice.name;
-        println!("{} rolled: {}", name, roll(Box::new(dice)));
-        // D6 rolled: 2
-        // D6 rolled: 5
-        // D6 rolled: 6
-        // D6 rolled: 3
-    }
-}
-```
 
 
 
-[^sub-rust]: [Subtyping in Rust](https://doc.rust-lang.org/reference/subtyping.html) is limited to two cases.
