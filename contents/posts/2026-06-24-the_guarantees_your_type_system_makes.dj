@@ -2,7 +2,7 @@
 {
  "title":"The Guarantees Your Type System Makes",
  "published":false,
- "tags":["Rust", "OCaml", "Go", "Type Systems"],
+ "tags":["Rust", "OCaml", "Typescript", "Python", "Type Systems"],
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
 ---
@@ -472,3 +472,187 @@ pub trait Future {
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
 }
 ```
+## Exhibit 3: Subtyping
+
+A *subtype* relation between types validates the *subsumption principle*:
+> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whener a value of type $`τ` is required.
+
+This relation essentialy enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
+
+[^complex]: It also makes proving safety more difficult, since an expression doesn't fully reveal the information about the underlying value, changing the proofs of preservation and progress.
+
+This can sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and is key when making sense of class hierarchies.
+
+This essentially relaxes the type system to allow values of one type to be treated as values of another, so it enlarges the set of well-typed programs. To understand subtyping is useful to think in matters of _behaviours_.
+
+To work some quick examples, in languages with nominal typing like Java, one often needs to declare the relation explicitly:
+
+``` java
+class Spren {
+    void fly() {}
+}
+
+class Bridgeman {
+   void fly() {}
+  
+}
+
+// We explicitly declare Herald as subtype of Spren
+class Herald extends Spren {
+  void fly() { }
+
+  void do_nothing() {}
+}
+
+// This works
+Spren Jezrien = new Herald();
+
+// Bridgeman has `fly()` but because we don't declare it
+// as a subtype of Spren, it will fail to compile.
+Spren Rock = new Bridgeman();
+
+```
+
+In contrast, Typescript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
+
+``` typescript
+type Spren = {
+    fly(): void
+}
+
+type Bridgeman = {
+    fly(): void
+}
+
+type Herald = {
+    fly(): void
+    doNothing(): void
+}
+
+const herald: Herald = {
+    fly() {},
+    doNothing() {}
+}
+
+// This will work because subtyping is based solely on the type's members.
+const jezrien: Spren = herald;
+
+const pattern = {
+    fly() {}
+};
+
+const rock: Bridgeman = {
+    fly() {}
+}
+
+console.assert(jezrien === herald);
+console.assert(jezrien === pattern);
+console.assert(rock === pattern);
+```
+
+You can check more examples, even where Typescript's features are unsound, [here](https://www.typescriptlang.org/docs/handbook/type-compatibility.html).
+
+This may look the same as duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to call the required method function at runtime, and will fail and burn if it isn't there: [^static-duck]
+
+```python
+from io import BytesIO
+
+class FakeFile:
+    def __init__(self, content: bytes, name: str):
+        self._buf = BytesIO(content)
+        self.name = name
+
+    def seek(self, pos):
+        self._buf.seek(pos)
+
+
+# I don't really care what file_like is, as long as it has a `read()` method.
+def save_file(file_like, destination: str):
+    with open(destination, "wb") as out:
+        out.write(file_like.read())
+
+
+with open("real.txt", "wb") as f:
+    f.write(b"i am a real file")
+
+with open("real.txt", "rb") as real:
+    save_file(real, "out_real.txt")
+
+fake = FakeFile(b"i am a duck", "duck.txt")
+save_file(fake, "out_duck.txt")
+
+# Traceback (most recent call last):
+#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
+#  in <module>
+#     save_file(fake, "out_duck.txt")
+#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
+#  save_file
+#     out.write(file_like.read())
+              ^^^^^^^^^^^^^^
+# AttributeError: 'FakeFile' object has no attribute 'read'
+
+```
+
+[^static-duck]: Python actually supports structural subtyping (named static duck-typing) in the shape of `protocols`. [Check PEP 544](https://peps.python.org/pep-0544/)
+
+In Rust, you could be tempted to think that an example of subtyping is when `impl Trait for T` so `T` becomes a subtype `Trait`, but that would be incorrect because traits are not types, and in Rust terms a function signature or struct field expecting a [trait object](https://doc.rust-lang.org/reference/types/trait-object.html) `dyn Trait` is handled by a coercion rule, there is no subtyping relation taking place.[^sub-rust]
+
+```rust
+trait Rollable {
+    fn roll(&self) -> u32;
+}
+
+struct Dice {
+    name: &'static str,
+    faces: u32,
+}
+
+impl Rollable for Dice {
+    fn roll(&self) -> u32 {
+        rand::random_range(1..=self.faces)
+    }
+}
+
+// The trait object `dyn Rollable` is an _opaque_ value of a type that
+// implements a certain set of traits. Because of its unknown size
+// at compile time it is considered a _dinamically sized type_ and
+// has to be used behind some type of pointer, in this case a `Box`.
+
+// Each pointer of a trait object includes a pointer to an instance
+// of the type `T` implementing the trait and a virtual method table
+// (vtable) containing, for each method of `T`, a function pointer
+// to `T`s implementation.
+fn roll(r: Box<dyn Rollable>) -> u32 {
+    // Using a Trait object like `dyn Rollable` allows a late binding
+    // of methods.
+
+    // Calling `roll()` results in a dynamic dispatch at runtime.
+    //A function pointer is loaded from the trait object vtable and executed.
+    r.roll()
+}
+
+// Not to be confused with the `impl Trait` syntax, which works on _concrete_
+// types so the usual static dispatch is used and causes no overhead.
+fn roll_impl(r: impl Rollable) -> u32 {
+    r.roll()
+}
+
+fn main() {
+    for _ in 0..=3 {
+        let dice = Dice {
+            name: "D6",
+            faces: 6,
+        };
+        let name = dice.name;
+        println!("{} rolled: {}", name, roll(Box::new(dice)));
+        // D6 rolled: 2
+        // D6 rolled: 5
+        // D6 rolled: 6
+        // D6 rolled: 3
+    }
+}
+```
+
+
+
+[^sub-rust]: [Subtyping in Rust](https://doc.rust-lang.org/reference/subtyping.html) is limited to two cases.
