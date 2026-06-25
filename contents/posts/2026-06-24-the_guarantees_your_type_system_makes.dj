@@ -6,6 +6,7 @@
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
 ---
+
  # The Guarantees Your Type System Makes
 
 I decided I wanted to write down what I've recently learned about the property of type safety in programming languages, exploring a bit of PL theory to try and understand what it is and how different languages approach the concept.
@@ -57,11 +58,11 @@ He also defines type safety and type soundness as separate:
 
 Where _forbidden_ errors are a set that includes all the _untrapped_ errors and a previously defined subset of _trapped errors_.
 
-{cap="Venn-like diagram depicting the relation between the trapped, untrapped and foribdden sets"}
+{cap="Venn-like diagram depicting the relation between the trapped, untrapped and forbidden sets"}
 ![Venn-like diagram depicting the relation between the trapped, untrapped and foribdden sets](https://cdn.lautaroacosta.com/2/set.avif)
 
 
-Which is essentially the same idea seen from another perspective of the well-behaved programs which Harper talks about.
+Which is essentially the same idea seen from another perspective of the well-behaved programs that Harper talks about.
 
 ****
 
@@ -116,13 +117,13 @@ This program is clearly well-typed, but to state that the language is sound we n
 
 ****
 
-Actually _proving_ type soundness in a language is not easy since it is a formal discipline in itself and I'm not qualified to explain fully. Nonetheless, I can introduce you to two key theorems used in it. 
+Actually _proving_ type soundness in a language is not easy and it is a formal discipline in itself, one which I'm not qualified enought to explain. Nonetheless, I can introduce you to two key theorems used. 
 
 ## Preservation and Progress
 
 We now have an understanding of what type safety is. It expresses a _coherence_ between the statics and the dynamics. 
 
-Consequently, evaluation of a well-typed expression _cannot get stuck_! It can never reach a non-value state for which no evaluation rule applies. And this is exactly what is sought to prove with the Preservation and Progress theorems. 
+Consequently, evaluation of a well-typed expression _cannot get stuck_! It can never reach a non-value state for which no evaluation rule applies. This is exactly what the Preservation and Progress theorems are used for. 
 
 Let's first introduce some notation to express these theorems precisely:
 
@@ -130,57 +131,26 @@ Let's first introduce some notation to express these theorems precisely:
 
 Where $`Γ` represents all the variables that are in the scope alongside their types. It's used in the relation $`Γ ⊢ e : τ` that can be read as "the typing context _shows_ that $`e` has type $`τ`".
 
-Preservation can be expressed as:
-{% Then, the theorems can be expressed as: %}
+*Preservation* can be expressed as:
 
 $$`\Gamma \vdash e : \tau \land e \rightarrow e' \Longrightarrow \Gamma \vdash e' : \tau`
 
-and Progress as:
+and *Progress* as:
 
 $$`\varnothing \vdash e : \tau \Longrightarrow (e\ \mathrm{val}) \lor (\exists\ e'.\ e \rightarrow e')`
 
 
-_Preservation_ can be read as _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type.
+Preservation can be read as _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type.
 
-_Progress_ and can be read as _"if under the empty typing context $`∅`, $`e` has type, $`τ` then $`e` is either a value or there exists an expression $`e'` reachable by a single step from $`e`"_. It ensures that well-typed closed expressions are either values or can be further evaluated. [^stuck]
+Progress and can be read as _"if under the empty typing context $`∅`, $`e` has type, $`τ` then $`e` is either a value or there exists an expression $`e'` reachable by a single step from $`e`"_. It ensures that well-typed closed expressions are either values or can be further evaluated. [^stuck]
 
-[^stuck]: As you could have guessed by now, a term is "stuck" when it fails to satisfy Progress.
+[^stuck]: A term is said to be "stuck" when it fails to satisfy the Progress theorem.
 
-### Where do dynamic languages fit?
+****
 
-I bet you have noticed that our discussion was heavily centered around types, so it is reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
+Now it's a good time to stop and take a look at the division by zero example but now on real languages.
 
-Dynamic languages are sometimes referred to as "untyped" languages, but the answer is that it is _types all the way down_ baby. Turns out, dynamic languages embrace a model of computation where multiple _classes_ of values exist for a *single recursive type*. Harper addresses this:
-
-> _"Every dynamic language is inherently a static language in which we confine ourselves to a (needlessly) restricted type discipline to ensure safety."_
-
-In this kind of language, every value is _tagged_ to indicate which _class_ of value they belong through a process called _Classification_. Since the static phase limits itself to checking only that the expression is well-formed[^dynamic-well-formed] and that there are _no free variables_ in the expression; the dynamics _must_ check for errors at runtime that would have never show up in a statically-typed language; this is called _Class Checking_ and uses the tags each value has.
-
-[^dynamic-well-formed]: Here "well-formed" means that it passes parsing not type-checking like before.
-
-It's useful to look at an example in the wild. This single recursive type can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, called `ob_type`, is a pointer to [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) and encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
-
-Knowing this, what happens to the theorems of Preservation and Progress? How do we talk about type soundness in this kind of languages? 
-
-Progress is expressed as:
-
-$$`d\ \mathrm{ok} \Longrightarrow (d\ \mathrm{val}) \lor (d\ \mathrm{err}) \lor (\exists\ d'.\ d \rightarrow d')`
-
-And there's a Exclusivity lemma:
-
-$$`\forall\ d : \text{exactly one of } (d\ \mathrm{val}),\ (d\ \mathrm{err}),\ (\exists\ d'.\ d \rightarrow d')`
-
-Progress now reads as "If $`d` is a closed expression, then it's either a value, results in a runtime error or it can be further evaluated". _Exclusivity_ states that, for any $`d` in the language, _exactly one_ of these outcomes must be true at any given time.
-
-In the previous model, these errors were guaranteed not to occur for well-typed programs. But, since catching those errors before evaluation requires static typing, now they have become part of the semantics of the language! This way, evaluation never becomes _stuck_.
-
-And since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! [^news] The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation [^overhead].
-
-[^overhead]: I find relevant that the runtime checks needed to catch the errors add non-negligible overhead to execution.
-
-[^news]: There have been great efforts made towards introducing static typing to dynamic languages: Python has external tools like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/) for static analysis based on annotations.  [Typescript](https://www.typescriptlang.org/), plays a similar role by adding a static type system on top of Javascript. More recently, [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/01we lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
-
-## Case study 1: Division by zero strikes back
+## Exhibit 1: Division by zero strikes back
 
 We'll look at two snippets in Rust and C and compare what their specifications define the behaviour to be in front of this error and what ultimately ends up happenning when we execute _implementations_ of the spec [^notice], which can deviate from it.
 
@@ -339,6 +309,41 @@ $ ./build/bin/clang -g -O3 -o main main.c && ./main
 
 This time, the Fil-C compiler ends up rewriting our program to always return `0`.
 
+
+### Where do dynamic languages fit?
+
+Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on, so it is reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
+
+Dynamic languages are sometimes referred to as "untyped" languages, but the truth is that it's _types all the way down baby_. Turns out, dynamic languages embrace a model of computation where multiple _classes_ of values exist for a *single recursive type*. Harper addresses this:
+
+> _"Every dynamic language is inherently a static language in which we confine ourselves to a (needlessly) restricted type discipline to ensure safety."_
+
+In this kind of language, every value is _tagged_ to indicate which _class_ of value they belong through a process called _Classification_. Since the static phase only checks that the expression is well-formed[^dynamic-well-formed] and that there are _no free variables_ in the expression; the dynamics _must_ check for errors at runtime that would have never show up in a statically-typed language; this is called _Class Checking_ and uses the tags each value has.
+
+[^dynamic-well-formed]: Here "well-formed" means that it passes parsing not type-checking like before.
+
+Knowing this, what happens to the theorems of Preservation and Progress? How do we talk about type soundness in this kind of languages? 
+
+Progress is expressed as:
+
+$$`d\ \mathrm{ok} \Longrightarrow (d\ \mathrm{val}) \lor (d\ \mathrm{err}) \lor (\exists\ d'.\ d \rightarrow d')`
+
+And there's a Exclusivity lemma:
+
+$$`\forall\ d : \text{exactly one of } (d\ \mathrm{val}),\ (d\ \mathrm{err}),\ (\exists\ d'.\ d \rightarrow d')`
+
+Progress now reads as "If $`d` is a closed expression, then it's either a value, results in a runtime error or it can be further evaluated". _Exclusivity_ states that, for any $`d` in the language, _exactly one_ of these outcomes must be true at any given time.
+
+In the previous model, these errors were guaranteed not to occur for well-typed programs. But, since catching those errors before evaluation requires static typing, now they have become part of the semantics of the language! This way, evaluation never becomes _stuck_.
+
+And since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! [^news] The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation [^overhead].
+
+[^overhead]: I find relevant that the runtime checks needed to catch the errors add non-negligible overhead to execution.
+
+[^news]: There have been great efforts made towards introducing static typing to dynamic languages: Python has external tools like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/) for static analysis based on annotations.  [Typescript](https://www.typescriptlang.org/), plays a similar role by adding a static type system on top of Javascript. More recently, [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/01we lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
+
+It's useful to look at an example in the wild. This single recursive type we mentioned can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
+
 ****
 
 By now I believe we know enough of what type soundness is, and that most languages are designed around trade-offs between soundness and other features, so it's more useful to think of subsets in a language where it _is_ sound.
@@ -350,44 +355,120 @@ Typescript sacrifices it to be able to be a superset of Javascript, C does it as
 
 I would like to now shift the focus on what useful properties can be enforced in languages that take advantage of what nice type systems can offer.
 
-## Case study 2: Send/Sync
+## Exhibit 2: Send/Sync
 
 Maybe two of the most famous traits[^trait] in Rust, if you ever tried to do anything related to concurrency you must know them by heart. [The Nomicon](https://doc.rust-lang.org/nomicon/send-and-sync.html) tells us that [`Send`](https://doc.rust-lang.org/core/marker/trait.Send.html) and [`Sync`](https://doc.rust-lang.org/core/marker/trait.Sync.html) are two special traits that govern how types are handled between threads.
 
-`Send` declares that a type `T` can be transferred across thread boundaries (meaning it is acceptable for another thread to have a mutable reference `&mut T`), and `T` is `Sync` if and only if a reference to it (`&T`) is `Send` (meaning it's okay for another thread to hold a reference `&T`).
+`Send` declares that a type `T` can be transferred across thread boundaries (meaning it is acceptable for another thread to have a mutable reference `&mut T`), and `T` is `Sync` if and only if a reference to it (`&T`) is `Send` (meaning it's okay for another thread to hold a reference `&T`). Mix that with Rust's ownership system which prevents aliasing a mutable reference, and you have a recipe to *make data races impossible*. [^os-scheduler]
 
-Most types are Send, the exception being types that cannot cross thread boundaries safely. For example, a referenced counted pointer [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) is `!Send` and `!Sync` because the count update is non-atomically, so using it across threads can cause data races, using it will cause compile-time errors.
+Most types from the standard library are `Send`, the exception being ones that can't cross thread boundaries safely. A textbook example: [`Rc<T>`](https://doc.rust-lang.org/std/rc/index.html), a reference-counting pointer, is `!Send` and `!Sync` because the count for how many references are there for `T` is non-atomic, so the compiler doesn't allow you to use it across threads boundaries because it could cause data races.
 
+```rust
+fn main() {
+    let bank_account = 10_000_000;
+    let rc_bank = Rc::new(bank_account);
 
-Another example are types that must be guaranteed to be freed by the same thread that created them, an attempt to use them another thread will result in a compile-time error.
+    // Trying to share a reference betweem threads
+    // will cause a compile-time error because `Rc` is `!Sync` !
+    thread::spawn(|| {
+        do_something(&rc_bank);
+    });
+}
+```
 
-Mix that with Rust's ownership system which prevents aliasing a mutable reference, and you have a recipe to *make data races impossible*. [^os-scheduler]
+Will result in an error message like:
+
+```
+error[E0277]: `Rc<i32>` cannot be shared between threads safely
+ --> src/main.rs:7:19
+  |
+7 |       thread::spawn(|| {
+  |  _____-------------_^
+  | |     |
+  | |     required by a bound introduced by this call
+8 | |         let _ = &rc_bank;
+9 | |     });
+  | |_____^ `Rc<i32>` cannot be shared between threads safely
+  |
+  = help: the trait `Sync` is not implemented for `Rc<i32>`
+  = note: required for `&Rc<i32>` to implement `Send`
+```
+
+And if we tried to move the variable to another thread instead of sharing it, we would get the error:
+
+```
+error[E0277]: `Rc<i32>` cannot be sent between threads safely
+ --> src/main.rs:7:19
+  |
+7 |       thread::spawn(move || {
+  |       ------------- ^------
+  |       |             |
+  |  _____|_____________within this `{closure@src/main.rs:7:19: 7:26}`
+  | |     |
+  | |     required by a bound introduced by this call
+8 | |         let _ = &rc_bank;
+9 | |     });
+  | |_____^ `Rc<i32>` cannot be sent between threads safely
+  |
+  = help: within `{closure@src/main.rs:7:19: 7:26}`, the trait
+  `Send` is not implemented for `Rc<i32>`
+```
+
+A type being `!Send` doesn't imply it is `!Sync`, remember that it only needs that a _shared reference_ `&T` implements `Send`. [`MutexGuard`](https://doc.rust-lang.org/std/sync/struct.MutexGuard.html) is one type that is `!Send` and `Sync` because in platforms that use [`pthreads`](https://en.wikipedia.org/wiki/Pthreads) there's the requirement to release the lock on the same thread that first acquired it, so reading a reference to the lock is fine but giving ownership to another thread would break that guarantee.
+
+```rust
+fn main() {
+    let bank_account = Arc::new(Mutex::new(10_000_000));
+    let guard = bank_account.lock().unwrap();
+
+    thread::scope(|s| {
+        // This is fine because we are just passing around a shared reference
+        s.spawn(|| read_or_something(&guard));
+
+        // But the moment we try to give away ownership of the guard
+        // we will have a compile error because the closure needs to be
+        // `Send`
+        s.spawn(|| {
+            update_value(guard);
+        });
+    });
+}
+```
+
+Would break the type system's rules:
+
+```
+error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely
+  --> src/main.rs:24:17
+   |
+24 |           s.spawn(|| {
+   |             ----- ^-
+   |             |     |
+   |  ___________|_____within this `{closure@src/main.rs:24:17: 24:19}`
+   | |           |
+   | |           required by a bound introduced by this call
+25 | |             update_value(guard);
+26 | |         });
+   | |_________^ `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely
+   |
+   = help: within `{closure@src/main.rs:24:17: 24:19}`, the trait `Send` is not implemented for `std::sync::MutexGuard<'_, u32>`
+```
+
+The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide "interior mutability" and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. You can imagine that sharing it between threads would become a source of data races, so the trait comes in handy to stop it from ever happening.
 
 [^trait]: If unfamiliar with Rust, a trait is somewhat similar to a interface in the sense that they declare a contract that must be met by it's implementators.
 
-[^os-scheduler]: There's a caviar here: Rust is not able to prevent resource races product of incorrect synchronization by the preemptive schedulers in operating systems.
-If you ever used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've probably seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await has to be `Send`. This is due to the fact that it has to be able to move between thread boundaries in order for the tasks executing futures to be able to steal work from one another when idle. This requirement can be seen clearly in the type signature of the trait:
+[^os-scheduler]: The compiler isn't able to prevent _resource_ races product of the preemptive schedulers of the underlying operating system.
+
+Lastly, if you ever used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await has to be `Send`, because the tasks running on separate threads and executing futures have to be able to steal work from one another when idle. If we look at the definition of the `Future` trait, we see that this is encoded using the type system:
 
 ```rust
 pub trait Future {
     type Output;
 
     // We can see that the required method demands a mutable reference to our
-    // type, therefore it will need to be `Send` in order to cross thread
+    // type, so it will need to be `Send` in order to cross thread
     // boundaries.
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
 }
 ```
-I would like to _borrow_ a snippet I saw of Jon Gjengset's talk on [EuroRust 2024](https://www.youtube.com/watch?v=8-KLX1PGg8Q&t=313s)[^scary]:
-
-```rust
-fn <F, Fut>(...)
-where
-    F: Fn() -> Fut,
-    Fut: Future + Send,
-    <Fut as Future>::Output: Send
-```
-
-Which showcases using [where bounds](https://doc.rust-lang.org/rust-by-example/generics/where.html) to be explicit in the signature of the generic function, which expects two generic arguments `F` and `Fut`, where only by reading it we understand that `F` must be a function that returns a `Future`, since `Fut` implements `Future + Send`, and that the associated `Output` of `Fut` as a `Future` must be `Send`. If a user of this functions fails to uphold those requirements, the program will not compile.
-
-[^scary]: If you never saw Rust code, it is often _not_ like this, but you grow fond of it.
