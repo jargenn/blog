@@ -654,7 +654,6 @@
     margin-left: auto;
     gap: 6px;
 
-
     a::before {
       content: "#"
     }
@@ -667,6 +666,7 @@
     .tag {
       font-variant: normal;
       font-size: .8rem;
+      font-variant: small-caps;
       color: var(--emphasis);
       padding: 2px 6px;
       border-radius: 0.4rem;

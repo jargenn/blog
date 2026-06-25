@@ -1,7 +1,7 @@
 ---
 {
  "title":"The Guarantees Your Type System Makes",
- "published":true,
+ "published":false,
  "tags":["Rust", "OCaml", "Typescript", "Python", "Type Systems"],
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
