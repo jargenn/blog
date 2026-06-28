@@ -1,17 +1,21 @@
 ---
 {
  "title":"The Guarantees Your Type System Makes",
- "published":false,
- "tags":["Rust", "OCaml", "Typescript", "Python", "Type Systems"],
+ "published": false,
+ "tags":["Rust", "OCaml", "Typescript", "pl"],
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
 ---
 
 # The Guarantees Your Type System Makes
 
-I wanted to write down what I've learned about the property of type safety in programming languages, exploring a bit of PL theory to try and understand what it is and how different languages approach the concept.
+I wrote about really useful concepts I've learned from programming languages up until now, ones that I think of every time I sit down to write software.
 
-I will do so by first explaining the required theory, giving examples along the way. I aim to write it in a way approachable to anyone with some experience writing software, so by the end it works as a quite fun, for me at least, overview of what type systems in different languages can offer you.
+My aim is to write it in a way that is approachable to anyone with some experience writing software, with no necessary background in PL theory but is interested in programming languages and likes to read code.
+
+We'll start by introducing some concepts, like _type safety_, and then start exploring what different languages can offer you in order to write software more efficiently. 
+
+By the end, it'll work as a quite fun (for me at least) overview of what type systems in different languages can offer you.
 
 As a disclaimer, there was an earlier post of mine with the same title which is available [here](https://lautaroacosta.com/2026/04/08/what_does_type_safety_mean).[^first] 
 
@@ -19,7 +23,7 @@ As a disclaimer, there was an earlier post of mine with the same title which is 
 
 ## Sound languages
 
-Searching for what type safety is led me to the idea of a "safe language". I found two popular definitions for what a safe language is.
+If you search for type safety, one of the first results will be something talking about the concept of a "safe language", so let's start there. I found two popular definitions for what a safe language is.
 
 The first from _"[The Practical Foundations of Programming Languages](https://www.cs.cmu.edu/~rwh/pfpl.html)"_ book by Robert Harper:
 
@@ -111,15 +115,17 @@ let res = div(10, 0);
 This program is clearly well-typed, but to state that the language is sound we need to check the dynamics. We can determine if it is sound by how it handles this division by zero error:
 
 - The dynamics do not define what happens in this failure case, it is an untrapped error: the language is unsound.
-- This kind of error is accounted for in the dynamics of the language, it is a trapped error: the language is considered sound. [^mechanisms]
+- This kind of error is accounted for in the dynamics of the language, it is a trapped error: the language is considered sound.
 
-[^mechanisms]: In practice, this is done via static and/or dynamic checks. There are more expressive type system where it is possible to detect errors like the division by zero at compile time (such as the ones implementing [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/)), but they aren't as common so dynamic checks are more popular: throwing errors, exceptions, panicking, returning a special value, choose your favourite.
+In practice, this is done with static and/or dynamic checks, with dynamich checks being easier to implement and because of that the most popular alterantive: throwing errors, exceptions, panicking, returning a special value, choose your favourite. 
+
+There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones implementing [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted.
 
 ****
 
 Actually _proving_ type soundness in a language is not easy and it is a formal discipline in itself, one which I'm not qualified enought to explain. Nonetheless, I can introduce you to two key theorems used. 
 
-## Preservation and Progress
+### Preservation and Progress
 
 We now have an understanding of what type safety is. It expresses a _coherence_ between the statics and the dynamics. 
 
@@ -336,20 +342,18 @@ Progress now reads as "If $`d` is a closed expression, then it's either a value,
 
 In the previous model, these errors were guaranteed not to occur for well-typed programs. But, since catching those errors before evaluation requires static typing, now they have become part of the semantics of the language! This way, evaluation never becomes _stuck_.
 
-And since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! [^news] The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation [^overhead].
+And since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation.
 
-[^overhead]: I find relevant that the runtime checks needed to catch the errors add non-negligible overhead to execution.
-
-[^news]: There have been great efforts made towards introducing static typing to dynamic languages: Python has external tools like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/) for static analysis based on annotations.  [Typescript](https://www.typescriptlang.org/), plays a similar role by adding a static type system on top of Javascript. More recently, [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/01we lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
 
 It's useful to look at an example in the wild. This single recursive type we mentioned can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
 
+Right now, it's looking like the static typing bois have won: Python has static type checkers like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/).  [Typescript](https://www.typescriptlang.org/) is incredibly adopted and it's essentially a static type system layer over Javascript. More recently, even [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/01we lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
+
 ****
 
-By now I believe we know enough of what type soundness is, and that most languages are designed around trade-offs between soundness and other features, so it's more useful to think of subsets in a language where it _is_ sound.
+By now I believe we've talked enough of what type soundness is. It's relevant to say that *most languages are not completely sound*, but ones try much harder than others. That's why, when you evaluate a language, it's interesting to see if what you need is in it's sound subset.
 
-I would like to now shift the focus on what properties can be enforced in languages that take advantage of a nice type system.
-
+I'll now shift the focus to review properties, some more common than others, that can be _enforced_ in languages that take advantage of a nice type system, using examples.
 
 ## Subtyping
 
@@ -879,7 +883,7 @@ error[E0277]: `Rc<i32>` cannot be sent between threads safely
   `Send` is not implemented for `Rc<i32>`
 ```
 
-A type being `!Send` doesn't imply it is `!Sync`, remember that it only needs that a _shared reference_ `&T` implements `Send`. [`MutexGuard`](https://doc.rust-lang.org/std/sync/struct.MutexGuard.html) is one type that is `!Send` and `Sync` because in platforms that use [`pthreads`](https://en.wikipedia.org/wiki/Pthreads) there's the requirement to release the lock on the same thread that first acquired it, so reading a reference to the lock is fine but giving ownership to another thread would break that guarantee.
+A type being `!Send` doesn't imply it is `!Sync`, remember that it only needs that a _shared reference_ `&T` implements `Send`. [`MutexGuard`](https://doc.rust-lang.org/std/sync/struct.MutexGuard.html) is one type that is `!Send` and `Sync` because, for historical reasons, in platforms that use [`pthreads`](https://en.wikipedia.org/wiki/Pthreads) there is the requirement to release the lock on the *same thread that first acquired it*, so reading a reference to the lock is fine but giving ownership to another thread would break that guarantee.
 
 ```rust
 fn main() {
@@ -900,7 +904,7 @@ fn main() {
 }
 ```
 
-Would break the type system's rules:
+Would in turn, give you this error message:
 
 ```
 error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely

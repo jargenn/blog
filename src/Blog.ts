@@ -91,7 +91,6 @@ export const Blog = {
       await copy_path(path, asset_map);
     }
 
-    console.log(asset_map);
     const css_bundle = asset("main.css", asset_map);
     const js_bundle = asset("scripts.js", asset_map);
 
