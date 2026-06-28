@@ -1,15 +1,15 @@
 ---
 {
  "title":"The Guarantees Your Type System Makes",
- "published": false,
- "tags":["Rust", "OCaml", "Typescript", "pl"],
+ "stage": "draft",
+ "tags":["Rust", "OCaml", "Typescript", "Type systems"],
  "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
 } 
 ---
 
 # The Guarantees Your Type System Makes
 
-I wrote about really useful concepts I've learned from programming languages up until now, ones that I think of every time I sit down to write software.
+I wrote about really useful concepts I've learned from programming languages up until now, ones that I think of every time.
 
 My aim is to write it in a way that is approachable to anyone with some experience writing software, with no necessary background in PL theory but is interested in programming languages and likes to read code.
 
@@ -117,13 +117,15 @@ This program is clearly well-typed, but to state that the language is sound we n
 - The dynamics do not define what happens in this failure case, it is an untrapped error: the language is unsound.
 - This kind of error is accounted for in the dynamics of the language, it is a trapped error: the language is considered sound.
 
-In practice, this is done with static and/or dynamic checks, with dynamich checks being easier to implement and because of that the most popular alterantive: throwing errors, exceptions, panicking, returning a special value, choose your favourite. 
+In practice, this is done with static and/or dynamic checks, with the latter being the most commonly found because it's easier to implement: throwing errors, errors as values, crash-recovery, exceptions, panicking, choose your favourite. 
 
-There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones implementing [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted.
+There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones that have [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted.
 
 ****
 
-Actually _proving_ type soundness in a language is not easy and it is a formal discipline in itself, one which I'm not qualified enought to explain. Nonetheless, I can introduce you to two key theorems used. 
+It's not easy to _prove_ type soundness. We may think that if a langauge has little keywords and features it would be easier, but it's more of a combinatorial problem between each possible combination.
+
+Nonetheless, there are two theorems key to proving it.
 
 ### Preservation and Progress
 
@@ -316,7 +318,7 @@ $ ./build/bin/clang -g -O3 -o main main.c && ./main
 This time, the Fil-C compiler ends up rewriting our program to always return `0`.
 
 
-## Where do dynamic languages fit?
+## What about dynamic languages?
 
 Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on, so it is reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
 
@@ -326,7 +328,7 @@ Dynamic languages are sometimes referred to as "untyped" languages, but the trut
 
 In this kind of language, every value is _tagged_ to indicate which _class_ of value they belong through a process called _Classification_. Since the static phase only checks that the expression is well-formed[^dynamic-well-formed] and that there are _no free variables_ in the expression; the dynamics _must_ check for errors at runtime that would have never show up in a statically-typed language; this is called _Class Checking_ and uses the tags each value has.
 
-[^dynamic-well-formed]: Here "well-formed" means that it passes parsing not type-checking like before.
+[^dynamic-well-formed]: Here "well-formed" only means that it passed parsing.
 
 Knowing this, what happens to the theorems of Preservation and Progress? How do we talk about type soundness in this kind of languages? 
 
@@ -363,7 +365,7 @@ A *subtype* relation between types validates the *subsumption principle*:
 
 This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
 
-[^complex]: It also makes proving safety more difficult, since an expression doesn't fully reveal the information about the underlying value, changing the proofs of preservation and progress.
+[^complex]: Since an expression doesn't fully reveal the information about the underlying value, proving safety is more delicate and the proofs of preservation and progress have to change.
 
 This can sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and is key when making sense of class hierarchies.
 
@@ -930,3 +932,7 @@ The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cel
 [^os-scheduler]: The compiler isn't able to prevent _resource_ races product of the preemptive schedulers of the underlying operating system.
 
 Lastly, if you used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) *has to be* `Send`. The reason is because tokio executes one or many tasks on one or many threads, with each task containing futures that are either being polled or waiting to be polled. When a task becomes idle, meaning it has polled all the futures assigned to it, it has to be able to _steal_ work from another task, meaning that a future waiting to be polled may need to cross a thread boundary.
+
+## ADTs 
+
+
