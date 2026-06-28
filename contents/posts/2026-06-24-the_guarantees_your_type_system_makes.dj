@@ -7,9 +7,9 @@
 } 
 ---
 
- # The Guarantees Your Type System Makes
+# The Guarantees Your Type System Makes
 
-I decided I wanted to write down what I've recently learned about the property of type safety in programming languages, exploring a bit of PL theory to try and understand what it is and how different languages approach the concept.
+I wanted to write down what I've learned about the property of type safety in programming languages, exploring a bit of PL theory to try and understand what it is and how different languages approach the concept.
 
 I will do so by first explaining the required theory, giving examples along the way. I aim to write it in a way approachable to anyone with some experience writing software, so by the end it works as a quite fun, for me at least, overview of what type systems in different languages can offer you.
 
@@ -150,7 +150,7 @@ Progress and can be read as _"if under the empty typing context $`∅`, $`e` has
 
 Now it's a good time to stop and take a look at the division by zero example but now on real languages.
 
-## Exhibit 1: Division by zero strikes back
+## Division by zero strikes back
 
 We'll look at two snippets in Rust and C and compare what their specifications define the behaviour to be in front of this error and what ultimately ends up happenning when we execute _implementations_ of the spec [^notice], which can deviate from it.
 
@@ -310,7 +310,7 @@ $ ./build/bin/clang -g -O3 -o main main.c && ./main
 This time, the Fil-C compiler ends up rewriting our program to always return `0`.
 
 
-### Where do dynamic languages fit?
+## Where do dynamic languages fit?
 
 Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on, so it is reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
 
@@ -351,7 +351,7 @@ By now I believe we know enough of what type soundness is, and that most languag
 I would like to now shift the focus on what properties can be enforced in languages that take advantage of a nice type system.
 
 
-## Exhibit 2: Subtyping
+## Subtyping
 
 A *subtype* relation between types validates the *subsumption principle*:
 
@@ -475,9 +475,10 @@ save_file(fake, "out_duck.txt")
 
 Subtyping is really there to make programs easier to write, but at the same time, makes it difficult to be sure that an expression has _exactly_ the type it declares.
 
-Due to this, in languages that support generics [^param], we'll also talk about *variance*, which in layman's terms, basically means _how_ the subtyping relations translates to the type constructor.
+**** 
 
-[^param]: The precise term is [parametric polymorphism](https://en.wikipedia.org/wiki/Parametric_polymorphism).
+Due to this, in languages that support generics, we'll also need to talk about *variance*, which in layman's terms is about _how_ the subtyping relations translates to the type constructor, or how we try to _reconcile_ two forms of genericity: [parametric](https://pin.it/1qXpf49jH) and subtype polymorphism.
+
 
 Harper states that:
 
@@ -751,7 +752,7 @@ debugEvent(key, login_store);
 
 Imagine now that we create a lot more subtypes of `Event`, they all can reuse the `debugEvent` function, and any storage accepting `Event` can also reuse `recordLogin`. This way we can use each variance where it is safe to do so, all on the same implementation! 
 
-This code used a syntax named `declaration-site`, _declaring_ the intended variance on the type definition, C# also does it and OCaml too with the `+a, -a and 'a` annotations in module definitions. Java famously uses the wildcard `? extends/super` syntax which is called `use-site`, because it appears when using the type.
+The snippets show a syntax for variance called _declaration-site_, because we _declare_ the intended variance on the type definition, C# uses the same keywords, OCaml has the `+'a`, `-'a` and `'a` annotations for covariance, contravariance and invariance respectively. Java famously has the wildcard `? extends/super` syntax which is named _use-site_ variance, because we declare the expected variance when _using_ the constructor.
 
 *Bivariance* exists too, but we don't do that around here.
 
@@ -817,9 +818,13 @@ fn main() {
 
 [^sub-rust]: Subtyping in Rust is limited to [two cases](https://doc.rust-lang.org/reference/subtyping.html).
 
-## Exhibit 3: Send/Sync
+## Traits: Send/Sync
 
-Maybe two of the most famous traits[^trait] in Rust, if you ever tried to do anything related to concurrency you must know them by heart. [The Nomicon](https://doc.rust-lang.org/nomicon/send-and-sync.html) tells us that [`Send`](https://doc.rust-lang.org/core/marker/trait.Send.html) and [`Sync`](https://doc.rust-lang.org/core/marker/trait.Sync.html) are two special traits that govern how types are handled between threads.
+This is more Rust-specific[^traits], but it's a nice example of how we can use the type system to constraint what programs can be built.
+
+If you've ever tried to do anything involving concurrency, you surely heard of both. [The Nomicon](https://doc.rust-lang.org/nomicon/send-and-sync.html) tells us that [`Send`](https://doc.rust-lang.org/core/marker/trait.Send.html) and [`Sync`](https://doc.rust-lang.org/core/marker/trait.Sync.html) are two special traits that govern how types are handled between threads.
+
+[^traits]: If unfamiliar, a trait describes an abstract interface that types can implement. It's somewhat similar to a interface if you come from Java/C#.
 
 `Send` declares that a type `T` can be transferred across thread boundaries (meaning it is acceptable for another thread to have a mutable reference `&mut T`), and `T` is `Sync` if and only if a reference to it (`&T`) is `Send` (meaning it's okay for another thread to hold a reference `&T`).
 
@@ -914,24 +919,10 @@ error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads sa
    = help: within `{closure@src/main.rs:24:17: 24:19}`, the trait `Send` is not implemented for `std::sync::MutexGuard<'_, u32>`
 ```
 
-The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide "interior mutability" and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. You can imagine that sharing it between threads would become a source of data races, so the trait comes in handy to stop it from ever happening.
+This is a cool example of relying on the type system. In other languages (Go or Java), the mutex and the protected data are different things, so correct usage relies on us having discipline (don't try to unlock a free mutex!). Here we can let the compiler do the work for us!
 
-[^trait]: If unfamiliar with Rust, a trait is somewhat similar to a interface in the sense that they declare a contract that must be met by it's implementators.
+The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide "interior mutability" and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. So it's okay to give away ownership of it, but the idea of multiple writers with no synchronization is not fun.
 
 [^os-scheduler]: The compiler isn't able to prevent _resource_ races product of the preemptive schedulers of the underlying operating system.
 
-Lastly, if you ever used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await has to be `Send`, because the tasks running on separate threads and executing futures have to be able to steal work from one another when idle. If we look at the definition of the `Future` trait, we see that this is encoded using the type system:
-
-```rust
-pub trait Future {
-    type Output;
-
-    // We can see that the required method demands a mutable reference to our
-    // type, so it will need to be `Send` in order to cross thread
-    // boundaries.
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
-}
-```
-
-
-
+Lastly, if you used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) *has to be* `Send`. The reason is because tokio executes one or many tasks on one or many threads, with each task containing futures that are either being polled or waiting to be polled. When a task becomes idle, meaning it has polled all the futures assigned to it, it has to be able to _steal_ work from another task, meaning that a future waiting to be polled may need to cross a thread boundary.
