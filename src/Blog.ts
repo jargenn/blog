@@ -14,6 +14,7 @@ import { ServeBlog } from "./http_server.ts";
 import { Blogroll } from "./blogroll.ts";
 import { copy_path, walk_dir, write_file } from "./Writer.ts";
 import type { Post } from "./Post.ts";
+import { build_toc, reading_time_str, toc_to_html } from "./Post.ts";
 
 class Ctx {
   constructor(
@@ -79,11 +80,26 @@ export const Blog = {
       }
     }
 
+    const asset_map = new Map<string, string>();
+
+    const paths = [
+      "css/*",
+      "assets/*",
+    ];
+
+    for (const path of paths) {
+      await copy_path(path, asset_map);
+    }
+
+    console.log(asset_map);
+    const css_bundle = asset("main.css", asset_map);
+    const js_bundle = asset("scripts.js", asset_map);
+
     if (blogroll) {
       const posts = await Blogroll.create();
       await write_file(
         "dist/blogroll.html",
-        html_ugly(BlogRoll({ posts })),
+        html_ugly(BlogRoll({ posts }, css_bundle, js_bundle)),
       );
     }
     await Deno.mkdir("./dist/", { recursive: true });
@@ -94,7 +110,7 @@ export const Blog = {
     for (const post of posts) {
       await write_file(
         `dist/${post.path}`,
-        html_ugly(PostPage({ post })),
+        html_ugly(PostPage({ post }, css_bundle, js_bundle)),
       );
     }
 
@@ -121,14 +137,14 @@ export const Blog = {
 
       await write_file(
         `dist/t/${tag_slug}.html`,
-        html_ugly(PostList({ posts: p, title: tag })),
+        html_ugly(PostList({ posts: p, title: tag }, css_bundle, js_bundle)),
       );
     }
 
     await write_file("./dist/feed.xml", feed_xml(published));
     await write_file(
       "dist/index.html",
-      html_ugly(PostList({ posts: published })),
+      html_ugly(PostList({ posts: published }, css_bundle, js_bundle)),
     );
 
     const pages = [
@@ -143,15 +159,8 @@ export const Blog = {
       const html = djot.render(ast, {});
       await write_file(
         `dist/${page}.html`,
-        html_ugly(Page(page, html)),
+        html_ugly(Page(page, html, css_bundle, js_bundle)),
       );
-    }
-    const paths = [
-      "css/*",
-      "assets/*",
-    ];
-    for (const path of paths) {
-      await copy_path(path);
     }
 
     const t_fmt = performance.now();
@@ -230,14 +239,17 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       date: iso_date,
       summary: undefined,
       title: undefined,
+      sidenotes: [],
     };
 
-    const word_count = djot.word_count(
+    const toc = build_toc(ast);
+    const toc_html = toc_to_html(toc);
+    const reading_stime_str = reading_time_str(
       ast,
     );
 
     render_ctx.faviconMap = djot.buildFaviconMap(ast);
-    const html = djot.render(ast, render_ctx, word_count);
+    const html = djot.render(ast, render_ctx, reading_stime_str);
 
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
@@ -253,10 +265,23 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
     const src = `/contents/posts/${y}-${m}-${d}-${slug}.dj`;
 
+    let sidenotes_html = "";
+
+    if (render_ctx.sidenotes) {
+      for (const [idx, sidenote] of render_ctx.sidenotes?.entries()) {
+        sidenotes_html +=
+          `<p class="sidenote-body"><span class="adhoc-number">${
+            1 + idx
+          }.</span> ${sidenote}<p>`;
+      }
+    }
+
     posts.push({
       year,
       month,
-      word_count,
+      reading_time: reading_stime_str,
+      sidenotes_html,
+      toc_html,
       day,
       slug,
       iso_date,
@@ -272,4 +297,10 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
   posts.sort((l, r) => l.path < r.path ? 1 : -1);
   ctx.collect_ms = performance.now() - start;
   return posts;
+}
+
+function asset(path: string, asset_map: Map<string, string>): string {
+  const built_path = "/" + (asset_map.get(path) ?? path);
+  console.log(built_path);
+  return built_path;
 }

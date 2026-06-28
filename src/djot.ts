@@ -16,7 +16,6 @@ import {
   FootnoteReference,
   HasAttributes,
   Heading,
-  InlineMath,
   Link,
   OrderedList,
   Section,
@@ -35,33 +34,13 @@ export type RenderCtx = {
   summary?: string;
   title?: string;
   faviconMap?: Map<string, Map<string, string>>;
+  sidenotes?: string[];
 };
-
-export function word_count(doc: Doc): number {
-  let words = 0;
-
-  function visit(node: AstNode) {
-    if (node.tag === "str") {
-      const t = node.text.trim();
-      if (t) words += t.split(/\s+/).length;
-    }
-
-    if ("children" in node && Array.isArray(node.children)) {
-      for (const child of node.children) {
-        visit(child);
-      }
-    }
-  }
-
-  visit(doc);
-
-  return words;
-}
 
 export function render(
   doc: Doc,
-  ctx: RenderCtx,
-  word_count?: number,
+  render_ctx: RenderCtx,
+  estimated_time?: string,
 ): HtmlString {
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
@@ -77,22 +56,24 @@ export function render(
       return result;
     },
     heading: (node: Heading, r: HTMLRenderer) => {
-      if (node.level === 1) ctx.title = get_string_content(node);
+      if (node.level === 1) render_ctx.title = get_string_content(node);
 
       if (node.level === 1) {
         const children = r.renderChildren(node);
 
-        const date_html = ctx.date ? time_html(ctx.date, "meta") : "";
+        const date_html = render_ctx.date
+          ? time_html(render_ctx.date, "meta")
+          : "";
 
-        const word_count_html = word_count
+        const reading_time_html = estimated_time
           ? `<span class="word-count">
-           ${word_count} words
+           ${estimated_time} 
          </span>`
           : "";
 
         return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
-      ${date_html}${word_count_html}
+      ${date_html}${reading_time_html}
     </header>`;
       }
 
@@ -130,7 +111,7 @@ export function render(
 
       if (!isImageOnly) {
         const result = r.renderAstNodeDefault(node);
-        if (!ctx.summary) ctx.summary = get_string_content(node);
+        if (!render_ctx.summary) render_ctx.summary = get_string_content(node);
         return result;
       }
 
@@ -171,7 +152,9 @@ export function render(
     },
     div: (node: Div, r: HTMLRenderer): string => {
       if (has_class(node, "links")) {
-        const favicons = ctx.faviconMap?.get(node.attributes?._linksKey ?? "");
+        const favicons = render_ctx.faviconMap?.get(
+          node.attributes?._linksKey ?? "",
+        );
 
         if (favicons) {
           const originalLink = r.options.overrides?.link;
@@ -303,6 +286,7 @@ export function render(
       if (documentSideNotes[label]) {
         // I track the footnote but don't increment the next index so the endnotes are not rendered when `doc` is rendered.
         let index = r.footnoteIndex[label];
+
         if (!index) {
           index = Object.keys(r.footnoteIndex).length + 1;
           r.footnoteIndex[label] = index;
@@ -313,16 +297,23 @@ export function render(
           `<label for="${refId}" class="margin-toggle sidenote-number"></label>`;
         result +=
           `<input type="checkbox" id="${refId}" class="margin-toggle"/>`;
-        result += `<span class="sidenote-content">`;
+
+        let sidenote_str = `<span class="sidenote-content">`;
         const footnoteNode = documentSideNotes[label];
+
+        let sidenote_content = "";
         if (footnoteNode.children) {
           for (const child of footnoteNode.children) {
             let childContent = r.renderAstNode(child);
             childContent = childContent.replace(/<\/?p>/g, "");
-            result += childContent;
+            sidenote_content += childContent;
           }
         }
-        result += `</span>`;
+        sidenote_str += `${sidenote_content}</span>`;
+
+        render_ctx.sidenotes?.push(sidenote_content);
+
+        result += sidenote_str;
       }
 
       return result;

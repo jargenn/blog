@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-06-26T01:30:56.931Z",
+  "createdAt": "2026-06-28T14:54:30.758Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -53,9 +53,9 @@
       "date": "2026-06-04T00:00:00.000Z"
     },
     {
-      "title": "Doing the rounds",
-      "url": "http://notes.eatonphil.com/2026-06-15-doing-the-rounds.html",
-      "date": "2026-06-15T00:00:00.000Z"
+      "title": "The feature in OxCaml that more languages should steal",
+      "url": "http://notes.eatonphil.com/2026-06-27-the-feature-in-oxcaml-more-languages-should-steal.html",
+      "date": "2026-06-27T00:00:00.000Z"
     },
     {
       "title": "Concurrent, atomic MSI hash tables",

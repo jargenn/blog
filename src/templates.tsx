@@ -79,7 +79,18 @@ function Fonts() {
 }
 
 function Base(
-  { children, published, description, title, path, extra_css, date, src }: {
+  {
+    children,
+    published,
+    description,
+    title,
+    path,
+    extra_css,
+    date,
+    src,
+    bundled_css,
+    bundled_js,
+  }: {
     children?: VNode[];
     src: string;
     description: string;
@@ -88,6 +99,8 @@ function Base(
     path: string;
     date?: string;
     extra_css?: string;
+    bundled_css: string;
+    bundled_js: string;
   },
 ) {
   const og_image_path = "og.png";
@@ -143,8 +156,8 @@ function Base(
           href={`${site_url}/feed.xml`}
         />
         <Fonts />
-        <link rel="stylesheet" href="/css/main.css" />
-        {extra_css && <link rel="stylesheet" href={`/css/${extra_css}`} />}
+        <link rel="stylesheet" href={`${bundled_css}`} />
+        {extra_css && <link rel="stylesheet" href={`${extra_css}`} />}
         <script
           defer
           src="https://cdn.jsdelivr.net/npm/@arborium/arborium@1/dist/arborium.iife.js"
@@ -152,7 +165,7 @@ function Base(
           data-cdn="unpkg"
         >
         </script>
-        <script defer src="/assets/scripts.js"></script>
+        <script defer src={`${bundled_js}`}></script>
       </head>
       <body>
         {date && (
@@ -231,20 +244,33 @@ function FooterIcon({ name }: { name: string }) {
   );
 }
 
-export function Page(name: string, content: HtmlString) {
+export function Page(
+  name: string,
+  content: HtmlString,
+  css: string,
+  js: string,
+) {
   return (
     <Base
       path={`/${name}`}
       title="Lautaro Acosta Quintana"
       src={`/content/${name}.dj`}
       description={blurb}
+      bundled_css={css}
+      bundled_js={js}
     >
-      <Raw unsafe={content.value} />
+      <div class="normal-layout">
+        <Raw unsafe={content.value} />
+      </div>
     </Base>
   );
 }
 
-export function BlogRoll({ posts }: { posts: FeedEntryData[] }) {
+export function BlogRoll(
+  { posts }: { posts: FeedEntryData[] },
+  css: string,
+  js: string,
+) {
   function get_domain(url: string): string {
     try {
       return new URL(url).host;
@@ -286,17 +312,23 @@ export function BlogRoll({ posts }: { posts: FeedEntryData[] }) {
       title="Lautaro Acosta Quintana"
       description={blurb}
       src="/src/templates.tsx"
+      bundled_css={css}
+      bundled_js={js}
     >
-      <p>Blogs I like reading and have posted in the last 2 years.</p>
-      <ul class="blogroll">
-        {list_items}
-      </ul>
+      <div class="normal-layout">
+        <p>Blogs I like reading and have posted in the last 2 years.</p>
+        <ul class="blogroll">
+          {list_items}
+        </ul>
+      </div>
     </Base>
   );
 }
 
 export function PostList(
   { posts, title }: { posts: PostData[]; title?: string },
+  css: string,
+  js: string,
 ) {
   const list_items = posts.map((post, idx) => {
     const tags = post.tags.map((tag) => {
@@ -321,7 +353,7 @@ export function PostList(
         <div class="meta-row">
           <Time className="meta" date={post.iso_date} />
           <span class="word-count">
-            {post.word_count} words
+            {post.reading_time}
           </span>
         </div>
         <div class="abstract">
@@ -340,16 +372,20 @@ export function PostList(
       title="Lautaro Acosta Quintana"
       description={blurb}
       src="/src/templates.tsx"
+      bundled_css={css}
+      bundled_js={js}
     >
-      {title && <h1>{title}</h1>}
-      <ul class="post-list">
-        {list_items}
-      </ul>
+      <div class="normal-layout">
+        {title && <h1>{title}</h1>}
+        <ul class="post-list">
+          {list_items}
+        </ul>
+      </div>
     </Base>
   );
 }
 
-export function Post({ post }: { post: PostData }) {
+export function Post({ post }: { post: PostData }, css: string, js: string) {
   return (
     <Base
       src={post.src}
@@ -358,11 +394,19 @@ export function Post({ post }: { post: PostData }) {
       published={post.published}
       date={post.iso_date.toISOString()}
       description={post.abstract}
+      bundled_css={css}
+      bundled_js={js}
     >
-      <div>
+      <div class="post-layout">
+        <aside class="table-of-contents">
+          <Raw unsafe={post.toc_html} />
+        </aside>
         <article>
           <Raw unsafe={post.content.value} />
         </article>
+        <aside class="sidenotes">
+          <Raw unsafe={post.sidenotes_html} />
+        </aside>
       </div>
     </Base>
   );
