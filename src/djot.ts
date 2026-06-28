@@ -5,8 +5,8 @@ import { HtmlString } from "./HtmlString.ts";
 import { time_html } from "./templates.tsx";
 import katex from "npm:katex";
 
-import { parse as djot_parse } from "@djot/parse.ts";
 import { HTMLRenderer, renderHTML } from "@djot/html.ts";
+import { parse as djot_parse } from "@djot/parse.ts";
 import {
   AstNode,
   BlockQuote,
@@ -24,56 +24,63 @@ import {
   Url,
   Visitor,
 } from "@djot/ast.ts";
+import { Stage } from "./Post.ts";
 
 export function parse(source: string): Doc {
   return djot_parse(source);
 }
 
-export type RenderCtx = {
+export type RenderData = {
   date?: Date;
   summary?: string;
   title?: string;
   faviconMap?: Map<string, Map<string, string>>;
   sidenotes?: string[];
+  reading_time_html?: string;
+  stage?: Stage;
 };
 
 export function render(
   doc: Doc,
-  render_ctx: RenderCtx,
-  estimated_time?: string,
+  render_data: RenderData,
 ): HtmlString {
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
+  let section_count: number = 0;
 
   const overrides: Visitor<HTMLRenderer, string> = {
     section: (node: Section, r: HTMLRenderer): string => {
+      if (render_data.stage === "draft" && section_count === 3) {
+        return "";
+      }
+
       const section_prev = section;
       section = node;
       const result = get_child(node, "heading")?.level == 1
         ? r.renderChildren(node)
         : r.renderAstNodeDefault(node);
       section = section_prev;
+
+      section_count++;
       return result;
     },
     heading: (node: Heading, r: HTMLRenderer) => {
-      if (node.level === 1) render_ctx.title = get_string_content(node);
+      if (node.level === 1) render_data.title = get_string_content(node);
 
       if (node.level === 1) {
         const children = r.renderChildren(node);
 
-        const date_html = render_ctx.date
-          ? time_html(render_ctx.date, "meta")
+        const date_html = render_data.date
+          ? time_html(render_data.date, "meta")
           : "";
 
-        const reading_time_html = estimated_time
-          ? `<span class="word-count">
-           ${estimated_time} 
-         </span>`
-          : "";
+        const reading_time_html = `<span class="word-count">
+           ${render_data.reading_time_html} 
+         </span>`;
 
         return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
-      ${date_html}${reading_time_html}
+      <div class="meta-row">${date_html}${reading_time_html}</div>
     </header>`;
       }
 
@@ -111,7 +118,9 @@ export function render(
 
       if (!isImageOnly) {
         const result = r.renderAstNodeDefault(node);
-        if (!render_ctx.summary) render_ctx.summary = get_string_content(node);
+        if (!render_data.summary) {
+          render_data.summary = get_string_content(node);
+        }
         return result;
       }
 
@@ -152,7 +161,7 @@ export function render(
     },
     div: (node: Div, r: HTMLRenderer): string => {
       if (has_class(node, "links")) {
-        const favicons = render_ctx.faviconMap?.get(
+        const favicons = render_data.faviconMap?.get(
           node.attributes?._linksKey ?? "",
         );
 
@@ -311,7 +320,7 @@ export function render(
         }
         sidenote_str += `${sidenote_content}</span>`;
 
-        render_ctx.sidenotes?.push(sidenote_content);
+        render_data.sidenotes?.push(sidenote_content);
 
         result += sidenote_str;
       }

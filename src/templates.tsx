@@ -10,8 +10,6 @@ import { HtmlString } from "./HtmlString.ts";
 const site_url = "https://lautaroacosta.com";
 const github_url = "https://github.com/jargenn";
 const blurb = "Lautaro's Coppermind";
-const not_published_html =
-  `<div class="private"><p>If you found this you are a beta reader or really lucky! This article is not yet ready to be made public :)</p></div>`;
 
 export function html_ugly(node: VNode, doctype = "<!DOCTYPE html>"): string {
   return `${doctype}\n${render(node)}`;
@@ -81,7 +79,6 @@ function Fonts() {
 function Base(
   {
     children,
-    published,
     description,
     title,
     path,
@@ -93,10 +90,9 @@ function Base(
   }: {
     children?: VNode[];
     src: string;
-    description: string;
     title: string;
-    published?: boolean;
     path: string;
+    description: string;
     date?: string;
     extra_css?: string;
     bundled_css: string;
@@ -182,9 +178,6 @@ function Base(
             <a id="home-page-top" href="#home-page-top"></a>
           </nav>
         </header>
-
-        {published === false &&
-          <Raw unsafe={not_published_html} />}
 
         <main>
           {children}
@@ -344,6 +337,8 @@ export function PostList(
       );
     });
 
+    const stage_class = `stage ${post.stage}`;
+
     return (
       <li class={(!title && idx === 0) ? "latest-post" : ""}>
         <h3>
@@ -354,6 +349,9 @@ export function PostList(
           <Time className="meta" date={post.iso_date} />
           <span class="word-count">
             {post.reading_time}
+          </span>
+          <span class={stage_class}>
+            {post.stage}
           </span>
         </div>
         <div class="abstract">
@@ -385,13 +383,87 @@ export function PostList(
   );
 }
 
+const draft_wall = () => {
+  return (
+    <div>
+      <div class="card draftwall">
+        <h2>This article is still a draft!</h2>
+        <div class="card-body">
+          <p>
+            I'm still iterating on the article, polishing or adding new
+            sections! You can search for another article to read{" "}
+            <a href="/">here</a>.
+          </p>
+          <p>
+            Check back on this article in a week!
+          </p>
+        </div>
+      </div>
+      <div class="draftwall-after">
+        <p>
+          Donec ut lacinia sapien, ut suscipit est. Proin fermentum, libero
+          vitae suscipit consequat, nulla sem iaculis massa, ut maximus sem
+          nulla ut enim. Duis rhoncus est tincidunt turpis convallis cursus.
+          Pellentesque congue risus eu metus convallis euismod. Mauris nec
+          rhoncus tortor, et pulvinar enim. Maecenas fringilla urna eu sodales
+          ornare. Sed blandit nibh sapien, eu lobortis felis tristique in.
+          Aliquam erat leo, ullamcorper eget libero sed, ullamcorper tempor
+          nisl. Vestibulum rutrum, velit quis consequat consequat, tellus ligula
+          ornare nisi, ut suscipit risus sem vitae orci. Fusce pulvinar risus
+          vitae lectus ullamcorper, in interdum enim cursus.
+        </p>
+
+        <p>
+          Donec urna tortor, auctor a porttitor in, tempor sed tellus. Phasellus
+          scelerisque augue at dictum vestibulum. Vivamus facilisis justo mi, id
+          fringilla sem lacinia et. Suspendisse ultricies scelerisque felis
+          venenatis aliquet. Sed mollis et diam malesuada pharetra. Pellentesque
+          quam tellus, maximus ac risus ut, scelerisque auctor dolor. Proin id
+          massa non felis lobortis fermentum. Praesent rutrum gravida massa, et
+          ornare lorem tincidunt eu. Fusce ac purus dui. Nunc tristique ante id
+          quam posuere aliquam. Fusce hendrerit dolor libero, quis viverra leo
+          porta vel. Maecenas eleifend iaculis nulla, et tempus nulla rutrum ut.
+          Aenean leo leo, dapibus ut vestibulum ac, viverra ultrices leo.
+        </p>
+
+        <p>
+          Curabitur pulvinar, leo non ultricies eleifend, orci ipsum faucibus
+          tellus, iaculis auctor sem orci sed est. Integer rhoncus velit nisi,
+          in sagittis ante tincidunt vel. Proin accumsan mauris non augue
+          viverra malesuada. Curabitur id dui ut orci venenatis finibus sit amet
+          ac libero. Fusce tempus ligula in leo malesuada venenatis. Donec elit
+          diam, tempor ac diam cursus, elementum tincidunt risus. In ullamcorper
+          ante nibh, ut venenatis nisi facilisis sodales. Suspendisse finibus
+          dapibus nunc, nec commodo enim auctor eu. Interdum et malesuada fames
+          ac ante ipsum primis in faucibus. Vivamus nec pulvinar sem. Nulla et
+          cursus purus. Aliquam commodo elementum libero in vehicula. Ut sit
+          amet feugiat justo. Mauris mollis condimentum ipsum at porttitor. Cras
+          sed semper diam. Sed posuere aliquet arcu interdum venenatis.
+        </p>
+      </div>
+    </div>
+  );
+};
+
 export function Post({ post }: { post: PostData }, css: string, js: string) {
+  const tags = post.tags.map((tag) => {
+    const tag_slug = tag
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-");
+
+    return (
+      <a class="tag" href={`/t/${tag_slug}.html`}>
+        {tag}
+      </a>
+    );
+  });
+
   return (
     <Base
       src={post.src}
       title={post.title}
       path={post.path}
-      published={post.published}
       date={post.iso_date.toISOString()}
       description={post.abstract}
       bundled_css={css}
@@ -400,9 +472,14 @@ export function Post({ post }: { post: PostData }, css: string, js: string) {
       <div class="post-layout">
         <aside class="table-of-contents">
           <Raw unsafe={post.toc_html} />
+          <div class="header-tags">
+            <h2>Tags</h2>
+            {tags}
+          </div>
         </aside>
         <article>
           <Raw unsafe={post.content.value} />
+          {post.stage === "draft" ? draft_wall() : ""}
         </article>
         <aside class="sidenotes">
           <Raw unsafe={post.sidenotes_html} />

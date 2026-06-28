@@ -1,5 +1,5 @@
 import * as debounce from "@std/async/debounce";
-import { Archetype } from "./archetype.ts";
+import { Archetype } from "./Post.ts";
 import * as djot from "./djot.ts";
 import {
   BlogRoll,
@@ -113,10 +113,12 @@ export const Blog = {
       );
     }
 
-    const published = posts.filter((p) => p.published);
+    const visible_posts = posts.filter((p) =>
+      p.stage === "draft" || p.stage == "finished"
+    );
 
     const map = new Map<string, Post[]>();
-    for (const post of published) {
+    for (const post of visible_posts) {
       for (const tag of post.tags) {
         if (!tag) continue;
 
@@ -140,10 +142,10 @@ export const Blog = {
       );
     }
 
-    await write_file("./dist/feed.xml", feed_xml(published));
+    await write_file("./dist/feed.xml", feed_xml(visible_posts));
     await write_file(
       "dist/index.html",
-      html_ugly(PostList({ posts: published }, css_bundle, js_bundle)),
+      html_ugly(PostList({ posts: visible_posts }, css_bundle, js_bundle)),
     );
 
     const pages = [
@@ -156,6 +158,7 @@ export const Blog = {
       const text = await Deno.readTextFile(`contents/${page}.dj`);
       const ast = djot.parse(text);
       const html = djot.render(ast, {});
+
       await write_file(
         `dist/${page}.html`,
         html_ugly(Page(page, html, css_bundle, js_bundle)),
@@ -221,6 +224,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     )!;
     const [year, month, day] = [y, m, d].map((it) => parseInt(it, 10));
     const iso_date = new Date(Date.UTC(year, month - 1, day));
+    const date_str = `${d}-${m}-${y}`;
 
     let t = performance.now();
     const raw = await Deno.readFile(path);
@@ -233,22 +237,26 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const ast = djot.parse(body);
     ctx.parse_ms += performance.now() - t;
 
+    const reading_time_html = reading_time_str(
+      ast,
+    );
+
+    const toc = build_toc(ast);
+    const toc_html = toc_to_html(toc);
+
     t = performance.now();
-    const render_ctx: djot.RenderCtx = {
+    const render_ctx: djot.RenderData = {
       date: iso_date,
       summary: undefined,
       title: undefined,
       sidenotes: [],
+      reading_time_html,
+      stage: arch.stage,
     };
 
-    const toc = build_toc(ast);
-    const toc_html = toc_to_html(toc);
-    const reading_stime_str = reading_time_str(
-      ast,
-    );
-
     render_ctx.faviconMap = djot.buildFaviconMap(ast);
-    const html = djot.render(ast, render_ctx, reading_stime_str);
+
+    const html = djot.render(ast, render_ctx);
 
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
@@ -278,14 +286,15 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     posts.push({
       year,
       month,
-      reading_time: reading_stime_str,
+      reading_time: reading_time_html,
       sidenotes_html,
       toc_html,
       day,
       slug,
+      date_str,
       iso_date,
       title: arch.title,
-      published: arch.published,
+      stage: arch.stage,
       tags: arch.tags,
       abstract: arch.abstract,
       content: html,
