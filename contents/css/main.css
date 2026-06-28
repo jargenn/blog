@@ -17,7 +17,7 @@
     --figure-width: 69ch;
     --figure-block-margin: 1.8em;
 
-    --col-toc: 16rem;
+    --col-toc: 17rem;
     --col-sidenote: 14rem;
     --col-gap: 2rem;
   }
@@ -245,6 +245,9 @@
         background: var(--lang-bg);
         border-left: 3px solid var(--accent);
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06);
+        font-weight: 200;
+        font-size: 0.90em;
+        font-style: italic;
       }
 
       &.code-block {
@@ -304,7 +307,6 @@
 
     :where(time, h1, h2, h3, .reading-time) {
       font-family: var(--regular-font);
-      font-style: italic;
       font-weight: 400;
     }
 
@@ -564,7 +566,7 @@
           margin: 0;
           padding: 0;
           line-height: 1.35;
-          color: var(--muted);
+          color: var(--text);
           border-right: 3px solid transparent;
           transition: color 0.12s ease,
           border-color 0.12s ease;

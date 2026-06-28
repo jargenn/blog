@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-06-28T14:54:30.758Z",
+  "createdAt": "2026-06-28T23:41:21.177Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -75,12 +75,6 @@
       "date": "2026-06-19T00:00:00.000Z"
     },
     {
-      "author": "Jack Vanlightly",
-      "title": "Kafka Share Groups - Pathological fetch waits with record_limit",
-      "url": "https://jack-vanlightly.com/blog/2026/6/24/kafka-share-groups-pathological-fetch-waits-with-recordlimit",
-      "date": "2026-06-24T12:50:48.000Z"
-    },
-    {
       "author": "Julian Hyde",
       "title": "Why can’t SQL average date values?",
       "url": "http://blog.hydromatic.net/2026/06/08/avg-date.html",
@@ -125,9 +119,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "A scorching CNG London during Climate Action Week",
-      "url": "https://anil.recoil.org/notes/cng-london-2026",
-      "date": "2026-06-24T00:00:00.000Z"
+      "title": ".plan-26-26: Gelato, geospatial, and players of games",
+      "url": "https://anil.recoil.org/notes/2026w26",
+      "date": "2026-06-28T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
