@@ -3,7 +3,7 @@
  "title":"The Guarantees Your Type System Makes",
  "stage": "draft",
  "tags":["Rust", "OCaml", "Typescript", "Type systems"],
- "abstract": "We explore what type safety means, talk a bit about the theorems used to prove soundness in a language and give an overview of different type systems and what they can guarantee."
+ "abstract": "What does it mean for a language to be type safe? We start from formal definitions and learn about concepts present in any language. A practical tour of what type systems can (and can't) promise you."
 } 
 ---
 
@@ -935,4 +935,5 @@ Lastly, if you used an asynchronous work-stealing runtime like [tokio](https://t
 
 ## ADTs 
 
+## Phantom Types
 
