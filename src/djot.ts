@@ -74,9 +74,11 @@ export function render(
           ? time_html(render_data.date, "meta")
           : "";
 
-        const reading_time_html = `<span class="word-count">
+        const reading_time_html = render_data.reading_time_html
+          ? `<span class="word-count">
            ${render_data.reading_time_html} 
-         </span>`;
+         </span>`
+          : "";
 
         return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>

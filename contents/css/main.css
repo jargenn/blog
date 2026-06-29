@@ -150,8 +150,11 @@
   }
 
   .stage {
-    color: inherit;
+    /* color: inherit; */
+    color: var(--accent);
     font-weight: 600;
+    margin-left: auto;
+    font-variant: small-caps;
   }
 
   article {
@@ -449,9 +452,9 @@
 
     .card {
       background: var(--lang-bg);
-      border: 1px solid var(--muted);
+      border: 2px dashed var(--accent);
       padding: 15px;
-
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06);
     }
 
     .draftwall {
