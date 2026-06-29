@@ -1,7 +1,7 @@
 ---
 {
     "title":"The Guarantees Your Type System Makes",
-    "stage": "finished",
+    "stage": "private",
     "abstract": "We explore what type safety means, how soundness is proven in a language's design, and why the rise of agentic coding makes these guarantees more valuable than ever for reasoning about code you didn't write yourself.",
     "tags": ["Type Systems", "Programming Languages"]
 } 
