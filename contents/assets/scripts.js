@@ -93,44 +93,44 @@ function alignSidenotes() {
   col.style.visibility = "visible";
 }
 
-function alignSidenotes() {
-  const col = document.querySelector("aside.sidenotes");
-  if (!col) return;
+// function alignSidenotes() {
+//   const col = document.querySelector("aside.sidenotes");
+//   if (!col) return;
 
-  const notes = col.querySelectorAll(".sidenote-body");
-  const labels = document.querySelectorAll(".sidenote-number");
+//   const notes = col.querySelectorAll(".sidenote-body");
+//   const labels = document.querySelectorAll(".sidenote-number");
 
-  col.style.position = "relative";
-  col.style.visibility = "visible";
+//   col.style.position = "relative";
+//   col.style.visibility = "visible";
 
-  requestAnimationFrame(() => {
-    const colTop = col.getBoundingClientRect().top + window.scrollY;
+//   requestAnimationFrame(() => {
+//     const colTop = col.getBoundingClientRect().top + window.scrollY;
 
-    const positions = Array.from(labels).map((label, i) => {
-      const note = notes[i];
-      if (!note) return null;
+//     const positions = Array.from(labels).map((label, i) => {
+//       const note = notes[i];
+//       if (!note) return null;
 
-      note.style.position = "absolute";
-      note.style.top = "0px";
+//       note.style.position = "absolute";
+//       note.style.top = "0px";
 
-      return {
-        note,
-        natural: label.getBoundingClientRect().top + window.scrollY - colTop,
-      };
-    }).filter(Boolean);
+//       return {
+//         note,
+//         natural: label.getBoundingClientRect().top + window.scrollY - colTop,
+//       };
+//     }).filter(Boolean);
 
-    requestAnimationFrame(() => {
-      let floor = 0;
+//     requestAnimationFrame(() => {
+//       let floor = 0;
 
-      for (const { note, natural } of positions) {
-        const top = Math.max(natural, floor);
-        note.style.top = `${top}px`;
-        floor = top + note.offsetHeight + 12;
-      }
+//       for (const { note, natural } of positions) {
+//         const top = Math.max(natural, floor);
+//         note.style.top = `${top}px`;
+//         floor = top + note.offsetHeight + 12;
+//       }
 
-      col.style.minHeight = `${floor}px`;
-    });
-  });
-}
-window.addEventListener("load", alignSidenotes);
-window.addEventListener("resize", alignSidenotes);
+//       col.style.minHeight = `${floor}px`;
+//     });
+//   });
+// }
+// window.addEventListener("load", alignSidenotes);
+// window.addEventListener("resize", alignSidenotes);

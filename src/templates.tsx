@@ -220,7 +220,7 @@ function Base(
           <p class="copyr">
             © 2026 Lautaro Acosta Quintana. All rights reserved.
             <a class="emphasis statement" href="/ai_transparency.html">
-              AI transparency statement
+              AI Transparency
             </a>
           </p>
         </footer>
@@ -351,7 +351,7 @@ export function PostList(
             {post.reading_time}
           </span>
           <span class={stage_class}>
-            {post.stage}
+            <span>{post.stage}</span>
           </span>
         </div>
         <div class="abstract">
@@ -481,9 +481,6 @@ export function Post({ post }: { post: PostData }, css: string, js: string) {
           <Raw unsafe={post.content.value} />
           {post.stage === "draft" ? draft_wall() : ""}
         </article>
-        <aside class="sidenotes">
-          <Raw unsafe={post.sidenotes_html} />
-        </aside>
       </div>
     </Base>
   );

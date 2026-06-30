@@ -130,7 +130,6 @@ export type Post = {
   day: number;
   reading_time: string;
   toc_html: string;
-  sidenotes_html: string;
   date_str: string;
   iso_date: Date;
   stage: Stage;

@@ -272,22 +272,10 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
     const src = `/contents/posts/${y}-${m}-${d}-${slug}.dj`;
 
-    let sidenotes_html = "";
-
-    if (render_ctx.sidenotes) {
-      for (const [idx, sidenote] of render_ctx.sidenotes?.entries()) {
-        sidenotes_html +=
-          `<p class="sidenote-body"><span class="adhoc-number">${
-            1 + idx
-          }.</span> ${sidenote}<p>`;
-      }
-    }
-
     posts.push({
       year,
       month,
       reading_time: reading_time_html,
-      sidenotes_html,
       toc_html,
       day,
       slug,
