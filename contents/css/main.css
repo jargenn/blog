@@ -8,7 +8,7 @@
     --border-radius: 0.4rem;
     --background: #eceff4;
     --lang-bg: #fbfbf5;
-    --emphasis: #333333;
+    --emphasis: #181818;
     --term-fg: #eddbb2;
     --term-bg: #181818;
     --muted: #dbdbd6;
@@ -138,13 +138,7 @@
     text-decoration: underline;
   }
 
-  .word-count::before {
-    content: " - ";
-    margin: 0 0.5rem;
-    color: inherit;
-  }
-
-  .word-count {
+  .reading-time {
     display: inline-flex;
     align-items: center;
   }
@@ -174,6 +168,7 @@
     right: -2.1rem;
     transform: rotate(45deg);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
   }
 
   article {
@@ -335,6 +330,11 @@
     :where(time, h1, h2, h3, .reading-time) {
       font-family: var(--regular-font);
       font-weight: 400;
+    }
+
+    time,
+    .reading-time {
+      color: var(--text)
     }
 
     :where(h1, h2, h3) {
@@ -548,7 +548,7 @@
   }
 
   aside.table-of-contents {
-    /* padding: 0.5em; */
+    top: 40px;
     font-size: 0.80rem;
     font-family: inherit;
     grid-area: toc;
@@ -576,17 +576,25 @@
       }
     }
 
-
     & menu {
       font-size: inherit;
       border: none;
       padding: 0 0 0 1rem;
+
 
       a.toc-entry {
         display: inline-block;
         width: 100%;
         padding-top: 0.32rem;
         padding-bottom: 0.32rem;
+      }
+
+      a.toc-entry:hover {
+        background: transparent;
+        border-radius: 0;
+        transition: none;
+
+        color: var(--emphasis);
       }
 
       & ul {
@@ -607,10 +615,13 @@
           margin: 0;
           padding: 0;
           line-height: 1.35;
-          color: var(--text);
+
           border-right: 3px solid transparent;
-          transition: color 0.12s ease,
-          border-color 0.12s ease;
+          transition: border-color 0.12s ease;
+
+          &:hover {
+            border-right-color: var(--muted);
+          }
 
           &.reading {
             font-weight: 600;

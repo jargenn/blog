@@ -164,12 +164,6 @@ function Base(
         <script defer src={`${bundled_js}`}></script>
       </head>
       <body>
-        {date && (
-          <div class="progress-container">
-            <div class="progress-bar"></div>
-          </div>
-        )}
-
         <header>
           <nav>
             <a class="title" href="/">Home</a>
@@ -347,7 +341,8 @@ export function PostList(
 
         <div class="meta-row">
           <Time className="meta" date={post.iso_date} />
-          <span class="word-count">
+          <span>·</span>
+          <span class="reading-time">
             {post.reading_time}
           </span>
           <span class={stage_class}>

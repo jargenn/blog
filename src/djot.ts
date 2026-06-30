@@ -80,9 +80,15 @@ export function render(
          </span>`
           : "";
 
+        if (reading_time_html && date_html) {
+          return `<header>
+      <h1${r.renderAttributes(node)}>${children}</h1>
+      <div class="meta-row">${date_html} · ${reading_time_html}</div>
+    </header>`;
+        }
+
         return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
-      <div class="meta-row">${date_html}${reading_time_html}</div>
     </header>`;
       }
 
