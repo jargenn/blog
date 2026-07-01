@@ -253,7 +253,7 @@ Dump of assembler code for function div:
 End of assembler dump.
 ```
 
-We see that the fault came from our `div` function. Notice how at address `0x0000555555555147` the division is performed with the `idiv` instruction on x86_64. Since the divisor is zero, the CPU raises a `#DE` (Division Error) exception. The OS handles it by sending a `SIGFPE` signal to the program. 
+We see that the fault came from our `div` function. Notice how at address `0x0000555555555147` the division is performed with the `idiv` instruction on `x86_64`. Since the divisor is zero, the CPU raises a `#DE` (Division Error) exception. The OS handles it by sending a `SIGFPE` signal to the program. 
 
 The latest publicly available [C language specification](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf#page=110) defines this as undefined behavior (UB), which is to say anything could happen[^time-travel]. Whether the program crashes, hangs, or produces unpredictable results depends on the implementation, the target architecture and the operating system running at the time. [^unsafe]
 
@@ -303,7 +303,7 @@ End of assembler dump.
 
 Without optimizations it behaves similarly to the GCC-compiled one. With optimizations enabled, Clang also deletes `div`; however, it doesn't replace main's body with a `ud2` and instead continues execution normally, printing an arbitrary value!
 
-Fil-C[^Fil-C] is a fork of `Clang 20.1.8` that adds static and runtime memory safety features to C (to explain _how_ I would need a series of articles):
+Fil-C[^Fil-C] is a fork of `Clang 20.1.8` that adds static and runtime memory safety features to C (to explain _how_, I would need a series of articles):
 
 [^Fil-C]: At the time of writing, it is at version 0.678. 
 
@@ -979,5 +979,96 @@ Then, when all the tasks in a local queue were resolved, the worker thread will 
 
 ## ADTs 
 
+Algebraic Data Types (ADTs) is the name given to a [composite data type](https://en.wikipedia.org/wiki/Composite_data_type)(a type created by combining other types) where the building blocks are [sum types](https://en.wikipedia.org/wiki/Tagged_union) and [product types](https://en.wikipedia.org/wiki/Product_type). Product types are the easier ones to understand because they are often the first ones any programmer encounters, be it in the shape of structs in C or dataclasses in Python.
+
+Let's say you are trying to build a service following the [twelve factors](https://12factor.net/) and you have to model a config declaring where to store images locally:
+
+``` ocaml
+type storage_settings = { base_path : string; base_url : string option }
+``` 
+
+Simple enough right? `base_path` tell us where the image is in the file system and `base_url` has the associated url to expose the asset if we wanted to. This is the simples product type because it expresses the _product_ between the `string` and `string option` types, `storage_settings` could hold any combination of the two.
+
+As it turns out, the requirements changed and we now need to also support storing images in the cloud:
+
+```ocaml
+type storage_settings = {
+  base_path : string option;
+  base_urL : string option;
+
+  (* Cloudflare's R2 information *)
+  account_id : string option;
+  secret_access_key : string option;
+  auth_token : string option;
+  bucket_name : string option;
+  public_url : string option;
+}
+
+```
+Now, the number of value combinations grew and every field is also an option because we don't have any other way of expressing that some values aren't needed if we choose to store images locally or in the cloud. We need a way to represent a value that could hold many different types at a time.
+
+That's where sum types come in. They are given a wide variety of names, from disjoint unions to tagged unions and variant types, but in our context are better understood as a data structure used to hold a value that can take one of several shapes at a given time. Reworking our example: 
+
+```ocaml
+type r2_backend = {
+  account_id : string;
+  secret_access_key : string;
+  auth_token : string;
+  bucket_name : string;
+  public_url : string option;
+}
+
+type filesystem_backend = {
+  base_path : string;
+  base_url : string option
+}
+
+type storage_settings =
+  | Local of filesystem_backend
+  | R2 of r2_backend
+```
+
+Now `storage_settings` can only ever be one of the two explicitly listed types at any given time, and we can stop abusing the option type!
+
+ADTs are at their most useful when combined with *pattern matching*, which is basically an algorithm that checks for _exhaustiveness_ when it comes to sum types:
+
+```ocaml
+let load_storage (settings : storage_settings) =
+  match settings with
+  | Local { base_path; base_url } -> ...
+  | R2 { account_id; secret_access_key; auth_token;
+   bucket_name; public_url } -> ...
+``` 
+
+Here the code will only compile if we make sure to consider every possible value `settings` can take! If in the future we add a third backend that isn't handled we will get an error like:
+
+```ocaml
+File "main.ml", lines 33-37, characters 2-22:
+33 | ..match settings with
+34 |   | Local { base_path; base_url } -> ...
+35 |   | R2 { account_id; secret_access_key; auth_token;
+        bucket_name; public_url } -> ...
+Error (warning 8 [partial-match]): this pattern-matching is not exhaustive.
+  Here is an example of a case that is not matched: GoogleCloud
+```
+
+*** 
+
+Before, I didn't explain what the `option` type was because it is in fact a sum type! It is the replacement of the concept of nullability that many other languages still have.
+
+```ocaml
+(*
+  The `'a` annotation is called alpha and is virtually the same as the `T`
+  used in the examples using typescript above!
+*) 
+type 'a option =
+  | None
+  | Some of 'a
+```
+
 ## Phantom Types
+
+This is a technique where we try to leverage the type system in order to enforce correct construction of our programs by adding more information through types. It's important to underline that this new information _only exists at compile-time_, they sort of "vanish". 
+
+
 
