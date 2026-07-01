@@ -99,8 +99,24 @@ function Base(
     bundled_js: string;
   },
 ) {
-  const og_image_path = "og.png";
   const def_title = date ? `${title} - Lautaro Acosta Quintana` : title;
+  const post_url = `${site_url}${path}`;
+  const json_ld = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    datePublished: date,
+    author: {
+      "@type": "Person",
+      name: "Lautaro Acosta Quintana",
+    },
+    url: post_url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": post_url,
+    },
+  };
 
   return (
     <html lang="en-US">
@@ -109,13 +125,11 @@ function Base(
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{def_title}</title>
         <meta name="description" content={description} />
-        <link rel="canonical" href={`${site_url}${path}`} />
+        <link rel="canonical" href={post_url} />
 
         <meta property="og:type" content="article" />
         <meta property="og:title" content={def_title} />
-        <meta
-          property="og:image"
-          content={`https://cdn.lautaroacosta.com/${og_image_path}`}
+        <meta property="og:image" // content={`https://cdn.lautaroacosta.com/${og_image_path}`}
         />
         <meta property="og:image:width" content="1260" />
         <meta property="og:image:height" content="630" />
@@ -125,9 +139,7 @@ function Base(
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={def_title} />
-        <meta
-          name="twitter:image"
-          content={`https://cdn.lautaroacosta.com/${og_image_path}`}
+        <meta name="twitter:image" // content={`https://cdn.lautaroacosta.com/${og_image_path}`}
         />
 
         <meta name="twitter:description" content={description} />
@@ -162,6 +174,9 @@ function Base(
         >
         </script>
         <script defer src={`${bundled_js}`}></script>
+        <script type="application/ld+json">
+          <Raw unsafe={JSON.stringify(json_ld)} />
+        </script>
       </head>
       <body>
         <header>
