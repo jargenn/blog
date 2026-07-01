@@ -14,6 +14,7 @@
     --muted: #dbdbd6;
     --text: #3b4252;
     --accent: #75AADB;
+    --code-tint: color-mix(in srgb, var(--accent) 10%, transparent);
     --figure-width: 69ch;
     --figure-block-margin: 1.8em;
 
@@ -120,6 +121,10 @@
     font-family: var(--font-symbol), monospace;
   }
 
+  p code {
+    background: var(--code-tint);
+  }
+
   em {
     font-style: italic;
   }
@@ -143,7 +148,7 @@
     align-items: center;
   }
 
-  .stage {
+  .draft {
     position: absolute;
     top: 0;
     right: 0;
@@ -153,7 +158,7 @@
     pointer-events: none;
   }
 
-  .stage span {
+  .draft span {
     position: absolute;
     display: block;
     width: 9rem;

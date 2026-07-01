@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-06-28T23:41:21.177Z",
+  "createdAt": "2026-07-01T00:41:50.307Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -75,6 +75,12 @@
       "date": "2026-06-19T00:00:00.000Z"
     },
     {
+      "author": "Jack Vanlightly",
+      "title": "Benchmarking Hardwood 1.0 on a Threadripper 9980X",
+      "url": "https://jack-vanlightly.com/blog/2026/6/30/benchmarking-hardwood-10-on-a-threadripper-9980x",
+      "date": "2026-06-30T13:10:15.000Z"
+    },
+    {
       "author": "Julian Hyde",
       "title": "Why can’t SQL average date values?",
       "url": "http://blog.hydromatic.net/2026/06/08/avg-date.html",
@@ -131,9 +137,9 @@
     },
     {
       "author": "Ian Duncan",
-      "title": "Brief aan de Eerste Kamer over box 3 · A letter to the Dutch Senate on Box 3",
-      "url": "https://iankduncan.com/personal/2026-06-12-box3-eerste-kamer/",
-      "date": "2026-06-12T00:00:00.000Z"
+      "title": "Deconstruct the Monolith: Composable App Bootstrapping with Fractal Layer",
+      "url": "https://iankduncan.com/engineering/2026-06-29-deconstruct-the-monolith-fractal-layer/",
+      "date": "2026-06-29T00:00:00.000Z"
     }
   ]
 }

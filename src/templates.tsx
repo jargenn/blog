@@ -331,8 +331,6 @@ export function PostList(
       );
     });
 
-    const stage_class = `stage ${post.stage}`;
-
     return (
       <li class={(!title && idx === 0) ? "latest-post" : ""}>
         <h3>
@@ -345,9 +343,13 @@ export function PostList(
           <span class="reading-time">
             {post.reading_time}
           </span>
-          <span class={stage_class}>
-            <span>{post.stage}</span>
-          </span>
+          {post.stage === "draft"
+            ? (
+              <span class={post.stage}>
+                <span>{post.stage}</span>
+              </span>
+            )
+            : ""}
         </div>
         <div class="abstract">
           <p>{post.abstract}</p>
