@@ -17,8 +17,6 @@ We'll start by introducing some concepts, like _type safety_, and then start exp
 
 By the end, it'll work as a quite fun (for me at least) overview of what type systems in different languages can offer you.
 
-As a disclaimer, there was an earlier post of mine with the same title which is available [here](https://lautaroacosta.com/2026/04/08/what_does_type_safety_mean).[^first] 
-
 [^first]: It was my first post!
 
 ## Sound languages
@@ -481,7 +479,7 @@ save_file(fake, "out_duck.txt")
 
 Subtyping is really there to make programs easier to write, but at the same time, makes it difficult to be sure that an expression has _exactly_ the type it declares.
 
-**** 
+### Variance
 
 Due to this, in languages that support generics, we'll also need to talk about *variance*, which in layman's terms is about _how_ the subtyping relations translates to the type constructor, or how we try to _reconcile_ two forms of genericity: [parametric](https://pin.it/1qXpf49jH) and subtype polymorphism.
 
@@ -762,7 +760,7 @@ The snippets show a syntax for variance called _declaration-site_, because we _d
 
 *Bivariance* exists too, but we don't do that around here.
 
-****
+### Trait Objects
 
 In Rust, you could be tempted to think that an example of subtyping is when `impl Trait for T` so `T` becomes a subtype `Trait`, but that would be incorrect because traits are not types, and in Rust terms a function signature or struct field expecting a [trait object](https://doc.rust-lang.org/reference/types/trait-object.html) `dyn Trait` is handled by a coercion rule, there is no subtyping relation taking place.[^sub-rust]
 
@@ -791,12 +789,39 @@ impl Rollable for Dice {
 // of the type `T` implementing the trait and a virtual method table
 // (vtable) containing, for each method of `T`, a function pointer
 // to `T`s implementation.
+// Roughly something like this:
+
+//                        HEAP
+//   ┌────────────────────┐
+//   │  data pointer      ├────────▶ ┌──────────────────┐
+//   ├────────────────────┤           │   T instance     │
+//   │  vtable pointer    ├─┐         │                  │
+//   └────────────────────┘ │         │  (concrete data) │
+//                          │         └──────────────────┘
+//                          ▼
+//     ┌─────────────────────────────┐
+//     │    vtable for T: Rollable   │
+//     ├─────────────────────────────┤
+//     │  size                       │
+//     ├─────────────────────────────┤
+//     │  align                      │
+//     ├─────────────────────────────┤
+//     │  drop_in_place fn ptr       │
+//     ├─────────────────────────────┤
+//     │  ...                        │
+//     ├─────────────────────────────┤
+//     │  roll()  fn ptr ────────────┼─┐
+//     └─────────────────────────────┘ │
+//                                     ▼
+//                       ┌───────────────────────┐
+//                       │ Rollable::roll(&self) │
+//                       └───────────────────────┘
+//
 fn roll(r: Box<dyn Rollable>) -> u32 {
     // Using a Trait object like `dyn Rollable` allows a late binding
     // of methods.
 
-    // Calling `roll()` results in a dynamic dispatch at runtime.
-    //A function pointer is loaded from the trait object vtable and executed.
+    // Calling `roll()` results in a function pointer being loaded from the trait object vtable and executed (dynamic dispatch).
     r.roll()
 }
 
@@ -931,7 +956,26 @@ The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cel
 
 [^os-scheduler]: The compiler isn't able to prevent _resource_ races product of the preemptive schedulers of the underlying operating system.
 
-Lastly, if you used an asynchronous work-stealing runtime like [tokio](https://tokio.rs/), you've seen that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) *has to be* `Send`. The reason is because tokio executes one or many tasks on one or many threads, with each task containing futures that are either being polled or waiting to be polled. When a task becomes idle, meaning it has polled all the futures assigned to it, it has to be able to _steal_ work from another task, meaning that a future waiting to be polled may need to cross a thread boundary.
+***
+
+If you've used an multi-threaded work-stealing runtime like [tokio](https://tokio.rs/), I'm sure you've seen the error demanding that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await *has to be* `Send`. First, let's see the signature of the `Future` trait:
+
+```
+pub trait Future {
+    type Output;
+
+//            Keep this in mind!
+//                  │
+//                  v
+fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
+}
+```
+
+The reason of that demand is that, at a high level, tokio uses a _thread pool_, starting worker-threads to execute tasks and assigning a local queue filled with them to each worker, all while maintaining one global queue.
+
+Then, when all the tasks in a local queue were resolved, the worker thread will either attempt to pick more tasks from the global queue or will *_steal_* from the local queue of another worker. In both cases, the future will need to cross a thread boundary and later be polled. If we check the signature for the `poll()` function above, we see that it takes an _exclusive_ reference `&mut`, that means we are _giving away ownership_ of everything inside that future to another thread, exactly the purpose of the `Send` trait! [^caveat] 
+
+[^caveat]: This behaviour is according to tokio's [multi-threaded runtime](https://docs.rs/tokio/latest/tokio/runtime/index.html#multi-threaded-runtime-behavior-at-the-time-of-writing), for `!Send` futures, tokio offers alternative runtimes.
 
 ## ADTs 
 
