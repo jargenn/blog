@@ -2,22 +2,20 @@
 {
  "title":"The Guarantees Your Type System Makes",
  "stage": "draft",
- "tags":["Rust", "OCaml", "Typescript", "Type systems"],
- "abstract": "What does it mean for a language to be type safe? We start from formal definitions and learn about concepts present in any language. A practical tour of what type systems can (and can't) promise you."
+ "tags":["Rust", "OCaml", "TypeScript", "Type systems"],
+"abstract": "What does it mean for a language to be type safe? We glaze over formal definitions surrounding type safety, then use them as a launchpad to explore features across languages that change and empower the way we write software: subtyping, variance and algebraic data types. A practical, code-heavy tour of what type systems can offer you."
 } 
 ---
 
 # The Guarantees Your Type System Makes
 
-I wrote about really useful concepts I've learned from programming languages up until now, ones that I think of every time.
+I wrote about concepts I've learned from programming languages up until now, ones that I think of every time.
 
-My aim is to write it in a way that is approachable to anyone with some experience writing software, with no necessary background in PL theory but is interested in programming languages and likes to read code.
+My aim is to write it in a way approachable to anyone with some experience writing software, with no necessary background in PL theory but is interested in programming languages and likes to read some code.
 
-We'll start by introducing some concepts, like _type safety_, and then start exploring what different languages can offer you in order to write software more efficiently. 
+We'll start by glazing over some formal definitions surrounding _type safety_, and then showcase really interesting features that change and empower the way one writes software.
 
 By the end, it'll work as a quite fun (for me at least) overview of what type systems in different languages can offer you.
-
-[^first]: It was my first post!
 
 ## Sound languages
 
@@ -71,7 +69,7 @@ Which is essentially the same idea seen from another perspective of the well-beh
 Let's play with some examples to illustrate what we have introduced so far. Imagine this function defined in a fictitious language which has the property of being sound, meaning that well-typed programs are well-behaved at runtime.
 
 
-``` rust
+``` Rust
 fn add(a: Int, b: Int) Int {
     return a + b;
 }
@@ -87,7 +85,7 @@ The expression `add(10, 314)` _is_ sound because `add` requires its arguments to
 
 By comparison, `add(10, "Some")` is ill-typed because `"Some"` does not have type `Int` nor it can be coerced to it, so it doesn't satisfy the "context". If we allowed this program to be executed it would fail to uphold the guarantees of the language and will get stuck in some unknown state. Another example would be:
 
-``` rust
+``` Rust
 fn add(a: Int, b: Str) Int {
     return a + b;
 }
@@ -102,7 +100,7 @@ The program may or may not be well-typed depending on the statics of the languag
 
 Let's look at another example, think that the language is no longer sound:
 
-``` rust
+``` Rust
 fn div(a: Int, b: Int) : Int {
     return a / b
 }
@@ -162,7 +160,7 @@ We'll look at two snippets in Rust and C and compare what their specifications d
 
 [^notice]: Notice how type soundness is a property of the language and not the implementation?
 
-``` rust
+``` Rust
 fn div(a: u32, b: u32) -> u32 {
     a / b
 }
@@ -347,7 +345,7 @@ And since there exists only one singular recursive type, _Preservation_ plays le
 
 It's useful to look at an example in the wild. This single recursive type we mentioned can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
 
-Right now, it's looking like the static typing bois have won: Python has static type checkers like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/).  [Typescript](https://www.typescriptlang.org/) is incredibly adopted and it's essentially a static type system layer over Javascript. More recently, even [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/01we lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
+Right now, it's looking like the static typing bois have won: Python has static type checkers like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/).  [TypeScript](https://www.typescriptlang.org/) is incredibly adopted and it's essentially a static type system layer over Javascript. More recently, even [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/00lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
 
 ****
 
@@ -359,7 +357,7 @@ I'll now shift the focus to review properties, some more common than others, tha
 
 A *subtype* relation between types validates the *subsumption principle*:
 
-> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whener a value of type $`τ` is required.
+> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whenever a value of type $`τ` is required.
 
 This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
 
@@ -398,9 +396,9 @@ Spren Rock = new Bridgeman();
 
 ```
 
-In contrast, Typescript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
+In contrast, TypeScript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
 
-``` typescript
+``` TypeScript
 type Bridgeman = {
   run(): void;
 };
@@ -432,7 +430,7 @@ run({
 
 ```
 
-You can check more examples, even where Typescript's features are unsound, [here](https://www.typescriptlang.org/docs/handbook/type-compatibility.html).
+You can check more examples, even where TypeScript's features are unsound, [here](https://www.typescriptlang.org/docs/handbook/type-compatibility.html).
 
 This may look the same as duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to call the required method function at runtime, and will fail and burn if it isn't there: [^static-duck]
 
@@ -491,9 +489,9 @@ is said to be *invariant* in an argument if subtyping for the constructed type i
 
 To make any sense of that, let's define some generic types:
 
-``` typescript
+``` TypeScript
 
-// Typescript actually tries to automatically infer the variance given the
+// TypeScript actually tries to automatically infer the variance given the
 // position where the type parameter T appears in the signatures.
 //
 // The `out` keyword exists to explicitly tell the compiler that the relation
@@ -560,7 +558,7 @@ Since we retain the subtyping relation, we can design API's that allows us to ea
 
 With contravariance, the idea is that it enables us to design APIs that are more *general* in the values they can operate on:
 
-``` typescript
+``` TypeScript
 // The `in` keyword exists to explicitly tell the compiler that the relation
 // is a _contravariance_, so this:
 type Logger<T> = {
@@ -627,7 +625,7 @@ We could create any kind of new `Event` and still be able to inspect it with the
 
 We could see a pattern here: covariance is often used when trying to _produce_ a value, contravariant when we want to _consume_ a value, and invariant is actually use when we want to do both, so the safest way to avoid type errors is to have no subtyping relation.
 
-```typescript
+``` TypeScript
 /// Since now we both produce and consume `V`, we have an _invariant_.
 // This:
 type KVStore<V> = {
@@ -678,7 +676,7 @@ type 'KVStore<Event>'.
 
 If we really wanted the same type constructor to support both kinds of variance, the solution is to create two new generic types for producing and reading:
 
-```typescript
+``` TypeScript
 type KVReader<out V> = {
   get: (key: string) => V | undefined;
 };
@@ -950,7 +948,9 @@ error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads sa
    = help: within `{closure@src/main.rs:24:17: 24:19}`, the trait `Send` is not implemented for `std::sync::MutexGuard<'_, u32>`
 ```
 
-This is a cool example of relying on the type system. In other languages (Go or Java), the mutex and the protected data are different things, so correct usage relies on us having discipline (don't try to unlock a free mutex!). Here we can let the compiler do the work for us!
+ In other languages (Go or Java), the mutex and the protected data are different things, so correct usage relies on us having discipline (don't try to unlock a free mutex!)[^cliffe]. Here we can let the compiler do the work for us!
+
+[^cliffe]: If you want to read more why they look like that, [read here](https://cliffle.com/blog/rust-mutexes/)
 
 The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide "interior mutability" and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. So it's okay to give away ownership of it, but the idea of multiple writers with no synchronization is not fun.
 
@@ -958,9 +958,9 @@ The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cel
 
 ***
 
-If you've used an multi-threaded work-stealing runtime like [tokio](https://tokio.rs/), I'm sure you've seen the error demanding that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await *has to be* `Send`. First, let's see the signature of the `Future` trait:
+If you've used a multi-threaded work-stealing runtime like [tokio](https://tokio.rs/), I'm sure you've seen the error demanding that every [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html) you await *has to be* `Send`. First, let's see the signature of the `Future` trait:
 
-```
+```rust
 pub trait Future {
     type Output;
 
@@ -971,9 +971,9 @@ fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
 }
 ```
 
-The reason of that demand is that, at a high level, tokio uses a _thread pool_, starting worker-threads to execute tasks and assigning a local queue filled with them to each worker, all while maintaining one global queue.
+The reason behind that demand is that, at a high level, tokio uses a _thread pool_, starting worker-threads to execute tasks and assigning a local queue filled with them to each worker, all while maintaining one global queue.
 
-Then, when all the tasks in a local queue were resolved, the worker thread will either attempt to pick more tasks from the global queue or will *_steal_* from the local queue of another worker. In both cases, the future will need to cross a thread boundary and later be polled. If we check the signature for the `poll()` function above, we see that it takes an _exclusive_ reference `&mut`, that means we are _giving away ownership_ of everything inside that future to another thread, exactly the purpose of the `Send` trait! [^caveat] 
+When all the tasks in the worker's queue were resolved, it will either attempt to pick more tasks from the global queue or will *_steal_* from the local queue of another worker. In both cases, the future will need to cross a thread boundary and later be polled. If we check the signature for the `poll()` function above, we see that it takes an _exclusive_ reference `&mut`, that means we are _giving away ownership_ of everything inside that future to another thread, exactly the purpose of the `Send` trait! [^caveat] 
 
 [^caveat]: This behaviour is according to tokio's [multi-threaded runtime](https://docs.rs/tokio/latest/tokio/runtime/index.html#multi-threaded-runtime-behavior-at-the-time-of-writing), for `!Send` futures, tokio offers alternative runtimes.
 
@@ -983,7 +983,7 @@ Algebraic Data Types (ADTs) is the name given to a [composite data type](https:/
 
 Let's say you are trying to build a service following the [twelve factors](https://12factor.net/) and you have to model a config declaring where to store images locally:
 
-``` ocaml
+``` OCaml
 type storage_settings = { base_path : string; base_url : string option }
 ``` 
 
@@ -991,10 +991,10 @@ Simple enough right? `base_path` tell us where the image is in the file system a
 
 As it turns out, the requirements changed and we now need to also support storing images in the cloud:
 
-```ocaml
+``` OCaml
 type storage_settings = {
   base_path : string option;
-  base_urL : string option;
+  base_url : string option;
 
   (* Cloudflare's R2 information *)
   account_id : string option;
@@ -1009,7 +1009,7 @@ Now, the number of value combinations grew and every field is also an option bec
 
 That's where sum types come in. They are given a wide variety of names, from disjoint unions to tagged unions and variant types, but in our context are better understood as a data structure used to hold a value that can take one of several shapes at a given time. Reworking our example: 
 
-```ocaml
+``` OCaml
 type r2_backend = {
   account_id : string;
   secret_access_key : string;
@@ -1030,9 +1030,9 @@ type storage_settings =
 
 Now `storage_settings` can only ever be one of the two explicitly listed types at any given time, and we can stop abusing the option type!
 
-ADTs are at their most useful when combined with *pattern matching*, which is basically an algorithm that checks for _exhaustiveness_ when it comes to sum types:
+ADTs are at their most useful when combined with *pattern matching* + *exhaustiveness checks*, which basically runs an algorithm that checks whether every variant in a sum type is taken care of:
 
-```ocaml
+``` OCaml
 let load_storage (settings : storage_settings) =
   match settings with
   | Local { base_path; base_url } -> ...
@@ -1042,7 +1042,7 @@ let load_storage (settings : storage_settings) =
 
 Here the code will only compile if we make sure to consider every possible value `settings` can take! If in the future we add a third backend that isn't handled we will get an error like:
 
-```ocaml
+``` OCaml
 File "main.ml", lines 33-37, characters 2-22:
 33 | ..match settings with
 34 |   | Local { base_path; base_url } -> ...
@@ -1052,23 +1052,27 @@ Error (warning 8 [partial-match]): this pattern-matching is not exhaustive.
   Here is an example of a case that is not matched: GoogleCloud
 ```
 
-*** 
-
 Before, I didn't explain what the `option` type was because it is in fact a sum type! It is the replacement of the concept of nullability that many other languages still have.
 
-```ocaml
+``` OCaml
 (*
   The `'a` annotation is called alpha and is virtually the same as the `T`
-  used in the examples using typescript above!
+  used in the examples using TypeScript above!
 *) 
 type 'a option =
   | None
   | Some of 'a
 ```
 
-## Phantom Types
+Researching about ADTs was how I found the notion of [Propositions as Types](https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf) which was really interesting to learn.
 
-This is a technique where we try to leverage the type system in order to enforce correct construction of our programs by adding more information through types. It's important to underline that this new information _only exists at compile-time_, they sort of "vanish". 
+On the surface, it describes a one-to-one correspondence between each proposition in a given logic and a type in the language, arguing that for each _proof_ of a proposition, a corresponding program exists; and evaluating the program is the same as simplifying the proof. Here, sum types and product types play the role of logic OR and AND.[^caml_resource]
 
+[^caml_resource]: [Examples in OCaml](https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence)
 
+***
+
+This is it! There are still a lot of things I didn't cover, but I focused on those I've had experience with. That's why I don't give more examples using dynamic languages!
+
+I'm sure there are more interesting applications of types from languages like [Haskell](https://www.haskell.org/), [Elixir](https://elixir-lang.org/), and Lisps like [Clojure](https://clojure.org/) but I haven't used them.
 
