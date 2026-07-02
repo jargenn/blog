@@ -1,7 +1,7 @@
 ---
 {
  "title":"The Guarantees Your Type System Makes",
- "stage": "draft",
+ "stage": "finished",
  "tags":["Rust", "OCaml", "TypeScript", "Type systems"],
 "abstract": "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, subtyping, variance, algebraic data types and others."
 } 
@@ -115,21 +115,21 @@ This program is clearly well-typed, but to state that the language is sound we n
 
 In practice, this is done with static and/or dynamic checks, with the latter being the most commonly found because it's easier to implement: throwing errors, errors as values, crash-recovery, exceptions, panicking, choose your favourite. 
 
-There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones that have [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted.
+There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones that have [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted and I know little of about them.
 
 ****
 
-It's not easy to _prove_ type soundness. We may think that if a langauge has little keywords and features it would be easier, but it's more of a combinatorial problem between each possible combination.
+It's not easy to _prove_ type soundness. Even if the language has a reduced set of keywords and features, it's more of a combinatorial problem between each possible combination and how they interact.
 
-Nonetheless, there are two theorems key to proving it.
+In the process, the Preservation and Progress theorems are involved and the proofs for them obviously change depending on the language.
 
 ### Preservation and Progress
 
 We now have an understanding of what type safety is. It expresses a _coherence_ between the statics and the dynamics. 
 
-Consequently, evaluation of a well-typed expression _cannot get stuck_! It can never reach a non-value state for which no evaluation rule applies. This is exactly what the Preservation and Progress theorems are used for. 
+Consequently, evaluation of a well-typed expression _cannot get stuck_! It can never reach a non-value state for which no evaluation rule applies. This is exactly what the Preservation and Progress theorems are used for.
 
-Let's first introduce some notation to express these theorems precisely:
+Let's introduce some notation to express these theorems precisely:
 
 ![Notation to express the Preservation and Progress theorems](https://cdn.lautaroacosta.com/1/table_125.avif)
 
@@ -152,13 +152,13 @@ Progress and can be read as _"if under the empty typing context $`∅`, $`e` has
 
 ****
 
-Now it's a good time to stop and take a look at the division by zero example but now on real languages.
+Now it's a good time to stop and take another look at the division by zero, but now with real languages.
 
 ## Division by zero strikes back
 
-We'll look at two snippets in Rust and C and compare what their specifications define the behaviour to be in front of this error and what ultimately ends up happenning when we execute _implementations_ of the spec [^notice], which can deviate from it.
+We'll look at two snippets in Rust and C and compare what their specifications define the behaviour to be in front of this error and what ultimately ends up happenning when we execute _implementations_ of the spec. [^notice]
 
-[^notice]: Notice how type soundness is a property of the language and not the implementation?
+[^notice]: This happens because type soundness is a property of the language and not the implementation!
 
 ``` Rust
 fn div(a: u32, b: u32) -> u32 {
@@ -171,9 +171,9 @@ fn main() {
 }
 ```
 
-Here, we are use [`rustc`](https://doc.rust-lang.org/rustc/what-is-rustc.html). Executing the output binary results in a panic:
+Here, we are use [`rustc`](https://doc.rust-lang.org/rustc/what-is-rustc.html), and executing the output results in a panic:
 
-``` 
+``` Bash
 $ rustc -o main main.rs; ./main
 
 thread 'main' (432991) panicked at main.rs:2:5:
@@ -182,10 +182,10 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 with a full backtrace in:
 ```
 
-If we add the `RUST_BACKTRACE=1` environment variable we can see the language's built-in error handling machinery at work:
+If run it again with `RUST_BACKTRACE=1` we can see the language's built-in error handling machinery at work:
 
 {highlight=10}
-``` 
+``` Bash 
 $ rustc -o main main.rs; RUST_BACKTRACE=1 ./main
 
 thread 'main' (433803) panicked at main.rs:2:5:
@@ -202,11 +202,11 @@ stack backtrace:
    5: core::ops::function::FnOnce::call_once
 ```
 
-Rust does not yet have a formal specification. The closest thing is the [Rust Reference](https://doc.rust-lang.org/reference/), in there we can see that this behavior is [*defined by the language*](https://doc.rust-lang.org/nightly/reference/expressions/operator-expr.html?highlight=division#arithmetic-and-logical-binary-operators:~:text=%E2%80%A0%20For%20integer%20types%2C%20division%20by%20zero%20panics), it is a trapped error: division by zero does not result in undefined behavior but instead transitions the program to a specified error state where computation is stopped immediately [^alternative-api].
+Rust does not yet have a formal specification. The closest thing is the [Rust Reference](https://doc.rust-lang.org/reference/), in there we see that this behavior is [*defined by the language*](https://doc.rust-lang.org/nightly/reference/expressions/operator-expr.html?highlight=division#arithmetic-and-logical-binary-operators:~:text=%E2%80%A0%20For%20integer%20types%2C%20division%20by%20zero%20panics), it is a trapped error: division by zero does not result in undefined behavior but instead transitions the program to a specified error state where computation is stopped immediately [^alternative-api].
 
 [^alternative-api]: Recovering from a panic like this can be done by using [`catch_unwind`](https://doc.rust-lang.org/std/panic/fn.catch_unwind.html) or avoided by using more idiomatic approaches, such as [`checked_div`](https://doc.rust-lang.org/std/primitive.u32.html#method.checked_div) or encoding the [invariants](https://matklad.github.io/2023/10/06/what-is-an-invariant.html) in the function's type signature.
 
-Now on the C program, we first use GCC:
+Now with the C program, we first use GCC:
 
 ``` c
 #include <stdio.h>
@@ -221,17 +221,18 @@ int main() {
 }
 ```
 
-We do `gcc -Wall -Wextra -Wpedantic -O0 -o main main.c` and it compiles successfully, but then:
+{% We do `gcc -Wall -Wextra -Wpedantic -O0 -o main main.c` and it compiles successfully, but then: %}
 
-```
-$ ./main
+``` Bash
+$ gcc -Wall -Wextra -Wpedantic -O0 -o main main.c && ./main
+
 Floating point exception   (core dumped) ./main
 ```
 
 We can use `gdb` to learn more about what happened:
 
 {highlight="4,7,14"}
-```
+``` Bash
 $ gdb -q ./main -ex run -ex "set disassembly-flavor intel" \
      -ex disassemble -ex quit
 ...
@@ -261,12 +262,12 @@ The latest publicly available [C language specification](https://www.open-std.or
 
 This illustrates one reason why C is considered unsafe: even well-typed programs can reach runtime states that the language does not account for.
 
-Obviously, this behavior is a *design decision*, partially influenced by the time and purpose for which it was created. This allows compilers more freedom to do optimizations, which is great and makes your program faster, but it can end up changing the behavior of your program in ways you don't expect.
+This behavior is a *design decision*, arguably influenced by the time and the purpose of the language. This allows compilers more freedom to do optimizations, which is great and makes your program faster, but it can end up changing the behavior of your program in ways you don't expect.
 
 To showcase this, let's see three different implementations of C: [`GCC`](https://gcc.gnu.org/), [`Clang`](https://clang.llvm.org/) and [`Fil-C`](https://fil-c.org/):
 
 {highlight="4, 8"}
-```
+``` Bash
 $ gcc -g -O3 -o main main.c && gdb -q ./main -ex run \
 -ex "set disassembly-flavor intel" -ex disassemble -ex quit
 ...
@@ -281,7 +282,7 @@ End of assembler dump.
 Now the fault comes from our `main` function. Inspecting the assembly we see that the compiler optimized the whole program to a `ud2` instruction which generates a `#UD` (Invalid Opcode) exception. Now the program receives a `SIGILL` from the OS.
 
 {highlight="2, 11"}
-```
+``` Bash
 $ clang -O3 -o main main.c && ./main 
 151705912 
 
@@ -305,8 +306,7 @@ Fil-C[^Fil-C] is a fork of `Clang 20.1.8` that adds static and runtime memory sa
 
 [^Fil-C]: At the time of writing, it is at version 0.678. 
 
-
-```
+``` Bash
 $ ./build/bin/clang -g -O3 -o main main.c && ./main
 0
 ```
@@ -316,7 +316,7 @@ This time, the Fil-C compiler ends up rewriting our program to always return `0`
 
 ## What about dynamic languages?
 
-Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on, so it is reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
+Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on. It's reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
 
 Dynamic languages are sometimes referred to as "untyped" languages, but the truth is that it's _types all the way down baby_. Turns out, dynamic languages embrace a model of computation where multiple _classes_ of values exist for a *single recursive type*. Harper addresses this:
 
@@ -340,8 +340,7 @@ Progress now reads as "If $`d` is a closed expression, then it's either a value,
 
 In the previous model, these errors were guaranteed not to occur for well-typed programs. But, since catching those errors before evaluation requires static typing, now they have become part of the semantics of the language! This way, evaluation never becomes _stuck_.
 
-And since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation.
-
+Since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! The runtime, through _Classification_ and _Class Checking_, enforces the discipline that guarantees safe evaluation.
 
 It's useful to look at an example in the wild. This single recursive type we mentioned can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
 
@@ -351,7 +350,7 @@ Right now, it's looking like the static typing bois have won: Python has static 
 
 By now I believe we've talked enough of what type soundness is. It's relevant to say that *most languages are not completely sound*, but ones try much harder than others. That's why, when you evaluate a language, it's interesting to see if what you need is in it's sound subset.
 
-I'll now shift the focus to review properties, some more common than others, that can be _enforced_ in languages that take advantage of a nice type system, using examples.
+We'll now start to talk about more applied concepts, some more common than others, that different languages offer through the type system.
 
 ## Subtyping
 
@@ -461,15 +460,20 @@ with open("real.txt", "rb") as real:
 fake = FakeFile(b"i am a duck", "duck.txt")
 save_file(fake, "out_duck.txt")
 
-# Traceback (most recent call last):
-#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
-#  in <module>
-#     save_file(fake, "out_duck.txt")
-#   File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
-#  save_file
-#     out.write(file_like.read())
-              ^^^^^^^^^^^^^^
-# AttributeError: 'FakeFile' object has no attribute 'read'
+```
+
+``` bash
+$ uv run main.py
+
+Traceback (most recent call last):
+  File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
+ in <module>
+    save_file(fake, "out_duck.txt")
+  File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
+ save_file
+    out.write(file_like.read())
+            ^^^^^^^^^^^^^^
+AttributeError: 'FakeFile' object has no attribute 'read'
 
 ```
 
@@ -551,7 +555,6 @@ console.log(iter.get());
 //     9,  8, 106
 //   ]
 // }
-
 ``` 
 
 Since we retain the subtyping relation, we can design API's that allows us to easily use more *specialized* implementations, since all it takes is to implement `Secret`, encapsulating any specific details.
@@ -660,16 +663,15 @@ const event_store: KVStore<Event> = login_store;
 
 Trying to create a `KVStore<Event>` this way or the other way around, declaring fist a event store and then trying to build a `KVStore<Login>` by assignment, creates an error because the compiler already inferred that the variance of the type constructor is invariant:
 
-```
-// I cleaned it up a little bit:
+``` Bash
+$ deno check main.ts
 
-$> deno check main.ts
-
+# I cleaned it up a little bit:
 TS2322 [ERROR]: Type 'KVStore<Login>' is not assignable to
 type 'KVStore<Event>'.
   Types of property 'set' are incompatible.
     Type 'Event' is not assignable to type 'Login'.
-// We can see that we no longer can do what we did when it was covariant:
+# We can see that we no longer can do what we did when it was covariant:
      Type 'Event' is missing the following properties from type
      '{ username: string; ip: string; }': username, ip
 ```
@@ -872,7 +874,9 @@ fn main() {
         do_something(&rc_bank);
     });
 }
+```
 
+``` Bash
 error[E0277]: `Rc<i32>` cannot be shared between threads safely
  --> src/main.rs:7:19
   |
@@ -890,7 +894,7 @@ error[E0277]: `Rc<i32>` cannot be shared between threads safely
 
 And if we tried to move the variable to another thread instead of sharing it, we would get the error:
 
-```
+``` Bash
 error[E0277]: `Rc<i32>` cannot be sent between threads safely
  --> src/main.rs:7:19
   |
@@ -931,7 +935,7 @@ fn main() {
 
 Would in turn, give you this error message:
 
-```
+``` Bash
 error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely
   --> src/main.rs:24:17
    |
@@ -944,11 +948,10 @@ error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads sa
 25 | |             update_value(guard);
 26 | |         });
    | |_________^ `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely
-   |
    = help: within `{closure@src/main.rs:24:17: 24:19}`, the trait `Send` is not implemented for `std::sync::MutexGuard<'_, u32>`
 ```
 
- In other languages (Go or Java), the mutex and the protected data are different things, so correct usage relies on us having discipline (don't try to unlock a free mutex!)[^cliffe]. Here we can let the compiler do the work for us!
+ In other languages Go, Java, etc.), the mutex and the protected data are different things, so correct usage relies on us having discipline (don't try to unlock a free mutex!)[^cliffe]. Here we can let the compiler do the work for us!
 
 [^cliffe]: If you want to read more why they look like that, [read here](https://cliffle.com/blog/rust-mutexes/)
 
@@ -1052,7 +1055,9 @@ Error (warning 8 [partial-match]): this pattern-matching is not exhaustive.
   Here is an example of a case that is not matched: GoogleCloud
 ```
 
-Before, I didn't explain what the `option` type was because it is in fact a sum type! It is the replacement of the concept of nullability that many other languages still have.
+I can't express enough how much I can miss this features. Currently I'm writing a fair amount of Go and I wish I had this.
+
+Before, I didn't elaborate on what the `option` type was because it was in fact a sum type! It's often used as the replacement of the concept of nullability that many other languages still have:
 
 ``` OCaml
 (*
@@ -1062,17 +1067,32 @@ Before, I didn't explain what the `option` type was because it is in fact a sum 
 type 'a option =
   | None
   | Some of 'a
+
+let get_env name =
+  match Sys.getenv_opt name with
+  | Some value -> Some value
+  | None -> None
+
+let port =
+  match get_env "PORT" with
+  | Some value -> value
+  | None -> "8080"
+
+let () =
+  Printf.printf "Listening on port %s\n" port
 ```
 
-Researching about ADTs was how I found the notion of [Propositions as Types](https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf) which was really interesting to learn.
+Researching about ADTs was how I found the notion of [Propositions as Types](https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf) which was really interesting to learn:
 
-On the surface, it describes a one-to-one correspondence between each proposition in a given logic and a type in the language, arguing that for each _proof_ of a proposition, a corresponding program exists; and evaluating the program is the same as simplifying the proof. Here, sum types and product types play the role of logic OR and AND.[^caml_resource]
+On the surface, it describes a one-to-one correspondence between each proposition in a given logic and a type in the language, arguing that for each _proof_ of a proposition, a corresponding program exists. Evaluating said program would be equivalent to simplifying the proof. In this model, sum types and product types would have the roles of logic OR and AND.[^caml_resource]
 
 [^caml_resource]: [Examples in OCaml](https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence)
 
 ***
 
-This is it! There are still a lot of things I didn't cover, but I focused on those I've had experience with. That's why I don't give more examples using dynamic languages!
+This is it! There are still a lot of things I didn't cover, but I focused on those I've had experience with (that's why I don't give more examples using dynamic languages!).
 
 I'm sure there are more interesting applications of types from languages like [Haskell](https://www.haskell.org/), [Elixir](https://elixir-lang.org/), and Lisps like [Clojure](https://clojure.org/) but I haven't used them.
+
+If you want to keep learning how to use types to write efficient software I can't recommend enough to read the archive of [Ted Kaminski](https://www.tedinski.com/archive/), especially "_[The One Ring Problem](https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_"! 
 
