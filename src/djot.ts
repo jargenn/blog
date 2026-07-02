@@ -251,12 +251,20 @@ export function render(
 </picture>`;
     },
     code_block: (node, r: HTMLRenderer) => {
-      const aria_label = node.lang ? `${node.lang} code block` : "text block";
+      const lang_name = node.lang?.toLowerCase();
+      const aria_label = node.lang ? `${lang_name} code block` : "text block";
 
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
         ${
         node.lang
-          ? `<span class="language-tag" title="${node.lang}">${node.lang}</span>`
+          ? `<span class="language-tag" title="${lang_name}">
+             <svg
+            class="language-icon"
+            aria-hidden="true"
+          >
+            <use href="/assets/icons.svg#${lang_name}"></use>
+          </svg>
+          </span>`
           : ""
       }
         ${r.renderAstNodeDefault(node)}</figure>`;
