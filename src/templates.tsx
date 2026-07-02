@@ -352,7 +352,9 @@ export function PostList(
     return (
       <li class={(!title && idx === 0) ? "latest-post" : ""}>
         <h3>
-          <a class="post_title" href={post.path}>{post.title}</a>
+          <a class="post_title" href={post.path} rel="noopener">
+            {post.title}
+          </a>
         </h3>
 
         <div class="meta-row">
@@ -373,7 +375,9 @@ export function PostList(
             : ""}
         </div>
         <div class="abstract">
-          <p>{post.abstract}</p>
+          <a href={post.path} rel="noopener">
+            <p>{post.abstract}</p>
+          </a>
         </div>
       </li>
     );

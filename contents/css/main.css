@@ -820,9 +820,6 @@
     text-transform: lowercase;
   }
 
-  .abstract {
-    font-size: 0.86rem;
-  }
 
   .post-list {
     margin-left: 0;
@@ -869,6 +866,21 @@
       color: var(--accent);
       background: none;
       transition: none;
+    }
+  }
+
+  .abstract {
+    font-size: 0.86rem;
+
+    & a {
+      font-variant: normal;
+
+      &:hover {
+        color: var(--text);
+        text-decoration: none;
+        transition: none;
+      }
+
     }
   }
 
