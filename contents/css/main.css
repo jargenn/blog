@@ -835,12 +835,11 @@
     >li.latest-post {
       position: relative;
       overflow: visible;
-      /* padding: 1rem 1rem 3rem; */
       border-color: var(--accent);
 
 
       h3 {
-        font-size: 1.9rem;
+        font-size: 1.6rem;
         font-weight: bold;
       }
 
