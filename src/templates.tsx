@@ -181,7 +181,7 @@ function Base(
       <body>
         <header>
           <nav>
-            <a class="title" href="/">Home</a>
+            <a class="title" href="/">Lautaro Acosta Quintana</a>
             <a href="/about.html">About</a>
             <a href="/blogroll.html">Blogroll</a>
             <a id="home-page-top" href="#home-page-top"></a>
@@ -318,7 +318,10 @@ export function BlogRoll(
       bundled_js={js}
     >
       <div class="normal-layout">
-        <p>Blogs I like reading and have posted in the last 2 years.</p>
+        <p>
+          My favourite tech blogs. For each one I've linked the latest post in
+          the span of two years:
+        </p>
         <ul class="blogroll">
           {list_items}
         </ul>
@@ -358,6 +361,9 @@ export function PostList(
           <span class="reading-time">
             {post.reading_time}
           </span>
+          <div class="tags">
+            {tags}
+          </div>
           {post.stage === "draft"
             ? (
               <span class={post.stage}>
@@ -368,9 +374,6 @@ export function PostList(
         </div>
         <div class="abstract">
           <p>{post.abstract}</p>
-        </div>
-        <div class="tags">
-          {tags}
         </div>
       </li>
     );

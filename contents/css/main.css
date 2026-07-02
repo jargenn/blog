@@ -423,8 +423,11 @@
       }
 
       & .title {
-        font-size: 1em;
+        font-size: 1.0em;
         margin-right: auto;
+        min-width: 0;
+        overflow-wrap: break-word;
+        white-space: normal;
       }
     }
   }
@@ -792,6 +795,7 @@
   }
 
   .tags {
+    color: var(--text);
     display: flex;
     margin-left: auto;
     gap: 6px;
