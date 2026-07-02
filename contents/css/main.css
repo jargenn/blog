@@ -14,7 +14,7 @@
     --muted: #dbdbd6;
     --text: #3b4252;
     --accent: #75AADB;
-    --code-tint: color-mix(in srgb, var(--accent) 10%, transparent);
+    --code-tint: color-mix(in srgb, var(--accent) 15%, transparent);
     --figure-width: 69ch;
     --figure-block-margin: 1.8em;
 

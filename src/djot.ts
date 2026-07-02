@@ -252,12 +252,12 @@ export function render(
     },
     code_block: (node, r: HTMLRenderer) => {
       const lang_name = node.lang?.toLowerCase();
-      const aria_label = node.lang ? `${lang_name} code block` : "text block";
+      const aria_label = node.lang ? `${node.lang} code block` : "text block";
 
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
         ${
         node.lang
-          ? `<span class="language-tag" title="${lang_name}">
+          ? `<span class="language-tag" title="${node.lang}">
              <svg
             class="language-icon"
             aria-hidden="true"
