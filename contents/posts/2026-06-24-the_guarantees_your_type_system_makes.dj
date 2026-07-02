@@ -3,7 +3,7 @@
  "title":"The Guarantees Your Type System Makes",
  "stage": "draft",
  "tags":["Rust", "OCaml", "TypeScript", "Type systems"],
-"abstract": "What does it mean for a language to be type safe? We glaze over formal definitions surrounding type safety, then use them as a launchpad to explore features across languages that change and empower the way we write software: subtyping, variance and algebraic data types. A practical, code-heavy tour of what type systems can offer you."
+"abstract": "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, subtyping, variance, algebraic data types and others."
 } 
 ---
 
@@ -69,7 +69,7 @@ Which is essentially the same idea seen from another perspective of the well-beh
 Let's play with some examples to illustrate what we have introduced so far. Imagine this function defined in a fictitious language which has the property of being sound, meaning that well-typed programs are well-behaved at runtime.
 
 
-``` Rust
+``` 
 fn add(a: Int, b: Int) Int {
     return a + b;
 }
@@ -85,7 +85,7 @@ The expression `add(10, 314)` _is_ sound because `add` requires its arguments to
 
 By comparison, `add(10, "Some")` is ill-typed because `"Some"` does not have type `Int` nor it can be coerced to it, so it doesn't satisfy the "context". If we allowed this program to be executed it would fail to uphold the guarantees of the language and will get stuck in some unknown state. Another example would be:
 
-``` Rust
+``` 
 fn add(a: Int, b: Str) Int {
     return a + b;
 }
@@ -100,7 +100,7 @@ The program may or may not be well-typed depending on the statics of the languag
 
 Let's look at another example, think that the language is no longer sound:
 
-``` Rust
+``` 
 fn div(a: Int, b: Int) : Int {
     return a / b
 }
