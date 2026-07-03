@@ -368,7 +368,7 @@ To understand subtyping is useful to think in matters of _behaviours_. We'll use
 
 To work some quick examples, in languages with nominal typing like Java, one often needs to declare the relation explicitly:
 
-``` java
+``` Java
 class Spren {
     void fly() {}
 }
@@ -433,7 +433,7 @@ You can check more examples, even where TypeScript's features are unsound, [here
 
 This may look the same as duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to call the required method function at runtime, and will fail and burn if it isn't there: [^static-duck]
 
-```python
+``` Python
 from io import BytesIO
 
 class FakeFile:
@@ -493,72 +493,57 @@ is said to be *invariant* in an argument if subtyping for the constructed type i
 
 To make any sense of that, let's define some generic types:
 
-``` TypeScript
-
+``` Typescript
 // TypeScript actually tries to automatically infer the variance given the
 // position where the type parameter T appears in the signatures.
 //
 // The `out` keyword exists to explicitly tell the compiler that the relation
 // is a _covariance_, so this:
-type Iterable<T> = {
+type Secret<T> = {
   //  would be equivalent to:
-  // type Iterable<out T>
-  get: () => T;
+  // type Secret<out T>
+  reveal: () => T;
+  toString: () => string;
 };
 
-type Secret = {
-  name: string;
+function makeSecret<T>(value: T): Secret<T> {
+  return {
+    reveal: () => value,
+    toString: () => "[REDACTED]",
+    [Symbol.for("nodejs.util.inspect.custom")]: () => "[REDACTED]",
+  };
+}
+
+type Credential = {
+  owner: string;
 };
 
-type SecretCode = Secret & {
-  inner: number[];
+type AccessToken = Credential & {
+  scopes: string[];
 };
 
-const secret: SecretCode = {
-  name: "Tale of Jiraiya the Gallant",
-  inner: [9, 31, 8, 106, 7, 207, 15],
-};
-
-const shuffling_iterator: Iterable<SecretCode> = {
-  get() {
-    const list = secret.inner;
-    let cIdx = list.length;
-    let rIdx;
-
-    while (cIdx != 0) {
-      rIdx = Math.floor(Math.random() * cIdx);
-      cIdx -= 1;
-
-      [list[cIdx], list[rIdx]] = [list[rIdx], list[cIdx]];
-    }
-
-    secret.inner = list;
-
-    return secret;
-  },
-};
+const token: Secret<AccessToken> = makeSecret({
+  owner: "service-account",
+  scopes: ["read", "write"],
+});
 
 // Here, we see the constructor is _covariant_ because
 // the subtyping "direction" remains the same:
 //
-// SecretCode <: Secret
-//             |
-//             V
-// Iterable<SecretCode> <: Iterable<Secret>
-const iter: Iterable<Secret> = shuffling_iterator;
+// AccessToken <: Credential
+//              |
+//              V
+// Secret<AccessToken> <: Secret<Credential>
+const credential: Secret<Credential> = token;
 
-console.log(iter.get());
-// {
-//   name: "Tale of Jiraiya the Gallant",
-//   inner: [
-//     7, 15, 207, 31,
-//     9,  8, 106
-//   ]
-// }
-``` 
+console.log(credential);
+// [REDACTED]
 
-Since we retain the subtyping relation, we can design API's that allows us to easily use more *specialized* implementations, since all it takes is to implement `Secret`, encapsulating any specific details.
+console.log(credential.reveal());
+// { owner: "service-account", scopes: ["read", "write"] }
+```
 
+Since we preserve the subtyping relation, any code expecting a `Secret<Credential>` can be handed a `Secret<T>`, as long as `T` is a subtype of `Credential`. The caller only needs `reveal()`; the redaction logic, and the shape of the underlying value, are encapsulated inside `Secret`.
 With contravariance, the idea is that it enables us to design APIs that are more *general* in the values they can operate on:
 
 ``` TypeScript

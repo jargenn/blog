@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-07-01T00:41:50.307Z",
+  "createdAt": "2026-07-03T02:10:23.201Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -17,9 +17,9 @@
       "date": "2024-10-25T00:00:00.000Z"
     },
     {
-      "title": "I'm not a cat",
-      "url": "https://www.scattered-thoughts.net/writing/im-not-a-cat/",
-      "date": "2026-06-24T00:00:00.000Z"
+      "title": "Artificial adventures",
+      "url": "https://www.scattered-thoughts.net/writing/artificial-adventures/",
+      "date": "2026-07-01T00:00:00.000Z"
     },
     {
       "title": "Steve Ballmer was an underrated CEO",
@@ -76,9 +76,9 @@
     },
     {
       "author": "Jack Vanlightly",
-      "title": "Benchmarking Hardwood 1.0 on a Threadripper 9980X",
-      "url": "https://jack-vanlightly.com/blog/2026/6/30/benchmarking-hardwood-10-on-a-threadripper-9980x",
-      "date": "2026-06-30T13:10:15.000Z"
+      "title": "1BRC on a Threadripper 9980X",
+      "url": "https://jack-vanlightly.com/blog/2026/7/1/1brc-on-a-threadripper-9980x",
+      "date": "2026-07-01T14:20:26.000Z"
     },
     {
       "author": "Julian Hyde",
@@ -108,9 +108,9 @@
     },
     {
       "author": "Alperen Keles",
-      "title": "Representation-Free Editing",
-      "url": "https://alperenkeles.com/posts/representation-free-editing/",
-      "date": "2026-06-16T00:00:00.000Z"
+      "title": "Next Chapter!",
+      "url": "https://alperenkeles.com/posts/next-chapter/",
+      "date": "2026-07-01T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
