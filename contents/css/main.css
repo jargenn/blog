@@ -3,6 +3,7 @@
 @layer base {
   :root {
     --font-symbol: "Iosevka";
+
     --regular-font: "et-book", Georgia, serif;
     --line-height: 1.8;
     --border-radius: 0.4rem;
