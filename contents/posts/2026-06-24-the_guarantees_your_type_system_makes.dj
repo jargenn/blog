@@ -544,6 +544,7 @@ console.log(credential.reveal());
 ```
 
 Since we preserve the subtyping relation, any code expecting a `Secret<Credential>` can be handed a `Secret<T>`, as long as `T` is a subtype of `Credential`. The caller only needs `reveal()`; the redaction logic, and the shape of the underlying value, are encapsulated inside `Secret`.
+
 With contravariance, the idea is that it enables us to design APIs that are more *general* in the values they can operate on:
 
 ``` TypeScript
