@@ -9,11 +9,11 @@
 
 # The Guarantees Your Type System Makes
 
-I wrote about concepts I've learned from programming languages up until now, ones that I think of every time.
+I wrote about different concepts I've learned from programming languages up until now, and really influence the way I work.
 
 My aim is to write it in a way approachable to anyone with some experience writing software, with no necessary background in PL theory but is interested in programming languages and likes to read some code.
 
-We'll start by glazing over some formal definitions surrounding _type safety_, and then showcase really interesting features that change and empower the way one writes software.
+We'll start by going over some formal definitions surrounding _type safety_, and then showcase really interesting features that change and empower the way one writes software.
 
 By the end, it'll work as a quite fun (for me at least) overview of what type systems in different languages can offer you.
 
