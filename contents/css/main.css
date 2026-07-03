@@ -3,7 +3,7 @@
 @layer base {
   :root {
     --font-symbol: "Iosevka";
-
+    --title-font: "Cabin", "et-book", Georgia, serif;
     --regular-font: "et-book", Georgia, serif;
     --line-height: 1.8;
     --border-radius: 0.4rem;
@@ -95,6 +95,10 @@
 
     a[role="doc-backlink"]::after {
       content: none;
+    }
+
+    :where(h1, h2, time, h3) {
+      font-family: var(--title-font);
     }
 
     :where(h1, h2, h3) a::after {
@@ -262,6 +266,7 @@
 
       &.with-caption {
         border: 1px solid var(--muted);
+        font-family: var(--title-font);
         border-radius: 6.9px;
         box-sizing: border-box;
         padding: .8em;
@@ -335,11 +340,6 @@
 
     :where(sup, sub) {
       line-height: 0;
-    }
-
-    :where(time, h1, h2, h3, .reading-time) {
-      font-family: var(--regular-font);
-      font-weight: 400;
     }
 
     time,
@@ -511,7 +511,7 @@
       clear: right;
       margin-right: -60%;
       width: 50%;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       line-height: 1.3;
       vertical-align: baseline;
       position: relative;
@@ -563,7 +563,7 @@
   aside.table-of-contents {
     top: 40px;
     font-size: 0.80rem;
-    font-family: inherit;
+    font-family: var(--title-font);
     grid-area: toc;
     position: sticky;
     width: 100%;
@@ -685,6 +685,10 @@
     font-variant: small-caps;
   }
 
+  header a[href^="/"] {
+    font-variant: normal;
+  }
+
   a.statement {
     font-variant: normal;
   }
@@ -774,10 +778,11 @@
 
   .meta-row {
     font-size: 0.8rem;
+    font-family: var(--title-font);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 2px;
     margin-top: 0.15rem;
   }
 
@@ -825,7 +830,8 @@
   .post-list {
     margin-left: 0;
     list-style: none;
-    max-width: 65ch;
+    max-width: 55ch;
+
 
     >li {
       padding: 1rem;

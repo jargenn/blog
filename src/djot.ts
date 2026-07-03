@@ -75,7 +75,7 @@ export function render(
           : "";
 
         const reading_time_html = render_data.reading_time_html
-          ? `<span class="word-count">
+          ? `<span class="reading-time">
            ${render_data.reading_time_html} 
          </span>`
           : "";

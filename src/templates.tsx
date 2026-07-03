@@ -25,24 +25,29 @@ function Fonts() {
 }
 
 @font-face {
+  font-family: 'Cabin';
+  src: url('/css/Cabin-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cabin";
+  src: url("/css/Cabin-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Cabin";
+  src: url("/css/Cabin-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Ornaments';
   src: url('/css/ornaments.woff2') format('woff2');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('/css/Inter-Light.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/css/Montserrat-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
   font-display: swap;
 }
 
@@ -302,7 +307,8 @@ export function BlogRoll(
           <a href={post.url}>{post.title}</a>
         </h2>
         <div class="meta-row">
-          <Time date={post.date} /> {domain}
+          <Time date={post.date} />
+          <p>- {domain}</p>
         </div>
       </li>
     );
