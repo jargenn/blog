@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-07-03T17:17:54.795Z",
+  "createdAt": "2026-07-08T00:07:36.951Z",
   "entries": [
     {
       "title": "A new era for software testing",
@@ -76,9 +76,9 @@
     },
     {
       "author": "Jack Vanlightly",
-      "title": "1BRC on a Threadripper 9980X",
-      "url": "https://jack-vanlightly.com/blog/2026/7/1/1brc-on-a-threadripper-9980x",
-      "date": "2026-07-01T14:20:26.000Z"
+      "title": "Apache Kafka performance #1 - linger.ms",
+      "url": "https://jack-vanlightly.com/blog/2026/7/7/apache-kafka-performance-1-lingerms",
+      "date": "2026-07-07T12:50:47.000Z"
     },
     {
       "author": "Julian Hyde",
@@ -102,9 +102,9 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
-      "title": "The best code is the one you shift+delete",
-      "url": "http://ayende.com/204067-a/the-best-code-is-the-one-you-shift-delete?Key=8b5a5104-ec4c-48b9-9a86-4d2a1715e0d0",
-      "date": "2026-07-03T12:00:00.000Z"
+      "title": "Multi-Agents in RavenDB",
+      "url": "http://ayende.com/204068-a/multi-agents-in-ravendb?Key=161fe52a-a127-4955-b8aa-0d1d75f7b5b1",
+      "date": "2026-07-07T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -125,9 +125,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-26: Gelato, geospatial, and players of games",
-      "url": "https://anil.recoil.org/notes/2026w26",
-      "date": "2026-06-28T00:00:00.000Z"
+      "title": ".plan-26-27: Somewhere over the icecap",
+      "url": "https://anil.recoil.org/notes/2026w27",
+      "date": "2026-07-05T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -142,9 +142,9 @@
       "date": "2026-06-29T00:00:00.000Z"
     },
     {
-      "title": "Disaggregated Inference Explained for Enterprise AI",
-      "url": "https://sambanova.ai/blog/understanding-disaggregated-inference?from_theconsensus=1",
-      "date": "2026-07-03T04:00:00.000Z"
+      "title": "How We Made mirrord Run Natively on Windows",
+      "url": "https://metalbear.com/blog/mirrord-for-windows/?from_theconsensus=1",
+      "date": "2026-07-07T04:00:00.000Z"
     }
   ]
 }
