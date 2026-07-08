@@ -63,7 +63,6 @@ async function main() {
     }
 
     case "build":
-      console.log(opts);
       await Blog.build(
         opts.clean !== false,
         opts.blogroll === true,
