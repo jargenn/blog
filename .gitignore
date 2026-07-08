@@ -6,3 +6,5 @@
 .direnv/
 .envrc
 *.typ
+/.opam
+/_build
