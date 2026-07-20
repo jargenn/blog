@@ -27,3 +27,7 @@ https://anil.recoil.org/news.xml
 https://words.filippo.io/rss/
 https://www.iankduncan.com/rss.xml
 https://theconsensus.dev/curation.xml
+https://jepsen.io/blog.rss
+https://corrode.dev/rss.xml
+https://www.seangoedecke.com/rss.xml
+https://hamvocke.com/feed-tech.xml

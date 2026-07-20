@@ -14,6 +14,7 @@ export type Stage = (typeof stages)[number];
 
 export type Archetype = {
   title: string;
+  date: Date;
   stage: Stage;
   abstract: string;
   tags: Array<string>;
@@ -76,7 +77,10 @@ export const Archetype = {
       );
     }
 
-    const arch = parsed;
+    const arch = {
+      ...parsed,
+      date: new Date(`${parsed.date}T00:00:00Z`),
+    };
 
     if (!arch.title.trim()) {
       throw new Error(
@@ -129,7 +133,6 @@ export type Post = {
   month: number;
   day: number;
   reading_time: string;
-  toc_html: string;
   date_str: string;
   iso_date: Date;
   stage: Stage;
@@ -213,12 +216,10 @@ export function toc_to_html(toc: Toc): string {
     return `  <li>${link}${nested}</li>`;
   }
 
-  return `<a href="#home-page-top" class="toc-entry">
-              <h2 class="toc-header">
-                  Contents
-              </h2>
-            </a>
-            <menu>${render_entries(toc)}</menu>`;
+  return `<details class="post-toc">
+  <summary>Contents</summary>
+  <menu>${render_entries(toc)}</menu>
+</details>`;
 }
 
 export function reading_time_str(doc: Doc): string {

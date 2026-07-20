@@ -10,6 +10,7 @@ import {
   PostList,
 } from "./templates.tsx";
 import { to_lower_snake_case, to_title_case } from "./utils.ts";
+import { HtmlString } from "./HtmlString.ts";
 import { ServeBlog } from "./http_server.ts";
 import { Blogroll } from "./blogroll.ts";
 import { copy_path, walk_dir, write_file } from "./Writer.ts";
@@ -44,22 +45,20 @@ class Ctx {
 }
 
 export const Blog = {
-  async draft(title: string, published: boolean): Promise<void> {
+  async draft(title: string): Promise<void> {
     const title_case = to_title_case(title);
-
-    const date = new Date().toISOString().split("T")[0];
     const slug = to_lower_snake_case(title_case);
-    const path = `./contents/posts/${date}-${slug}.dj`;
-
-    console.log(`drafted post ${path}`);
+    const path = `./contents/posts/${slug}.dj`;
 
     const arch = JSON.stringify({
       title: title_case,
-      published: published,
+      stage: "draft",
       tags: [""],
+      date: new Date().toISOString().slice(0, 10),
       abstract: "placeholder",
     });
 
+    console.log(`drafted post ${path}`);
     await Deno.writeTextFile(path, `---\n ${arch} \n---\n # ${title_case}\n`);
   },
 
@@ -81,19 +80,15 @@ export const Blog = {
     }
 
     const asset_map = new Map<string, string>();
-
     const paths = [
       "css/*",
       "assets/*",
     ];
-
     for (const path of paths) {
       await copy_path(path, asset_map);
     }
-
     const css_bundle = asset("main.css", asset_map);
     const js_bundle = asset("scripts.js", asset_map);
-
     if (blogroll) {
       const posts = await Blogroll.create();
       await write_file(
@@ -143,9 +138,21 @@ export const Blog = {
     }
 
     await write_file("./dist/feed.xml", feed_xml(visible_posts));
+    const about_html = await page_html("about");
     await write_file(
       "dist/index.html",
-      html_ugly(PostList({ posts: visible_posts }, css_bundle, js_bundle)),
+      html_ugly(Page("", about_html, css_bundle, js_bundle)),
+    );
+
+    await write_file(
+      "dist/posts.html",
+      html_ugly(
+        PostList(
+          { posts: visible_posts, title: "Posts", latest: true },
+          css_bundle,
+          js_bundle,
+        ),
+      ),
     );
 
     const pages = [
@@ -155,13 +162,11 @@ export const Blog = {
       "style_guidelines",
     ];
     for (const page of pages) {
-      const text = await Deno.readTextFile(`contents/${page}.dj`);
-      const ast = djot.parse(text);
-      const html = djot.render(ast, {});
+      const content = page === "about" ? about_html : await page_html(page);
 
       await write_file(
         `dist/${page}.html`,
-        html_ugly(Page(page, html, css_bundle, js_bundle)),
+        html_ugly(Page(page, content, css_bundle, js_bundle)),
       );
     }
 
@@ -210,6 +215,11 @@ export const Blog = {
   },
 };
 
+async function page_html(page: string): Promise<HtmlString> {
+  const text = await Deno.readTextFile(`contents/${page}.dj`);
+  return djot.render(djot.parse(text), {});
+}
+
 async function collect_posts(ctx: Ctx): Promise<Post[]> {
   const start = performance.now();
   const posts: Post[] = [];
@@ -218,13 +228,6 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
   for await (const path of walk_dir("./contents/posts/")) {
     if (!path.endsWith(".dj")) continue;
-
-    const [, y, m, d, slug] = path.match(
-      /^.*(\d\d\d\d)-(\d\d)-(\d\d)-(.*)\.dj$/,
-    )!;
-    const [year, month, day] = [y, m, d].map((it) => parseInt(it, 10));
-    const iso_date = new Date(Date.UTC(year, month - 1, day));
-    const date_str = `${d}-${m}-${y}`;
 
     let t = performance.now();
     const raw = await Deno.readFile(path);
@@ -244,19 +247,31 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const toc = build_toc(ast);
     const toc_html = toc_to_html(toc);
 
+    const tags_html = arch.tags
+      .map((tag) => {
+        const slug = tag.toLowerCase().trim().replace(/\s+/g, "-");
+        return `<a class="tag" href="/t/${slug}.html">${tag}</a>`;
+      })
+      .join("");
+
     t = performance.now();
     const render_ctx: djot.RenderData = {
-      date: iso_date,
+      date: arch.date,
       summary: undefined,
       title: undefined,
       sidenotes: [],
       reading_time_html,
+      tags_html,
       stage: arch.stage,
     };
 
     render_ctx.faviconMap = djot.buildFaviconMap(ast);
 
     const html = djot.render(ast, render_ctx);
+
+    const content = toc_html !== ""
+      ? new HtmlString(html.value.replace(/<section/, `${toc_html}<section`))
+      : html;
 
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
@@ -270,14 +285,18 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       `\x1b[90m${time} \x1b[34m├─ \x1b[90m${path} (${ms} ms)`,
     );
 
-    const src = `/contents/posts/${y}-${m}-${d}-${slug}.dj`;
+    const { year, month, day } = dateParts(arch.date);
+    const iso_date = new Date(Date.UTC(year, month - 1, day));
+    const date_str = `${day}-${month}-${year}`;
+
+    const slug = to_lower_snake_case(arch.title);
+    const src = `/contents/posts/${slug}.dj`;
 
     posts.push({
       year,
       month,
-      reading_time: reading_time_html,
-      toc_html,
       day,
+      reading_time: reading_time_html,
       slug,
       date_str,
       iso_date,
@@ -285,8 +304,8 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       stage: arch.stage,
       tags: arch.tags,
       abstract: arch.abstract,
-      content: html,
-      path: `/${y}/${m}/${d}/${slug}.html`,
+      content,
+      path: `/posts/${slug}.html`,
       src,
     });
   }
@@ -299,4 +318,12 @@ function asset(path: string, asset_map: Map<string, string>): string {
   const built_path = "/" + (asset_map.get(path) ?? path);
   console.log(built_path);
   return built_path;
+}
+
+function dateParts(date: Date) {
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+  };
 }

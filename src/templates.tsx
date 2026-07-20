@@ -186,8 +186,19 @@ function Base(
       <body>
         <header>
           <nav>
-            <a class="title" href="/">Lautaro Acosta Quintana</a>
+            <a class="title" href="/">
+              <div class="logo">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <circle cx="16" cy="11" r="5" fill="currentColor" />
+                  <path d="M4 28a12 12 0 0 1 24 0z" fill="currentColor" />
+                </svg>
+              </div>
+              <span class="site-name">
+                Lautaro<br />Acosta Quintana
+              </span>
+            </a>
             <a href="/about.html">About</a>
+            <a href="/posts.html">Posts</a>
             <a href="/blogroll.html">Blogroll</a>
             <a id="home-page-top" href="#home-page-top"></a>
           </nav>
@@ -211,7 +222,7 @@ function Base(
                 )
               </p>
             )}
-          <p>
+          <p class="footer-links">
             <a href="/feed.xml">
               <FooterIcon name="rss" />
               RSS
@@ -337,7 +348,11 @@ export function BlogRoll(
 }
 
 export function PostList(
-  { posts, title }: { posts: PostData[]; title?: string },
+  { posts, title, latest }: {
+    posts: PostData[];
+    title?: string;
+    latest?: boolean;
+  },
   css: string,
   js: string,
 ) {
@@ -356,7 +371,7 @@ export function PostList(
     });
 
     return (
-      <li class={(!title && idx === 0) ? "latest-post" : ""}>
+      <li class={(latest && idx === 0) ? "latest-post" : ""}>
         <h3>
           <a class="post_title" href={post.path} rel="noopener">
             {post.title}
@@ -372,13 +387,6 @@ export function PostList(
           <div class="tags">
             {tags}
           </div>
-          {post.stage === "draft"
-            ? (
-              <span class={post.stage}>
-                <span>{post.stage}</span>
-              </span>
-            )
-            : ""}
         </div>
         <div class="abstract">
           <a href={post.path} rel="noopener">
@@ -471,19 +479,6 @@ const draft_wall = () => {
 };
 
 export function Post({ post }: { post: PostData }, css: string, js: string) {
-  const tags = post.tags.map((tag) => {
-    const tag_slug = tag
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-");
-
-    return (
-      <a class="tag" href={`/t/${tag_slug}.html`}>
-        {tag}
-      </a>
-    );
-  });
-
   return (
     <Base
       src={post.src}
@@ -495,13 +490,6 @@ export function Post({ post }: { post: PostData }, css: string, js: string) {
       bundled_js={js}
     >
       <div class="post-layout">
-        <aside class="table-of-contents">
-          <Raw unsafe={post.toc_html} />
-          <div class="header-tags">
-            <h2>Tags</h2>
-            {tags}
-          </div>
-        </aside>
         <article>
           <Raw unsafe={post.content.value} />
           {post.stage === "draft" ? draft_wall() : ""}

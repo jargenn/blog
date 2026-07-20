@@ -1,15 +1,15 @@
 {
-  "createdAt": "2026-07-08T00:07:36.951Z",
+  "createdAt": "2026-09-01T19:51:37.691Z",
   "entries": [
     {
-      "title": "A new era for software testing",
-      "url": "http://antirez.com/news/168",
-      "date": "2026-06-07T09:46:06.000Z"
+      "title": "The real AI risk is inside the labs",
+      "url": "http://antirez.com/news/172",
+      "date": "2026-07-28T09:00:11.000Z"
     },
     {
-      "title": "Moving away from Tailwind, and learning to structure my CSS",
-      "url": "https://jvns.ca/blog/2026/05/15/moving-away-from-tailwind--and-learning-to-structure-my-css-/",
-      "date": "2026-05-15T00:00:00.000Z"
+      "title": "Some more things about Django I've been enjoying",
+      "url": "https://jvns.ca/blog/2026/07/21/more-nice-django-things/",
+      "date": "2026-07-21T00:00:00.000Z"
     },
     {
       "title": "Generators with UnpinCell",
@@ -22,9 +22,9 @@
       "date": "2026-07-01T00:00:00.000Z"
     },
     {
-      "title": "Steve Ballmer was an underrated CEO",
-      "url": "https://danluu.com/ballmer/",
-      "date": "2024-10-28T00:00:00.000Z"
+      "title": "There's no reason for software to be slow anymore",
+      "url": "https://danluu.com/perf-opt/",
+      "date": "2026-08-21T00:00:00.000Z"
     },
     {
       "title": "iddqd, or the hardest kind of unsafe Rust",
@@ -37,25 +37,25 @@
       "date": "2025-12-31T22:00:00.000Z"
     },
     {
-      "title": "Periodic Spaces",
-      "url": "https://ianthehenry.com/posts/periodic-spaces/",
-      "date": "2025-11-30T00:00:00.000Z"
+      "title": "Keyboardion",
+      "url": "https://ianthehenry.com/posts/keyboardion/",
+      "date": "2026-07-27T00:00:00.000Z"
     },
     {
-      "title": "Modular Explicits:",
-      "url": "https://okmij.org/ftp/ML/higher-kind-poly.html#mod-exp",
-      "date": "2026-07-03T00:01:00.000Z"
+      "title": "Summaries and impressions of papers and talks,",
+      "url": "https://okmij.org/ftp/Computation/Impressions/index.html",
+      "date": "2026-08-06T00:01:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "CSS: Unavoidable Bad Parts",
-      "url": "https://matklad.github.io/2026/06/04/css-unavoidable-bad-parts.html",
-      "date": "2026-06-04T00:00:00.000Z"
+      "title": "Cancelation Terminology",
+      "url": "https://matklad.github.io/2026/08/31/cancelation-terminology.html",
+      "date": "2026-08-31T00:00:00.000Z"
     },
     {
-      "title": "The feature in OxCaml that more languages should steal",
-      "url": "http://notes.eatonphil.com/2026-06-27-the-feature-in-oxcaml-more-languages-should-steal.html",
-      "date": "2026-06-27T00:00:00.000Z"
+      "title": "Another look at SQLite's WAL-Reset bug",
+      "url": "http://notes.eatonphil.com/2026-08-23-another-look-at-sqlite-wal-reset.html",
+      "date": "2026-08-23T00:00:00.000Z"
     },
     {
       "title": "Concurrent, atomic MSI hash tables",
@@ -70,21 +70,21 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Meet Alice. Alice is impatient.",
-      "url": "http://brooker.co.za/blog/2026/06/19/waiting.html",
-      "date": "2026-06-19T00:00:00.000Z"
+      "title": "Lorenz and Little: How Much Does Your Tail Cost?",
+      "url": "http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html",
+      "date": "2026-07-29T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
-      "title": "Apache Kafka performance #1 - linger.ms",
-      "url": "https://jack-vanlightly.com/blog/2026/7/7/apache-kafka-performance-1-lingerms",
-      "date": "2026-07-07T12:50:47.000Z"
+      "title": "The AtomicLog + LogDrive: Strong vs weak sealing",
+      "url": "https://jack-vanlightly.com/blog/2026/8/28/the-atomiclog-logdrive-strong-vs-weak-sealing",
+      "date": "2026-08-28T12:39:35.000Z"
     },
     {
       "author": "Julian Hyde",
-      "title": "Why can’t SQL average date values?",
-      "url": "http://blog.hydromatic.net/2026/06/08/avg-date.html",
-      "date": "2026-06-08T20:00:00.000Z"
+      "title": "Morel on Go, and why platforms shouldn’t matter",
+      "url": "http://blog.hydromatic.net/2026/08/01/morel-on-go.html",
+      "date": "2026-08-01T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -102,49 +102,66 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
-      "title": "Multi-Agents in RavenDB",
-      "url": "http://ayende.com/204068-a/multi-agents-in-ravendb?Key=161fe52a-a127-4955-b8aa-0d1d75f7b5b1",
-      "date": "2026-07-07T12:00:00.000Z"
+      "title": "Database research, frontier AI, and idiot savants, oh my!",
+      "url": "http://ayende.com/204131-a/database-research-frontier-ai-and-idiot-savants-oh-my?Key=53bb569b-cf7f-4df2-8679-47bb246b102e",
+      "date": "2026-08-21T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
-      "title": "Next Chapter!",
-      "url": "https://alperenkeles.com/posts/next-chapter/",
-      "date": "2026-07-01T00:00:00.000Z"
+      "title": "Source of truth is all you need",
+      "url": "https://alperenkeles.com/posts/source-of-truth/",
+      "date": "2026-08-10T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
-      "title": "O(x)Caml in Space",
-      "url": "https://gazagnaire.org/blog/2026-05-14-borealis.html",
-      "date": "2026-05-14T00:00:00.000Z"
-    },
-    {
-      "title": "LLM time",
-      "url": "https://graydon2.dreamwidth.org/322732.html",
-      "date": "2026-03-14T20:59:55.000Z"
+      "title": "Reusing Buffers in Multicore OCaml",
+      "url": "https://gazagnaire.org/blog/2026-07-24-domain-safe-codecs.html",
+      "date": "2026-07-24T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-27: Somewhere over the icecap",
-      "url": "https://anil.recoil.org/notes/2026w27",
-      "date": "2026-07-05T00:00:00.000Z"
+      "title": "Security scanning my own code with Scrutineer and local coding models",
+      "url": "https://anil.recoil.org/notes/scrutineer-local-llm",
+      "date": "2026-08-31T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
-      "title": "Vulnerability Reports Are Not Special Anymore",
-      "url": "https://words.filippo.io/vuln-reports/",
-      "date": "2026-06-23T13:00:00.000Z"
+      "title": "Production ML-DSA Verification in 350 Lines of Python",
+      "url": "https://words.filippo.io/mldsa-py/",
+      "date": "2026-07-26T11:45:08.000Z"
     },
     {
       "author": "Ian Duncan",
-      "title": "Deconstruct the Monolith: Composable App Bootstrapping with Fractal Layer",
-      "url": "https://iankduncan.com/engineering/2026-06-29-deconstruct-the-monolith-fractal-layer/",
-      "date": "2026-06-29T00:00:00.000Z"
+      "title": "Getting Freaky in the Age of AI",
+      "url": "https://iankduncan.com/engineering/2026-08-07-getting-freaky-in-the-age-of-ai/",
+      "date": "2026-08-07T00:00:00.000Z"
     },
     {
-      "title": "How We Made mirrord Run Natively on Windows",
-      "url": "https://metalbear.com/blog/mirrord-for-windows/?from_theconsensus=1",
-      "date": "2026-07-07T04:00:00.000Z"
+      "title": "Building-level catastrophe risk scoring",
+      "url": "https://wherobots.com/blog/how-to-score-every-building-in-a-state-for-catastrophe-risk?utm_source=theconsensus.dev&utm_medium=referral",
+      "date": "2026-09-01T04:00:00.000Z"
+    },
+    {
+      "author": "Jepsen",
+      "title": "Bugbash 2026 - Paranormal Forms",
+      "url": "https://jepsen.io/blog/2026-03-26-bugbash",
+      "date": "2026-03-26T00:00:00.000Z"
+    },
+    {
+      "author": "Matthias Endler",
+      "title": "JetBrains",
+      "url": "https://corrode.dev/podcast/s06e09-jetbrains/",
+      "date": "2026-07-30T00:00:00.000Z"
+    },
+    {
+      "title": "You have to beat the models at something",
+      "url": "https://seangoedecke.com/you-have-to-beat-the-models-at-something/",
+      "date": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "title": "Find Git Commits by Commit Message Text",
+      "url": "https://hamvocke.com/blog/git-revisions-by-text/",
+      "date": "2026-08-22T00:00:00.000Z"
     }
   ]
 }

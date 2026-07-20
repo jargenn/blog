@@ -1,6 +1,0 @@
-(library
- (name rook)
- (libraries core core_unix cmarkit tyxml cascade)
- (modules blog lexer parser)
- (preprocess
-  (pps ppx_jane)))

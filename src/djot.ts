@@ -37,6 +37,7 @@ export type RenderData = {
   faviconMap?: Map<string, Map<string, string>>;
   sidenotes?: string[];
   reading_time_html?: string;
+  tags_html?: string;
   stage?: Stage;
 };
 
@@ -80,14 +81,23 @@ export function render(
          </span>`
           : "";
 
+        const tags_html = render_data.tags_html
+          ? `<div class="tags">${render_data.tags_html}</div>`
+          : "";
+
         if (reading_time_html && date_html) {
           return `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
-      <div class="meta-row">${date_html} · ${reading_time_html}</div>
+      <div class="meta-row">${date_html} · ${reading_time_html} ${tags_html}</div>
     </header>`;
         }
 
-        return `<header>
+        return tags_html
+          ? `<header>
+      <h1${r.renderAttributes(node)}>${children}</h1>
+      <div class="meta-row">${tags_html}</div>
+    </header>`
+          : `<header>
       <h1${r.renderAttributes(node)}>${children}</h1>
     </header>`;
       }

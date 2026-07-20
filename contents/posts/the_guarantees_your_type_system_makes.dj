@@ -1,12 +1,11 @@
 ---
-(
-  (title "The Guarantees Your Type System Makes")
-  (stage finished)
-  (tags
-    ("Rust" "OCaml" "TypeScript" "Type systems"))
-  (abstract
-    "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, subtyping, variance, algebraic data types and others.")
-)
+{
+ "title":"The Guarantees Your Type System Makes",
+ "stage": "finished",
+ "date": "2026-06-24", 
+ "tags":["Rust", "OCaml", "TypeScript", "Type systems"],
+"abstract": "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, subtyping, variance, algebraic data types and others."
+} 
 ---
 
 # The Guarantees Your Type System Makes
