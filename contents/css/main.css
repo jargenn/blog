@@ -558,27 +558,6 @@
     font-weight: bold;
   }
 
-  a[href^="/"] {
-    font-variant: small-caps;
-  }
-
-  header a[href^="/"] {
-    font-variant: normal;
-  }
-
-  a.statement {
-    font-variant: normal;
-  }
-
-  a.post_title,
-  a.tag {
-    font-variant: normal;
-  }
-
-  a[href^="/"]::after {
-    content: none;
-  }
-
   .meta-links {
     display: block;
     text-align: center;
