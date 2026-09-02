@@ -198,8 +198,9 @@ function Base(
               </span>
             </a>
             <a href="/about.html">About</a>
-            <a href="/posts.html">Posts</a>
+            <a href="/posts.html">Writing</a>
             <a href="/blogroll.html">Blogroll</a>
+            <a href="/links.html">Links</a>
             <a id="home-page-top" href="#home-page-top"></a>
           </nav>
         </header>
@@ -336,8 +337,7 @@ export function BlogRoll(
     >
       <div class="normal-layout">
         <p>
-          My favourite tech blogs. For each one I've linked the latest post in
-          the span of two years:
+          RSS feeds I follow:
         </p>
         <ul class="blogroll">
           {list_items}

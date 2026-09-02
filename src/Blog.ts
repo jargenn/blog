@@ -148,7 +148,7 @@ export const Blog = {
       "dist/posts.html",
       html_ugly(
         PostList(
-          { posts: visible_posts, title: "Posts", latest: true },
+          { posts: visible_posts, title: "", latest: true },
           css_bundle,
           js_bundle,
         ),
@@ -157,6 +157,7 @@ export const Blog = {
 
     const pages = [
       "about",
+      "links",
       "404",
       "ai_transparency",
       "style_guidelines",

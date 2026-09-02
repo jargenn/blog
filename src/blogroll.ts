@@ -77,9 +77,6 @@ function rebuild(entries: FeedEntry[]): FeedEntry[] {
 async function blogroll_feed(
   url: string,
 ): Promise<FeedEntry | null> {
-  const cutoff = new Date();
-  cutoff.setFullYear(cutoff.getFullYear() - 2);
-
   const start = performance.now();
   let feed;
   try {
@@ -132,10 +129,6 @@ async function blogroll_feed(
   if (!date) return null;
 
   const entry_date = new Date(date);
-
-  if (entry_date < cutoff) {
-    return null;
-  }
 
   const entry: FeedEntry = {
     author: first_entry.author?.name ?? undefined,

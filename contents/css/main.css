@@ -289,11 +289,6 @@
     container-type: inline-size;
   }
 
-  ::selection {
-    text-decoration-color: var(--accent);
-    background: var(--code-tint);
-  }
-
   header {
     margin-bottom: 2rem;
 
