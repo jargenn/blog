@@ -143,7 +143,7 @@ export const Blog = {
     );
 
     await write_file(
-      "dist/posts.html",
+      "dist/writing.html",
       html_ugly(
         PostList(
           { posts: visible_posts, title: "", latest: true },

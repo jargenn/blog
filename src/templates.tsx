@@ -198,7 +198,7 @@ function Base(
               </span>
             </a>
             <a href="/about.html">About</a>
-            <a href="/posts.html">Writing</a>
+            <a href="/writing.html">Writing</a>
             <a href="/blogroll.html">Blogroll</a>
             <a href="/links.html">Links</a>
             <a id="home-page-top" href="#home-page-top"></a>
