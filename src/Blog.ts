@@ -35,12 +35,10 @@ class Ctx {
       if (!key.endsWith("_ms")) continue;
 
       const label = key.slice(0, -3);
-      parts.push(`${label}=\x1b[36m${value.toFixed(2)}ms\x1b[0m`);
+      parts.push(`${label}=${value.toFixed(2)}ms`);
     }
 
-    console.log(
-      `\n\x1b[33m[stats]\x1b[0m\n\x1b[90m  ${parts.join(" ")}\x1b[0m`,
-    );
+    console.log(`\n[stats] ${parts.join(" ")}`);
   }
 }
 
@@ -99,7 +97,7 @@ export const Blog = {
     await Deno.mkdir("./dist/", { recursive: true });
 
     const posts = await collect_posts(ctx);
-    console.log(`\n\x1b[34m[Building output]\x1b[0m`);
+    console.log(`\n[Building output]`);
 
     for (const post of posts) {
       await write_file(
@@ -188,7 +186,7 @@ export const Blog = {
       let build_id = 0;
       while (await signal.promise) {
         signal = Promise.withResolvers();
-        console.log(`\nRebuild \x1b[34m${"#" + build_id.toString()}`);
+        console.log(`Rebuild #${build_id}`);
         build_id += 1;
         await Blog.build(
           clean,
@@ -225,7 +223,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
   const start = performance.now();
   const posts: Post[] = [];
 
-  console.log(`\n\x1b[34m[Collecting posts]`);
+  console.log("[Collecting posts]");
 
   for await (const path of walk_dir("./contents/posts/")) {
     if (!path.endsWith(".dj")) continue;
@@ -277,14 +275,9 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
 
-    const time = Temporal.Now.plainTimeISO()
-      .toLocaleString("en-gb", { hour12: false });
-
     const ms = render_ms.toFixed(2);
 
-    console.log(
-      `\x1b[90m${time} \x1b[34m├─ \x1b[90m${path} (${ms} ms)`,
-    );
+    console.log(`  ${path} (${ms} ms)`);
 
     const { year, month, day } = dateParts(arch.date);
     const iso_date = new Date(Date.UTC(year, month - 1, day));
@@ -316,9 +309,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 }
 
 function asset(path: string, asset_map: Map<string, string>): string {
-  const built_path = "/" + (asset_map.get(path) ?? path);
-  console.log(built_path);
-  return built_path;
+  return "/" + (asset_map.get(path) ?? path);
 }
 
 function dateParts(date: Date) {

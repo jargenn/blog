@@ -21,13 +21,8 @@ export async function write_file(
   }
   await Deno.rename(temp, path);
 
-  const time = Temporal.Now.plainTimeISO()
-    .toLocaleString("en-gb", { hour12: false });
   const ms = (performance.now() - start).toFixed(2);
-
-  console.log(
-    `\x1b[90m${time} \x1b[34m├─ \x1b[90m${path} (${ms} ms)`,
-  );
+  console.log(`  wrote ${path} (${ms} ms)`);
 }
 
 export async function copy_path(

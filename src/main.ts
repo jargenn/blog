@@ -1,85 +1,44 @@
 import { Blog } from "./Blog.ts";
 
-import { parseArgs } from "@std/cli/parse-args";
-
-const VALID_COMMANDS = ["draft", "build", "watch", "serve"] as const;
-
-type Command = typeof VALID_COMMANDS[number];
-
-export function parseCli(
-  argv: string[],
-): {
-  command: Command;
-  args: string[];
-  options: Record<string, string | boolean>;
-} {
-  const [rawCommand, ...rest] = argv;
-
-  if (!rawCommand || !VALID_COMMANDS.includes(rawCommand as Command)) {
-    console.error(
-      `Unknown command, use one of: ${VALID_COMMANDS.join(", ")}`,
-    );
-    Deno.exit(1);
-  }
-
-  const command = rawCommand as Command;
-
-  const parsed = parseArgs(rest);
-
-  const options: Record<string, string | boolean> = {};
-
-  for (const [key, value] of Object.entries(parsed)) {
-    if (key === "_") continue;
-
-    if (
-      typeof value === "string" ||
-      typeof value === "boolean"
-    ) {
-      options[key] = value;
-    }
-  }
-
-  return {
-    command,
-    args: parsed._.map(String),
-    options,
-  };
-}
-
 async function main() {
-  const { command, args, options: opts } = parseCli(Deno.args);
+  const [command, ...rest] = Deno.args;
 
   switch (command) {
     case "draft": {
-      const title = args[0];
-
+      const title = rest[0];
       if (!title) {
         console.error("Error: Missing required argument: title");
         Deno.exit(1);
       }
-
-      await Blog.draft(title, opts.published === true);
+      await Blog.draft(title);
       break;
     }
 
     case "build":
       await Blog.build(
-        opts.clean !== false,
-        opts.blogroll === true,
+        !rest.includes("--no-clean"),
+        rest.includes("--blogroll"),
       );
       break;
 
     case "watch":
-      await Blog.watch(
-        opts.clean !== false,
-      );
+      await Blog.watch(!rest.includes("--no-clean"));
       break;
 
-    case "serve":
-      await Blog.serve(
-        Number(opts.port ?? 8080),
-      );
+    case "serve": {
+      const portFlag = rest.find((a) => a.startsWith("--port="));
+      const port = portFlag ? Number(portFlag.split("=")[1]) : 8080;
+      await Blog.serve(port);
       break;
+    }
+
+    default:
+      console.error(
+        `Unknown command "${
+          command ?? ""
+        }", use one of: draft, build, watch, serve`,
+      );
+      Deno.exit(1);
   }
 }
 

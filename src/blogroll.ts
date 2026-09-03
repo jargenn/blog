@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
 import { parseFeed } from "@rss";
-import { NowHHMMSS } from "./http_server.ts";
 
 export interface FeedEntry {
   author?: string;
@@ -19,17 +18,17 @@ const TTL = 1000 * 60 * 2880;
 
 export const Blogroll = {
   async create(): Promise<FeedEntry[]> {
-    console.log(`\n\x1b[33m[Creating the Blogroll]\x1b[0m`);
+    console.log("[Creating the Blogroll]");
 
     const cached = await read_cache();
 
     if (cached) {
       if (Date.now() - new Date(cached.createdAt).getTime() < TTL) {
-        console.log("\x1b[90mUsing cached blogroll\x1b[0m");
+        console.log("Using cached blogroll");
         return rebuild(cached.entries);
       }
 
-      console.log("\x1b[90mCache is stale, regenerating...\x1b[0m");
+      console.log("Cache is stale, regenerating...");
     }
 
     const urls = (await Deno.readTextFile("contents/blogroll.txt"))
@@ -80,10 +79,7 @@ async function blogroll_feed(
   const start = performance.now();
   let feed;
   try {
-    console.log(
-      `\x1b[90m${NowHHMMSS()}\x1b[0m ` +
-        `\x1b[33m├─\x1b[0m Fetching ${url}...\x1b[0m`,
-    );
+    console.log(`Fetching ${url}...`);
     const response = await fetch(url, {
       headers: {
         "Accept":
@@ -92,24 +88,15 @@ async function blogroll_feed(
     });
 
     if (!response.ok) {
-      console.error(
-        `\x1b[90m${NowHHMMSS()}\x1b[0m ` +
-          `\x1b[31m├─ HTTP ${response.status}\x1b[0m ${url}`,
-      );
+      console.error(`HTTP ${response.status} ${url}`);
       return null;
     }
 
     const xml = await response.text();
 
     if (!xml.includes("<rss") && !xml.includes("<feed")) {
-      console.error(
-        `\x1b[90m${NowHHMMSS()}\x1b[0m ` +
-          `\x1b[31m├─ Invalid feed\x1b[0m ${url}`,
-      );
-      console.error(
-        `\x1b[90m${NowHHMMSS()}\x1b[0m ` +
-          `\x1b[90m│  Preview:\x1b[0m ${xml.slice(0, 120).replace(/\n/g, " ")}`,
-      );
+      console.error(`Invalid feed ${url}`);
+      console.error(`  Preview: ${xml.slice(0, 120).replace(/\n/g, " ")}`);
       return null;
     }
 
@@ -141,12 +128,7 @@ async function blogroll_feed(
 
   const duration = performance.now() - start;
 
-  console.log(
-    `\x1b[90m${NowHHMMSS()}\x1b[0m ` +
-      `\x1b[33m├─\x1b[0m "${entry.title}" \x1b[90m (${entry.url}) (${
-        duration.toFixed(0)
-      } ms)\x1b[0m`,
-  );
+  console.log(`"${entry.title}" ${entry.url} (${duration.toFixed(0)} ms)`);
 
   return entry;
 }

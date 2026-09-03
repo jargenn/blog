@@ -63,7 +63,6 @@ export const Archetype = {
     let parsed: unknown;
 
     try {
-      console.log(match[1]);
       parsed = JSON.parse(match[1]);
     } catch {
       throw new Error(

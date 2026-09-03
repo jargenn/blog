@@ -458,7 +458,7 @@ export function buildFaviconMap(doc: Doc): Map<string, Map<string, string>> {
 
   const allUrls = [...new Set(containers.flatMap((c) => c.urls))];
 
-  console.log(`\x1b[33m[Resolving favicons]\x1b[0m`);
+  console.log("[Resolving favicons]");
 
   const entries = allUrls.map((url) => [url, getFavicon(url)] as const);
   const urlToFavicon = new Map(entries);
@@ -469,9 +469,7 @@ export function buildFaviconMap(doc: Doc): Map<string, Map<string, string>> {
     result.set(key, nodeMap);
   }
 
-  console.log(
-    `\x1b[90mResolved ${urlToFavicon.size} favicons for ${containers.length} links divs\x1b[0m`,
-  );
+  console.log(`Resolved ${urlToFavicon.size} favicons for ${containers.length} links divs`);
 
   return result;
 }

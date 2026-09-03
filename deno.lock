@@ -30,11 +30,7 @@
       ]
     },
     "@std/cli@1.0.30": {
-      "integrity": "769446536522d0417d7127ebcabcafac1ab0ce6766d0eb3fca1d36326fe98d13",
-      "dependencies": [
-        "jsr:@std/fmt",
-        "jsr:@std/internal@^1.0.14"
-      ]
+      "integrity": "769446536522d0417d7127ebcabcafac1ab0ce6766d0eb3fca1d36326fe98d13"
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
@@ -143,7 +139,6 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
-      "jsr:@std/cli@^1.0.30",
       "jsr:@std/http@^1.0.24",
       "jsr:@std/path@^1.1.5",
       "npm:katex@0.17"
