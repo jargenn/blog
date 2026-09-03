@@ -384,14 +384,14 @@ export function PostList(
           <span class="reading-time">
             {post.reading_time}
           </span>
-          <div class="tags">
-            {tags}
-          </div>
         </div>
         <div class="abstract">
           <a href={post.path} rel="noopener">
             <p>{post.abstract}</p>
           </a>
+        </div>
+        <div class="tags">
+          {tags}
         </div>
       </li>
     );
