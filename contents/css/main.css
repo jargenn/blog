@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --font-symbol: "Iosevka";
+    --code-font: "Iosevka";
     --title-font: "Cabin", "et-book", Georgia, serif;
     --regular-font: "et-book", Georgia, serif;
     --line-height: 1.8;
@@ -112,7 +112,7 @@
 
   code,
   pre {
-    font-family: var(--font-symbol), monospace;
+    font-family: var(--code-font), monospace;
   }
 
   p code {
@@ -823,7 +823,7 @@
   }
 
   kbd {
-    font-family: var(--font-symbol), monospace;
+    font-family: var(--code-font), monospace;
     font-variant-ligatures: none;
     line-height: 1;
   }

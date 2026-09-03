@@ -15,45 +15,49 @@ export function html_ugly(node: VNode, doctype = "<!DOCTYPE html>"): string {
   return `${doctype}\n${render(node)}`;
 }
 
-function Fonts() {
+function Fonts({ fonts }: { fonts: Map<string, string> }) {
+  const font = (n: string) => {
+    const src = fonts.get(n) ?? `css/${n}`;
+    return `/${src}`;
+  };
   const style = `
 @font-face {
   font-family: 'Iosevka';
-  src: url('/css/Iosevka-Regular.woff2') format('woff2');
+  src: url('${font("Iosevka-Regular.woff2")}') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Cabin';
-  src: url('/css/Cabin-Regular.woff2') format('woff2');
+  src: url('${font("Cabin-Regular.woff2")}') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Cabin";
-  src: url("/css/Cabin-Italic.woff2") format("woff2");
+  src: url("${font("Cabin-Italic.woff2")}") format("woff2");
   font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
   font-family: "Cabin";
-  src: url("/css/Cabin-Bold.woff2") format("woff2");
+  src: url("${font("Cabin-Bold.woff2")}") format("woff2");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Ornaments';
-  src: url('/css/ornaments.woff2') format('woff2');
+  src: url('${font("ornaments.woff2")}') format('woff2');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'et-book';
-  src: url('/css/etbookot-roman-webfont.woff2') format('woff2');
+  src: url('${font("etbookot-roman-webfont.woff2")}') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -61,7 +65,7 @@ function Fonts() {
 
 @font-face {
   font-family: 'et-book';
-  src: url('/css/etbookot-italic-webfont.woff2') format('woff2');
+  src: url('${font("etbookot-italic-webfont.woff2")}') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -69,7 +73,7 @@ function Fonts() {
 
 @font-face {
   font-family: 'et-book';
-  src: url('/css/etbookot-bold-webfont.woff2') format('woff2');
+  src: url('${font("etbookot-bold-webfont.woff2")}') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -92,6 +96,7 @@ function Base(
     src,
     bundled_css,
     bundled_js,
+    fonts,
   }: {
     children?: VNode[];
     src: string;
@@ -102,6 +107,7 @@ function Base(
     extra_css?: string;
     bundled_css: string;
     bundled_js: string;
+    fonts: Map<string, string>;
   },
 ) {
   const def_title = date ? `${title} - Lautaro Acosta Quintana` : title;
@@ -168,7 +174,7 @@ function Base(
           title="blog"
           href={`${site_url}/feed.xml`}
         />
-        <Fonts />
+        <Fonts fonts={fonts} />
         <link rel="stylesheet" href={`${bundled_css}`} />
         {extra_css && <link rel="stylesheet" href={`${extra_css}`} />}
         <script
@@ -268,6 +274,7 @@ export function Page(
   content: HtmlString,
   css: string,
   js: string,
+  fonts: Map<string, string>,
 ) {
   return (
     <Base
@@ -277,6 +284,7 @@ export function Page(
       description={blurb}
       bundled_css={css}
       bundled_js={js}
+      fonts={fonts}
     >
       <div class="normal-layout">
         <Raw unsafe={content.value} />
@@ -289,6 +297,7 @@ export function BlogRoll(
   { posts }: { posts: FeedEntryData[] },
   css: string,
   js: string,
+  fonts: Map<string, string>,
 ) {
   function get_domain(url: string): string {
     try {
@@ -334,6 +343,7 @@ export function BlogRoll(
       src="/src/templates.tsx"
       bundled_css={css}
       bundled_js={js}
+      fonts={fonts}
     >
       <div class="normal-layout">
         <p>
@@ -355,6 +365,7 @@ export function PostList(
   },
   css: string,
   js: string,
+  fonts: Map<string, string>,
 ) {
   const list_items = posts.map((post, idx) => {
     const tags = post.tags.map((tag) => {
@@ -405,6 +416,7 @@ export function PostList(
       src="/src/templates.tsx"
       bundled_css={css}
       bundled_js={js}
+      fonts={fonts}
     >
       <div class="normal-layout">
         {title && <h1>{title}</h1>}
@@ -478,7 +490,12 @@ const draft_wall = () => {
   );
 };
 
-export function Post({ post }: { post: PostData }, css: string, js: string) {
+export function Post(
+  { post }: { post: PostData },
+  css: string,
+  js: string,
+  fonts: Map<string, string>,
+) {
   return (
     <Base
       src={post.src}
@@ -488,6 +505,7 @@ export function Post({ post }: { post: PostData }, css: string, js: string) {
       description={post.abstract}
       bundled_css={css}
       bundled_js={js}
+      fonts={fonts}
     >
       <div class="post-layout">
         <article>

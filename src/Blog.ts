@@ -85,13 +85,19 @@ export const Blog = {
     for (const path of paths) {
       await copy_path(path, asset_map);
     }
+    if (!clean) {
+      await prune_assets(asset_map);
+    }
     const css_bundle = asset("main.css", asset_map);
     const js_bundle = asset("scripts.js", asset_map);
+    const fonts = new Map(
+      [...asset_map].filter(([k]) => k.endsWith(".woff2")),
+    );
     if (blogroll) {
       const posts = await Blogroll.create();
       await write_file(
         "dist/blogroll.html",
-        html_ugly(BlogRoll({ posts }, css_bundle, js_bundle)),
+        html_ugly(BlogRoll({ posts }, css_bundle, js_bundle, fonts)),
       );
     }
     await Deno.mkdir("./dist/", { recursive: true });
@@ -102,7 +108,7 @@ export const Blog = {
     for (const post of posts) {
       await write_file(
         `dist/${post.path}`,
-        html_ugly(PostPage({ post }, css_bundle, js_bundle)),
+        html_ugly(PostPage({ post }, css_bundle, js_bundle, fonts)),
       );
     }
 
@@ -131,7 +137,9 @@ export const Blog = {
 
       await write_file(
         `dist/t/${tag_slug}.html`,
-        html_ugly(PostList({ posts: p, title: tag }, css_bundle, js_bundle)),
+        html_ugly(
+          PostList({ posts: p, title: tag }, css_bundle, js_bundle, fonts),
+        ),
       );
     }
 
@@ -139,7 +147,7 @@ export const Blog = {
     const about_html = await page_html("about");
     await write_file(
       "dist/index.html",
-      html_ugly(Page("", about_html, css_bundle, js_bundle)),
+      html_ugly(Page("", about_html, css_bundle, js_bundle, fonts)),
     );
 
     await write_file(
@@ -149,6 +157,7 @@ export const Blog = {
           { posts: visible_posts, title: "", latest: true },
           css_bundle,
           js_bundle,
+          fonts,
         ),
       ),
     );
@@ -165,7 +174,7 @@ export const Blog = {
 
       await write_file(
         `dist/${page}.html`,
-        html_ugly(Page(page, content, css_bundle, js_bundle)),
+        html_ugly(Page(page, content, css_bundle, js_bundle, fonts)),
       );
     }
 
@@ -182,6 +191,7 @@ export const Blog = {
 
   async watch(clean: boolean): Promise<void> {
     let signal = Promise.withResolvers();
+    let first = true;
     (async () => {
       let build_id = 0;
       while (await signal.promise) {
@@ -189,9 +199,10 @@ export const Blog = {
         console.log(`Rebuild #${build_id}`);
         build_id += 1;
         await Blog.build(
-          clean,
+          first ? clean : false,
           true,
         );
+        first = false;
       }
     })();
 
@@ -310,6 +321,33 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
 function asset(path: string, asset_map: Map<string, string>): string {
   return "/" + (asset_map.get(path) ?? path);
+}
+
+const HASHED_EXTENSIONS = new Set([".js", ".css", ".woff2"]);
+
+async function prune_assets(asset_map: Map<string, string>): Promise<void> {
+  const in_use = new Set(
+    [...asset_map.values()].map((p) => p.replace(/^dist\//, "")),
+  );
+
+  for (const dir of ["css", "assets"]) {
+    let entries;
+    try {
+      entries = await Array.fromAsync(Deno.readDir(`dist/${dir}`));
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      if (!entry.isFile) continue;
+      const name = entry.name;
+      const ext = name.slice(name.lastIndexOf("."));
+      if (!HASHED_EXTENSIONS.has(ext)) continue;
+      const rel = `${dir}/${name}`;
+      if (!in_use.has(rel)) {
+        await Deno.remove(`dist/${rel}`);
+      }
+    }
+  }
 }
 
 function dateParts(date: Date) {

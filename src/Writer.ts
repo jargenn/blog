@@ -51,7 +51,7 @@ export async function copy_path(
     const ext = path_utils.extname(path);
     let bundle_path = `dist/${path}`;
 
-    if (ext === ".js" || ext === ".css") {
+    if (ext === ".js" || ext === ".css" || ext === ".woff2") {
       const basename = path_utils.basename(path, ext);
       const prev_basename = path_utils.basename(path);
 
