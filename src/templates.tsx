@@ -29,6 +29,25 @@ function Fonts({ fonts }: { fonts: Map<string, string> }) {
 }
 
 @font-face {
+  font-family: 'Libre Bodoni';
+  src: url('${font("LibreBodoniRegular.woff2")}') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Libre Bodoni';
+  src: url('${font("LibreBodoniBold.woff2")}') format('woff2');
+  font-style: bold;
+}
+
+@font-face {
+  font-family: 'Libre Bodoni';
+  src: url('${font("LibreBodoniItalic.woff2")}') format('woff2');
+  font-style: italic;
+}
+
+@font-face {
   font-family: 'Cabin';
   src: url('${font("Cabin-Regular.woff2")}') format('woff2');
   font-weight: 400;
@@ -384,7 +403,7 @@ export function PostList(
     return (
       <li class={(latest && idx === 0) ? "latest-post" : ""}>
         <h3>
-          <a class="post_title" href={post.path} rel="noopener">
+          <a class="post-title" href={post.path} rel="noopener">
             {post.title}
           </a>
         </h3>
@@ -520,12 +539,10 @@ export function Post(
 function Time(
   { date, className = undefined }: { date: Date; className?: string },
 ) {
-  const human = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  const human = `${day}-${month}-${year}`;
   const machine = yyyy_mm_dd(date);
   return <time class={className} datetime={machine}>{human}</time>;
 }

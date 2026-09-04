@@ -49,6 +49,7 @@
     line-height: var(--line-height);
   }
 
+
   main {
     a {
       color: inherit;
@@ -88,13 +89,16 @@
     }
 
     h1 {
-      font-family: var(--title-font);
-      /* font-family: var(--regular-font); */
-      font-weight: 700;
+        font-family: "Libre Bodoni", serif;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+
+    .post-title {
+        font-family: "Libre Bodoni", serif;
     }
 
     :where(h2, , h3) {
-      /* font-family: var(--title-font); */
       font-family: var(--regular-font);
       font-weight: 700;
     }
@@ -295,6 +299,12 @@
 
   header {
     margin-bottom: 2rem;
+
+    .site-name {
+        font-family: "Libre Bodoni", "et-book", serif;
+        font-weight: 700;
+        font-size: 0.8em;
+    }
 
     & nav {
       display: flex;
