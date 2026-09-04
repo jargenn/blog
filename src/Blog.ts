@@ -213,9 +213,15 @@ export const Blog = {
       16,
     );
 
-    for await (const event of Deno.watchFs("./contents", { recursive: true })) {
-      if (event.kind == "access") continue;
-      rebuild_debounced();
+    const watcher = Deno.watchFs("./contents", { recursive: true });
+    try {
+      for await (const event of watcher) {
+        if (event.kind == "access") continue;
+        rebuild_debounced();
+      }
+    } finally {
+      rebuild_debounced.cancel();
+      watcher.close();
     }
     signal.resolve(false);
   },
