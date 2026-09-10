@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-09-08T00:27:54.502Z",
+  "createdAt": "2026-09-10T18:51:04.355Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -42,9 +42,9 @@
       "date": "2026-07-27T00:00:00.000Z"
     },
     {
-      "title": "Summaries and impressions of papers and talks,",
-      "url": "https://okmij.org/ftp/Computation/Impressions/index.html",
-      "date": "2026-08-06T00:01:00.000Z"
+      "title": "Parallel Fun with Monoids and Map-Reduce,",
+      "url": "https://okmij.org/ftp/Algorithms/map-monoid-reduce.html",
+      "date": "2026-09-08T00:01:00.000Z"
     },
     {
       "author": "Ted Kaminski",
@@ -114,9 +114,9 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
-      "title": "Database research, frontier AI, and idiot savants, oh my!",
-      "url": "http://ayende.com/204131-a/database-research-frontier-ai-and-idiot-savants-oh-my?Key=53bb569b-cf7f-4df2-8679-47bb246b102e",
-      "date": "2026-08-21T12:00:00.000Z"
+      "title": "Doing it again, twenty years later: introducing Quill",
+      "url": "http://ayende.com/204163-a/doing-it-again-twenty-years-later-introducing-quill?Key=9778e219-50e7-48b3-95e4-0ddb4b36e403",
+      "date": "2026-09-09T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -132,9 +132,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-36: Ground control to major MODIS",
-      "url": "https://anil.recoil.org/notes/2026w36",
-      "date": "2026-09-06T00:00:00.000Z"
+      "title": "Open MPhil/Part II student projects for 2026-2027",
+      "url": "https://anil.recoil.org/notes/student-projects-2026",
+      "date": "2026-09-09T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -149,9 +149,9 @@
       "date": "2026-08-07T00:00:00.000Z"
     },
     {
-      "title": "Rethinking PAM",
-      "url": "https://mariadb.org/rethinking-pam?utm_source=theconsensus.dev&utm_medium=referral",
-      "date": "2026-09-07T04:00:00.000Z"
+      "title": "Following the Bottleneck: Optimizing MiniMax M3 on AMD Instinct MI355X",
+      "url": "https://vllm.ai/blog/2026-09-10-minimax-m3-mi355x?utm_source=theconsensus.dev&utm_medium=referral",
+      "date": "2026-09-10T04:00:00.000Z"
     },
     {
       "author": "Jepsen",
@@ -166,14 +166,20 @@
       "date": "2026-07-30T00:00:00.000Z"
     },
     {
-      "title": "Automatically detecting AI text in my browser",
-      "url": "https://seangoedecke.com/deckard/",
-      "date": "2026-09-08T00:00:00.000Z"
+      "title": "They really do think AI might kill everyone",
+      "url": "https://seangoedecke.com/they-really-do-think-ai-might-kill-everyone/",
+      "date": "2026-09-10T00:00:00.000Z"
     },
     {
       "title": "Find Git Commits by Commit Message Text",
       "url": "https://hamvocke.com/blog/git-revisions-by-text/",
       "date": "2026-08-22T00:00:00.000Z"
+    },
+    {
+      "author": "steve@ersc.io (Steve Klabnik)",
+      "title": "What comes after git",
+      "url": "https://ersc.io/blog/what-comes-after-git",
+      "date": "2026-09-10T00:00:00.000Z"
     }
   ]
 }

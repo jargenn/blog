@@ -210,8 +210,9 @@ function Base(
         </script>
       </head>
       <body>
+        <a class="skip-link" href="#main-content">Skip to content</a>
         <header>
-          <nav>
+          <nav aria-label="Main">
             <a class="title" href="/">
               <div class="logo">
                 <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -227,11 +228,10 @@ function Base(
             <a href="/writing.html">Writing</a>
             <a href="/blogroll.html">Blogroll</a>
             <a href="/links.html">Links</a>
-            <a id="home-page-top" href="#home-page-top"></a>
           </nav>
         </header>
 
-        <main>
+        <main id="main-content">
           {children}
         </main>
 
@@ -282,8 +282,15 @@ function Base(
 }
 
 function FooterIcon({ name }: { name: string }) {
+  const labels: Record<string, string> = {
+    rss: "RSS",
+    email: "Email",
+    linkedin: "LinkedIn",
+    github: "GitHub",
+  };
   return (
-    <svg>
+    <svg role="img" aria-label={labels[name] ?? name}>
+      <title>{labels[name] ?? name}</title>
       <use href={`/assets/icons.svg#${name}`} />
     </svg>
   );

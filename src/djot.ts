@@ -203,10 +203,11 @@ export function render(
     image: (node): string => {
       if (has_class(node, "video")) {
         if (!node.destination) throw "missing destination";
+        const title = node.children[0]?.text ?? "Video";
 
         return has_class(node, "loop")
-          ? `<video src="${node.destination}" autoplay muted loop></video>`
-          : `<video src="${node.destination}" controls muted></video>`;
+          ? `<video src="${node.destination}" autoplay muted loop aria-label="${title}"></video>`
+          : `<video src="${node.destination}" controls muted aria-label="${title}"></video>`;
       }
 
       if (!node.destination) throw "missing image src";
@@ -218,6 +219,9 @@ export function render(
       };
 
       const title = node.children[0]?.text ?? "";
+      if (!title) {
+        console.warn(`[a11y] Image at "${node.destination}" has no alt text`);
+      }
       const src = node.destination;
 
       const darkSrc = src.replace(
