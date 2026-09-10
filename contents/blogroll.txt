@@ -31,3 +31,4 @@ https://jepsen.io/blog.rss
 https://corrode.dev/rss.xml
 https://www.seangoedecke.com/rss.xml
 https://hamvocke.com/feed-tech.xml
+https://ersc.io/rss.xml
