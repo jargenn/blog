@@ -144,8 +144,8 @@
 
       a {
         text-decoration: underline;
-        font-weight: 700;
         text-decoration-color: var(--muted);
+        font-weight: 700;
         text-decoration-thickness: 1px;
         text-underline-offset: 2px;
         transition: text-decoration-color 0.5s;
@@ -403,6 +403,15 @@
   }
 
   .normal-layout {
+            a {
+        text-decoration: underline;
+        text-decoration-color: var(--muted);
+        font-weight: 700;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+        transition: text-decoration-color 0.5s;
+      }
+
     max-width: 80.5ch;
     margin-inline: auto;
   }
