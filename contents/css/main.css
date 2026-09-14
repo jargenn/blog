@@ -191,8 +191,8 @@
         background: var(--lang-bg);
         border-left: 3px solid var(--accent);
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06);
+        font-family: var(--title-font);
         font-weight: 500;
-        font-style: italic;
       }
 
       &.code-block {
