@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-09-10T18:51:04.355Z",
+  "createdAt": "2026-09-14T15:21:36.261Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -22,9 +22,9 @@
       "date": "2026-07-01T00:00:00.000Z"
     },
     {
-      "title": "How accurate have Ed Zitron's AI skeptic predictions been?",
-      "url": "https://danluu.com/zitron/",
-      "date": "2026-09-01T00:00:00.000Z"
+      "title": "How well do agents use test and verification techniques?",
+      "url": "https://danluu.com/agentic-testing/",
+      "date": "2026-09-07T00:00:00.000Z"
     },
     {
       "title": "iddqd, or the hardest kind of unsafe Rust",
@@ -65,9 +65,9 @@
       "date": "2019-05-04T17:00:00.000Z"
     },
     {
-      "title": "Data races and the limits of ThreadSanitizer in C and Go",
-      "url": "http://notes.eatonphil.com/2026-09-06-data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html",
-      "date": "2026-09-06T00:00:00.000Z"
+      "title": "Query plan rewriting in PostgreSQL",
+      "url": "http://notes.eatonphil.com/2026-09-13-query-plan-rewriting-in-postgresql.html",
+      "date": "2026-09-13T00:00:00.000Z"
     },
     {
       "title": "Concurrent, atomic MSI hash tables",
@@ -132,9 +132,9 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Open MPhil/Part II student projects for 2026-2027",
-      "url": "https://anil.recoil.org/notes/student-projects-2026",
-      "date": "2026-09-09T00:00:00.000Z"
+      "title": "Hitting a NERVE with attacks on AI-powered brain-computer interfaces",
+      "url": "https://anil.recoil.org/notes/nerve-attacks",
+      "date": "2026-09-11T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -149,9 +149,9 @@
       "date": "2026-08-07T00:00:00.000Z"
     },
     {
-      "title": "Following the Bottleneck: Optimizing MiniMax M3 on AMD Instinct MI355X",
-      "url": "https://vllm.ai/blog/2026-09-10-minimax-m3-mi355x?utm_source=theconsensus.dev&utm_medium=referral",
-      "date": "2026-09-10T04:00:00.000Z"
+      "title": "GSoC 2026: Extending Clang API Notes for C++: Overload-Specific Annotations for Functions and Methods",
+      "url": "https://blog.llvm.org/posts/2026-08-21-gsoc-clang-api-notes-overloads?utm_source=theconsensus.dev&utm_medium=referral",
+      "date": "2026-09-14T04:00:00.000Z"
     },
     {
       "author": "Jepsen",
@@ -166,9 +166,9 @@
       "date": "2026-07-30T00:00:00.000Z"
     },
     {
-      "title": "They really do think AI might kill everyone",
-      "url": "https://seangoedecke.com/they-really-do-think-ai-might-kill-everyone/",
-      "date": "2026-09-10T00:00:00.000Z"
+      "title": "Slow developer experience will bottleneck fast models",
+      "url": "https://seangoedecke.com/slow-devex-will-bottleneck-fast-models/",
+      "date": "2026-09-14T00:00:00.000Z"
     },
     {
       "title": "Find Git Commits by Commit Message Text",
@@ -180,6 +180,11 @@
       "title": "What comes after git",
       "url": "https://ersc.io/blog/what-comes-after-git",
       "date": "2026-09-10T00:00:00.000Z"
+    },
+    {
+      "title": "A faster way to calculate the Time of Day",
+      "url": "https://www.benjoffe.com/fast-time-of-day",
+      "date": "2026-09-07T09:50:00.000Z"
     }
   ]
 }

@@ -473,7 +473,9 @@ export function buildFaviconMap(doc: Doc): Map<string, Map<string, string>> {
     result.set(key, nodeMap);
   }
 
-  console.log(`Resolved ${urlToFavicon.size} favicons for ${containers.length} links divs`);
+  console.log(
+    `Resolved ${urlToFavicon.size} favicons for ${containers.length} links divs`,
+  );
 
   return result;
 }
