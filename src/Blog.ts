@@ -15,7 +15,7 @@ import { ServeBlog } from "./http_server.ts";
 import { Blogroll } from "./blogroll.ts";
 import { copy_path, walk_dir, write_file } from "./Writer.ts";
 import type { Post } from "./Post.ts";
-import { build_toc, reading_time_str, toc_to_html } from "./Post.ts";
+import { reading_time_str } from "./Post.ts";
 
 class Ctx {
   constructor(
@@ -260,9 +260,6 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       ast,
     );
 
-    const toc = build_toc(ast);
-    const toc_html = toc_to_html(toc);
-
     const tags_html = arch.tags
       .map((tag) => {
         const slug = tag.toLowerCase().trim().replace(/\s+/g, "-");
@@ -285,9 +282,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
     const html = djot.render(ast, render_ctx);
 
-    const content = toc_html !== ""
-      ? new HtmlString(html.value.replace(/<section/, `${toc_html}<section`))
-      : html;
+    const content = html;
 
     const render_ms = performance.now() - t;
     ctx.render_ms += render_ms;
