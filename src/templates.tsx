@@ -160,8 +160,7 @@ function Base(
 
         <meta property="og:type" content="article" />
         <meta property="og:title" content={def_title} />
-        <meta property="og:image" // content={`https://cdn.lautaroacosta.com/${og_image_path}`}
-        />
+        <meta property="og:image" />
         <meta property="og:image:width" content="1260" />
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en-us" />
@@ -170,24 +169,25 @@ function Base(
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={def_title} />
-        <meta name="twitter:image" // content={`https://cdn.lautaroacosta.com/${og_image_path}`}
-        />
+        <meta name="twitter:image" />
 
         <meta name="twitter:description" content={description} />
 
         {date && <meta property="article:published_time" content={date} />}
         <meta name="author" content="Lautaro Acosta Quintana" />
 
-        <link
-          rel="icon"
-          href="https://cdn.lautaroacosta.com/favicon.png"
-          type="image/png"
-        />
-        <link
-          rel="icon"
-          href="https://cdn.lautaroacosta.com/favicon.svg"
-          type="image/svg+xml"
-        />
+        {
+          // <link
+          //   rel="icon"
+          //   href="https://cdn.lautaroacosta.com/favicon.png"
+          //   type="image/png"
+          // />
+          // <link
+          //   rel="icon"
+          //   href="https://cdn.lautaroacosta.com/favicon.svg"
+          //   type="image/svg+xml"
+          // />
+        }
         <link
           rel="alternate"
           type="application/rss+xml"
@@ -214,12 +214,6 @@ function Base(
         <header>
           <nav aria-label="Main">
             <a class="title" href="/">
-              <div class="logo">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <circle cx="16" cy="11" r="5" fill="currentColor" />
-                  <path d="M4 28a12 12 0 0 1 24 0z" fill="currentColor" />
-                </svg>
-              </div>
               <span class="site-name">
                 Lautaro<br />Acosta Quintana
               </span>
@@ -354,7 +348,7 @@ export function BlogRoll(
           />
           <a href={post.url}>{post.title}</a>
         </h2>
-        <div class="meta-row">
+        <div class="blogroll-metadata">
           <Time date={post.date} />
           <p>- {domain}</p>
         </div>
