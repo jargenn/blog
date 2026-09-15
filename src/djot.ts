@@ -258,21 +258,26 @@ export function render(
     code_block: (node, r: HTMLRenderer) => {
       const lang_name = node.lang?.toLowerCase();
       const aria_label = node.lang ? `${node.lang} code block` : "text block";
+      const grammar_name = lang_name === "fishshell" ? "fish" : node.lang;
 
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
         ${
         node.lang
           ? `<span class="language-tag" title="${node.lang}">
-             <svg
+             <img
             class="language-icon"
-            aria-hidden="true"
+            alt="${node.lang}"
+            src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${lang_name}.svg"
           >
-            <use href="/assets/icons.svg#${lang_name}"></use>
-          </svg>
           </span>`
           : ""
       }
-        ${r.renderAstNodeDefault(node)}</figure>`;
+        ${
+        r.renderAstNodeDefault({
+          ...node,
+          lang: grammar_name,
+        })
+      }</figure>`;
     },
     span: (node: Span, r: HTMLRenderer) => {
       if (has_class(node, "code")) {

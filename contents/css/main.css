@@ -30,6 +30,11 @@
       --emphasis: #f5f5f5;
       --muted: #2a2f36;
     }
+
+    .language-icon,
+    footer a img {
+      filter: invert(1);
+    }
   }
 
   html {
@@ -231,6 +236,7 @@
             height: 25px;
             display: block;
             fill: currentColor;
+            opacity: 0.6;
           }
         }
       }
@@ -387,9 +393,16 @@
         color: var(--text);
       }
 
-      svg {
-        width: 0.9em;
-        height: 0.9em;
+      svg,
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+        opacity: 0.6;
+      }
+
+      &:hover svg,
+      &:hover img {
+        opacity: 1;
       }
     }
 
@@ -397,6 +410,28 @@
       margin-top: 2.5rem;
       text-align: center;
       color: color-mix(in srgb, var(--text) 85%, var(--background));
+
+      a {
+        display: inline;
+        gap: 0;
+        white-space: normal;
+      }
+    }
+
+    .credit {
+      display: block;
+      text-align: center;
+      color: var(--text);
+      opacity: 0.5;
+
+      a {
+        display: inline;
+        gap: 0;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+        white-space: normal;
+      }
     }
   }
 

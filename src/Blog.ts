@@ -147,7 +147,16 @@ export const Blog = {
     const about_html = await page_html("about");
     await write_file(
       "dist/index.html",
-      html_ugly(Page("", about_html, css_bundle, js_bundle, fonts)),
+      html_ugly(
+        Page(
+          "",
+          "/contents/about.dj",
+          about_html,
+          css_bundle,
+          js_bundle,
+          fonts,
+        ),
+      ),
     );
 
     await write_file(
@@ -174,7 +183,16 @@ export const Blog = {
 
       await write_file(
         `dist/${page}.html`,
-        html_ugly(Page(page, content, css_bundle, js_bundle, fonts)),
+        html_ugly(
+          Page(
+            page,
+            `/contents/${page}.dj`,
+            content,
+            css_bundle,
+            js_bundle,
+            fonts,
+          ),
+        ),
       );
     }
 

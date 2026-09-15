@@ -11,6 +11,10 @@ const site_url = "https://lautaroacosta.com";
 const github_url = "https://github.com/jargenn";
 const blurb = "Lautaro's Coppermind";
 
+// <a href="mailto:me+blog@lautaroacosta.com">
+//   <FooterIcon name="email" />
+//   Contact
+// </a>
 export function html_ugly(node: VNode, doctype = "<!DOCTYPE html>"): string {
   return `${doctype}\n${render(node)}`;
 }
@@ -26,25 +30,6 @@ function Fonts({ fonts }: { fonts: Map<string, string> }) {
   src: url('${font("Iosevka-Regular.woff2")}') format('woff2');
   font-weight: 400;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Libre Bodoni';
-  src: url('${font("LibreBodoniRegular.woff2")}') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Libre Bodoni';
-  src: url('${font("LibreBodoniBold.woff2")}') format('woff2');
-  font-style: bold;
-}
-
-@font-face {
-  font-family: 'Libre Bodoni';
-  src: url('${font("LibreBodoniItalic.woff2")}') format('woff2');
-  font-style: italic;
 }
 
 @font-face {
@@ -132,6 +117,7 @@ function Base(
 ) {
   const def_title = date ? `${title} - Lautaro Acosta Quintana` : title;
   const post_url = `${site_url}${path}`;
+  const page_url = `${github_url}/blog/edit/master${src}`;
   const json_ld = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -230,37 +216,21 @@ function Base(
         </main>
 
         <footer>
-          {date &&
-            (
-              <p class="meta-links">
-                ({" "}
-                <a
-                  class="emphasis"
-                  href={`${github_url}/blog/commits/master${src}`}
-                >
-                  revision history
-                </a>{" "}
-                )
-              </p>
-            )}
           <p class="footer-links">
+            <a href={page_url}>
+              <FooterIcon name="edit" />
+            </a>
+
             <a href="/feed.xml">
               <FooterIcon name="rss" />
-              RSS
-            </a>
-            <a href="mailto:me+blog@lautaroacosta.com">
-              <FooterIcon name="email" />
-              Contact
             </a>
 
             <a href="https://linkedin.com/in/lautaro-acosta-quintana">
               <FooterIcon name="linkedin" />
-              LinkedIn
             </a>
 
             <a href={github_url}>
               <FooterIcon name="github" />
-              jargenn
             </a>
           </p>
           <p class="copyr">
@@ -268,6 +238,9 @@ function Base(
             <a class="emphasis statement" href="/ai_transparency.html">
               AI Transparency
             </a>
+          </p>
+          <p class="credit">
+            Icons by <a href="https://simpleicons.org">Simple Icons</a>
           </p>
         </footer>
       </body>
@@ -281,7 +254,23 @@ function FooterIcon({ name }: { name: string }) {
     email: "Email",
     linkedin: "LinkedIn",
     github: "GitHub",
+    fixes: "Suggest fixes",
   };
+  const simple_icons: Record<string, string> = {
+    github: "github",
+    rss: "rss",
+    linkedin: "linkedin",
+  };
+  const src = simple_icons[name];
+  if (src) {
+    return (
+      <img
+        role="img"
+        alt={labels[name] ?? name}
+        src={`https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${src}.svg`}
+      />
+    );
+  }
   return (
     <svg role="img" aria-label={labels[name] ?? name}>
       <title>{labels[name] ?? name}</title>
@@ -292,6 +281,7 @@ function FooterIcon({ name }: { name: string }) {
 
 export function Page(
   name: string,
+  src: string,
   content: HtmlString,
   css: string,
   js: string,
@@ -301,7 +291,7 @@ export function Page(
     <Base
       path={`/${name}`}
       title="Lautaro Acosta Quintana"
-      src={`/content/${name}.dj`}
+      src={src}
       description={blurb}
       bundled_css={css}
       bundled_js={js}
@@ -532,6 +522,16 @@ export function Post(
         <article>
           <Raw unsafe={post.content.value} />
           {post.stage === "draft" ? draft_wall() : ""}
+          <p class="meta-links">
+            ({" "}
+            <a
+              class="emphasis"
+              href={`${github_url}/blog/commits/master${post.src}`}
+            >
+              revision history
+            </a>{" "}
+            )
+          </p>
         </article>
       </div>
     </Base>
