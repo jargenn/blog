@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-09-14T15:21:36.261Z",
+  "createdAt": "2026-09-15T19:28:36.699Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -7,9 +7,19 @@
       "date": "2026-07-28T09:00:11.000Z"
     },
     {
+      "title": "Being Linux Torvalds",
+      "url": "http://antirez.com/news/171",
+      "date": "2026-07-25T11:20:55.000Z"
+    },
+    {
       "title": "Some more things about Django I've been enjoying",
       "url": "https://jvns.ca/blog/2026/07/21/more-nice-django-things/",
       "date": "2026-07-21T00:00:00.000Z"
+    },
+    {
+      "title": "Learning a few things about running SQLite",
+      "url": "https://jvns.ca/blog/2026/07/17/learning-about-running-sqlite/",
+      "date": "2026-07-17T00:00:00.000Z"
     },
     {
       "title": "Generators with UnpinCell",
@@ -17,9 +27,19 @@
       "date": "2024-10-25T00:00:00.000Z"
     },
     {
+      "title": "UnpinCell",
+      "url": "https://without.boats/blog/unpin-cell/",
+      "date": "2024-10-16T00:00:00.000Z"
+    },
+    {
       "title": "Artificial adventures",
       "url": "https://www.scattered-thoughts.net/writing/artificial-adventures/",
       "date": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "title": "I'm not a cat",
+      "url": "https://www.scattered-thoughts.net/writing/im-not-a-cat/",
+      "date": "2026-06-24T00:00:00.000Z"
     },
     {
       "title": "How well do agents use test and verification techniques?",
@@ -27,9 +47,19 @@
       "date": "2026-09-07T00:00:00.000Z"
     },
     {
+      "title": "Ed Zitron's AI prediction track record",
+      "url": "https://danluu.com/zitron/",
+      "date": "2026-09-01T00:00:00.000Z"
+    },
+    {
       "title": "iddqd, or the hardest kind of unsafe Rust",
       "url": "https://sunshowers.io/posts/iddqd-unsafe/?utm_source=atom_feed",
       "date": "2026-06-02T00:00:00.000Z"
+    },
+    {
+      "title": "In defense of lock poisoning in Rust",
+      "url": "https://sunshowers.io/posts/on-poisoning/?utm_source=atom_feed",
+      "date": "2025-12-02T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -37,14 +67,29 @@
       "date": "2025-12-31T22:00:00.000Z"
     },
     {
+      "title": "Introducing arborium, a tree-sitter distribution",
+      "url": "https://fasterthanli.me/articles/introducing-arborium",
+      "date": "2025-12-13T10:00:00.000Z"
+    },
+    {
       "title": "Keyboardion",
       "url": "https://ianthehenry.com/posts/keyboardion/",
       "date": "2026-07-27T00:00:00.000Z"
     },
     {
+      "title": "Periodic Spaces",
+      "url": "https://ianthehenry.com/posts/periodic-spaces/",
+      "date": "2025-11-30T00:00:00.000Z"
+    },
+    {
       "title": "Parallel Fun with Monoids and Map-Reduce,",
       "url": "https://okmij.org/ftp/Algorithms/map-monoid-reduce.html",
       "date": "2026-09-08T00:01:00.000Z"
+    },
+    {
+      "title": "Summaries and impressions of papers and talks,",
+      "url": "https://okmij.org/ftp/Computation/Impressions/index.html",
+      "date": "2026-08-06T00:01:00.000Z"
     },
     {
       "author": "Ted Kaminski",
@@ -53,10 +98,22 @@
       "date": "2019-11-18T02:16:35.000Z"
     },
     {
+      "author": "Ted Kaminski",
+      "title": "On ideological purity in programming",
+      "url": "http://www.tedinski.com/2019/05/08/unexpected-moral-reasoning.html",
+      "date": "2019-05-09T03:12:38.000Z"
+    },
+    {
       "author": "Alex Kladov",
       "title": "Static Allocation, Constant Work",
       "url": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
       "date": "2026-09-02T00:00:00.000Z"
+    },
+    {
+      "author": "Alex Kladov",
+      "title": "Cancelation Terminology",
+      "url": "https://matklad.github.io/2026/08/31/cancelation-terminology.html",
+      "date": "2026-08-31T00:00:00.000Z"
     },
     {
       "author": "Nathaniel J. Smith",
@@ -65,14 +122,30 @@
       "date": "2019-05-04T17:00:00.000Z"
     },
     {
+      "author": "Nathaniel J. Smith",
+      "title": "Beautiful tracebacks in Trio v0.7.0",
+      "url": "https://vorpus.org/blog/beautiful-tracebacks-in-trio-v070/",
+      "date": "2018-09-10T19:00:00.000Z"
+    },
+    {
       "title": "Query plan rewriting in PostgreSQL",
       "url": "http://notes.eatonphil.com/2026-09-13-query-plan-rewriting-in-postgresql.html",
       "date": "2026-09-13T00:00:00.000Z"
     },
     {
+      "title": "Data races and the limits of ThreadSanitizer in C and Go",
+      "url": "http://notes.eatonphil.com/2026-09-06-data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html",
+      "date": "2026-09-06T00:00:00.000Z"
+    },
+    {
       "title": "Concurrent, atomic MSI hash tables",
       "url": "https://nullprogram.com/blog/2026/05/06/",
       "date": "2026-05-06T02:01:17.000Z"
+    },
+    {
+      "title": "I have officially retired from Emacs",
+      "url": "https://nullprogram.com/blog/2026/04/26/",
+      "date": "2026-04-26T00:00:00.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -81,10 +154,22 @@
       "date": "2025-11-05T00:00:00.000Z"
     },
     {
+      "author": "Alice Ryhl",
+      "title": "In-place initialization",
+      "url": "https://ryhl.io/blog/in-place-initialization/",
+      "date": "2025-06-07T00:00:00.000Z"
+    },
+    {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
       "title": "Lorenz and Little: How Much Does Your Tail Cost?",
       "url": "http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html",
       "date": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "author": "marcbrooker@gmail.com (Marc Brooker)",
+      "title": "Aurora DSQL: Scalable, Multi-Region OLTP",
+      "url": "http://brooker.co.za/blog/2026/07/19/dsql-paper.html",
+      "date": "2026-07-19T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -93,10 +178,22 @@
       "date": "2026-08-28T12:39:35.000Z"
     },
     {
+      "author": "Jack Vanlightly",
+      "title": "The LogDrive: Flexible Composition Through Abstraction in Shared Logs",
+      "url": "https://jack-vanlightly.com/blog/2026/8/25/the-logdrive-flexible-composition-through-abstraction-in-shared-logs",
+      "date": "2026-08-25T12:11:33.000Z"
+    },
+    {
       "author": "Julian Hyde",
       "title": "Morel on Go, and why platforms shouldn’t matter",
       "url": "http://blog.hydromatic.net/2026/08/01/morel-on-go.html",
       "date": "2026-08-01T20:00:00.000Z"
+    },
+    {
+      "author": "Julian Hyde",
+      "title": "Expressing package queries in Morel",
+      "url": "http://blog.hydromatic.net/2026/05/29/package-queries.html",
+      "date": "2026-05-29T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -104,9 +201,19 @@
       "date": "2026-04-10T17:00:30.000Z"
     },
     {
+      "title": "Testing the Datadog Explain Plan Visualizer with Oracle execution plans",
+      "url": "https://tanelpoder.com/posts/testing-datadog-plan-visualizer-with-oracle-execution-plans/",
+      "date": "2026-03-01T01:37:33.000Z"
+    },
+    {
       "title": "Rust is perfectly imperfect",
       "url": "http://0x80.pl/notesen/2026-01-08-imperfect-rust.html",
       "date": "2026-01-08T11:00:00.000Z"
+    },
+    {
+      "title": "Change case of UTF-32-encoded strings",
+      "url": "http://0x80.pl/notesen/2025-02-02-utf32-change-case.html",
+      "date": "2025-02-02T11:00:00.000Z"
     },
     {
       "title": "Why I joined OpenAI",
@@ -114,9 +221,19 @@
       "date": "2026-02-06T13:00:00.000Z"
     },
     {
+      "title": "Leaving Intel",
+      "url": "http://www.brendangregg.com/blog//2025-12-05/leaving-intel.html",
+      "date": "2025-12-04T13:00:00.000Z"
+    },
+    {
       "title": "Doing it again, twenty years later: introducing Quill",
       "url": "http://ayende.com/204163-a/doing-it-again-twenty-years-later-introducing-quill?Key=9778e219-50e7-48b3-95e4-0ddb4b36e403",
       "date": "2026-09-09T12:00:00.000Z"
+    },
+    {
+      "title": "Database research, frontier AI, and idiot savants, oh my!",
+      "url": "http://ayende.com/204131-a/database-research-frontier-ai-and-idiot-savants-oh-my?Key=53bb569b-cf7f-4df2-8679-47bb246b102e",
+      "date": "2026-08-21T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -125,10 +242,28 @@
       "date": "2026-08-10T00:00:00.000Z"
     },
     {
+      "author": "Alperen Keles",
+      "title": "Next Chapter!",
+      "url": "https://alperenkeles.com/posts/next-chapter/",
+      "date": "2026-07-01T00:00:00.000Z"
+    },
+    {
       "author": "Thomas Gazagnaire",
       "title": "Reusing Buffers in Multicore OCaml",
       "url": "https://gazagnaire.org/blog/2026-07-24-domain-safe-codecs.html",
       "date": "2026-07-24T00:00:00.000Z"
+    },
+    {
+      "author": "Thomas Gazagnaire",
+      "title": "Cascade: A Typed CSS Toolkit in OCaml",
+      "url": "https://gazagnaire.org/blog/2026-07-22-cascade-minify.html",
+      "date": "2026-07-22T00:00:00.000Z"
+    },
+    {
+      "author": "Anil Madhavapeddy",
+      "title": ".plan-26-37: The humans aren't dead, the humans are ahead",
+      "url": "https://anil.recoil.org/notes/2026w37",
+      "date": "2026-09-13T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
@@ -143,15 +278,32 @@
       "date": "2026-07-26T11:45:08.000Z"
     },
     {
+      "author": "Filippo Valsorda <feed@filippo.io>",
+      "title": "Opaque, Interoperable Passkey Records (and a Go API)",
+      "url": "https://words.filippo.io/passkey-record/",
+      "date": "2026-07-20T22:33:32.000Z"
+    },
+    {
       "author": "Ian Duncan",
       "title": "Getting Freaky in the Age of AI",
       "url": "https://iankduncan.com/engineering/2026-08-07-getting-freaky-in-the-age-of-ai/",
       "date": "2026-08-07T00:00:00.000Z"
     },
     {
-      "title": "GSoC 2026: Extending Clang API Notes for C++: Overload-Specific Annotations for Functions and Methods",
-      "url": "https://blog.llvm.org/posts/2026-08-21-gsoc-clang-api-notes-overloads?utm_source=theconsensus.dev&utm_medium=referral",
-      "date": "2026-09-14T04:00:00.000Z"
+      "author": "Kevin Bell (CircleCI, archived)",
+      "title": "The Mathematics of Build Queue Optimization and Auto-Scaling",
+      "url": "https://iankduncan.com/engineering/autoscaling-build-fleets-queueing-theory/",
+      "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+      "title": "The 9-Year Detour: I Never Really Left Tech, I Just Found the Way Back",
+      "url": "https://www.broadcom.com/company/news/articles/mainframe/the-9-year-detour-i-never-really-left-tech-i-just-found-the-way-back?utm_source=theconsensus.dev&utm_medium=referral",
+      "date": "2026-09-15T04:00:00.000Z"
+    },
+    {
+      "title": "Come work with me on Hegel",
+      "url": "https://drmaciver.com/2026/09/come-work-with-me-on-hegel?utm_source=theconsensus.dev&utm_medium=referral",
+      "date": "2026-09-15T04:00:00.000Z"
     },
     {
       "author": "Jepsen",
@@ -160,10 +312,27 @@
       "date": "2026-03-26T00:00:00.000Z"
     },
     {
+      "author": "Jepsen",
+      "title": "MariaDB Galera Cluster 12.1.2",
+      "url": "https://jepsen.io/blog/2026-03-16-mariadb-galera-cluster-12.1.2",
+      "date": "2026-03-16T00:00:00.000Z"
+    },
+    {
       "author": "Matthias Endler",
       "title": "JetBrains",
       "url": "https://corrode.dev/podcast/s06e09-jetbrains/",
       "date": "2026-07-30T00:00:00.000Z"
+    },
+    {
+      "author": "Matthias Endler",
+      "title": "Understanding Dyn Compatibility",
+      "url": "https://corrode.dev/blog/dyn-compatibility/",
+      "date": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "title": "Tell agents the why, not just the how",
+      "url": "https://seangoedecke.com/tell-agents-the-why/",
+      "date": "2026-09-15T00:00:00.000Z"
     },
     {
       "title": "Slow developer experience will bottleneck fast models",
@@ -176,15 +345,41 @@
       "date": "2026-08-22T00:00:00.000Z"
     },
     {
+      "title": "Use Task Runners for Common Coding Tasks",
+      "url": "https://hamvocke.com/blog/task-runners/",
+      "date": "2026-08-03T00:00:00.000Z"
+    },
+    {
       "author": "steve@ersc.io (Steve Klabnik)",
       "title": "What comes after git",
       "url": "https://ersc.io/blog/what-comes-after-git",
       "date": "2026-09-10T00:00:00.000Z"
     },
     {
+      "author": "contact@ersc.io (East River Source Control)",
+      "title": "East River Source Control Names Jujutsu Creator Martin von Zweigbergk Chief Technology Officer",
+      "url": "https://ersc.io/blog/martin-joins-ersc",
+      "date": "2026-09-01T00:00:00.000Z"
+    },
+    {
+      "title": "A New Equal-Area Map for Interactive Computer Use",
+      "url": "https://www.benjoffe.com/map",
+      "date": "2026-09-14T22:30:00.000Z"
+    },
+    {
       "title": "A faster way to calculate the Time of Day",
       "url": "https://www.benjoffe.com/fast-time-of-day",
       "date": "2026-09-07T09:50:00.000Z"
+    },
+    {
+      "title": "Interpreting Pangram",
+      "url": "https://lucumr.pocoo.org/2026/9/14/interpreting-pangram/",
+      "date": "2026-09-14T00:00:00.000Z"
+    },
+    {
+      "title": "P(doom)",
+      "url": "https://lucumr.pocoo.org/2026/9/12/pdoom/",
+      "date": "2026-09-12T00:00:00.000Z"
     }
   ]
 }

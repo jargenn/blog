@@ -305,7 +305,7 @@ export function Page(
 }
 
 export function BlogRoll(
-  { posts }: { posts: FeedEntryData[] },
+  { posts, preamble }: { posts: FeedEntryData[]; preamble: HtmlString },
   css: string,
   js: string,
   fonts: Map<string, string>,
@@ -357,9 +357,7 @@ export function BlogRoll(
       fonts={fonts}
     >
       <div class="normal-layout">
-        <p>
-          RSS feeds I follow:
-        </p>
+        <Raw unsafe={preamble.value} />
         <ul class="blogroll">
           {list_items}
         </ul>

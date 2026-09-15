@@ -95,9 +95,12 @@ export const Blog = {
     );
     if (blogroll) {
       const posts = await Blogroll.create();
+      const preamble = await page_html_djot("src/blogroll.djot");
       await write_file(
         "dist/blogroll.html",
-        html_ugly(BlogRoll({ posts }, css_bundle, js_bundle, fonts)),
+        html_ugly(
+          BlogRoll({ posts, preamble }, css_bundle, js_bundle, fonts),
+        ),
       );
     }
     await Deno.mkdir("./dist/", { recursive: true });
@@ -250,7 +253,11 @@ export const Blog = {
 };
 
 async function page_html(page: string): Promise<HtmlString> {
-  const text = await Deno.readTextFile(`contents/${page}.dj`);
+  return page_html_djot(`contents/${page}.dj`);
+}
+
+async function page_html_djot(path: string): Promise<HtmlString> {
+  const text = await Deno.readTextFile(path);
   return djot.render(djot.parse(text), {});
 }
 

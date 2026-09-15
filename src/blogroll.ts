@@ -25,7 +25,7 @@ export const Blogroll = {
     if (cached) {
       if (Date.now() - new Date(cached.createdAt).getTime() < TTL) {
         console.log("Using cached blogroll");
-        return rebuild(cached.entries);
+        return sort_entries(rebuild(cached.entries));
       }
 
       console.log("Cache is stale, regenerating...");
@@ -37,7 +37,7 @@ export const Blogroll = {
       .filter((line) => line.length > 0);
 
     const entries = await Promise.all(urls.map(blogroll_feed));
-    const all_entries = entries.filter((e): e is FeedEntry => e !== null);
+    const all_entries = entries.flat();
 
     const cache: Cache = {
       createdAt: new Date().toISOString(),
@@ -51,7 +51,7 @@ export const Blogroll = {
       );
     }
 
-    all_entries.sort((a, b) => b.date.getTime() - a.date.getTime());
+    sort_entries(all_entries);
 
     return all_entries;
   },
@@ -73,9 +73,13 @@ function rebuild(entries: FeedEntry[]): FeedEntry[] {
   }));
 }
 
+function sort_entries(entries: FeedEntry[]): FeedEntry[] {
+  return entries.sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
 async function blogroll_feed(
   url: string,
-): Promise<FeedEntry | null> {
+): Promise<FeedEntry[]> {
   const start = performance.now();
   let feed;
   try {
@@ -89,7 +93,7 @@ async function blogroll_feed(
 
     if (!response.ok) {
       console.error(`HTTP ${response.status} ${url}`);
-      return null;
+      return [];
     }
 
     const xml = await response.text();
@@ -97,38 +101,40 @@ async function blogroll_feed(
     if (!xml.includes("<rss") && !xml.includes("<feed")) {
       console.error(`Invalid feed ${url}`);
       console.error(`  Preview: ${xml.slice(0, 120).replace(/\n/g, " ")}`);
-      return null;
+      return [];
     }
 
     feed = await parseFeed(xml);
   } catch (error) {
     console.error({ url, error });
-    return null;
+    return [];
   }
 
-  if (!feed.entries || feed.entries.length === 0) return null;
+  if (!feed.entries || feed.entries.length === 0) return [];
 
-  const first_entry = feed.entries[0];
-  const date = first_entry.published ??
-    first_entry.updated ??
-    null;
+  const dated = feed.entries
+    .map((entry) => {
+      const date = entry.published ?? entry.updated ?? null;
+      return date ? { entry, date: new Date(date) } : null;
+    })
+    .filter((it) => it !== null)
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .slice(0, 2);
 
-  if (!date) return null;
+  return dated.map(({ entry, date }) => {
+    const item: FeedEntry = {
+      author: entry.author?.name ?? undefined,
+      title: entry.title?.value ?? "",
+      url: (entry.links.find(
+        (it: any) => it.type === "text/html" || it.href?.endsWith(".html"),
+      ) ?? entry.links[0])?.href ?? "",
+      date,
+    };
 
-  const entry_date = new Date(date);
+    const duration = performance.now() - start;
 
-  const entry: FeedEntry = {
-    author: first_entry.author?.name ?? undefined,
-    title: first_entry.title?.value ?? "",
-    url: (first_entry.links.find(
-      (it: any) => it.type === "text/html" || it.href?.endsWith(".html"),
-    ) ?? first_entry.links[0])?.href ?? "",
-    date: entry_date,
-  };
+    console.log(`"${item.title}" ${item.url} (${duration.toFixed(0)} ms)`);
 
-  const duration = performance.now() - start;
-
-  console.log(`"${entry.title}" ${entry.url} (${duration.toFixed(0)} ms)`);
-
-  return entry;
+    return item;
+  });
 }
