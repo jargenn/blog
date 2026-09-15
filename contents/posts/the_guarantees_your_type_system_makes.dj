@@ -174,7 +174,7 @@ fn main() {
 
 Here, we are use [`rustc`](https://doc.rust-lang.org/rustc/what-is-rustc.html), and executing the output results in a panic:
 
-``` Bash
+```fishshell
 $ rustc -o main main.rs; ./main
 
 thread 'main' (432991) panicked at main.rs:2:5:
@@ -186,7 +186,7 @@ with a full backtrace in:
 If run it again with `RUST_BACKTRACE=1` we can see the language's built-in error handling machinery at work:
 
 {highlight=10}
-``` Bash 
+```fishshell 
 $ rustc -o main main.rs; RUST_BACKTRACE=1 ./main
 
 thread 'main' (433803) panicked at main.rs:2:5:
@@ -224,7 +224,7 @@ int main() {
 
 {% We do `gcc -Wall -Wextra -Wpedantic -O0 -o main main.c` and it compiles successfully, but then: %}
 
-``` Bash
+```fishshell
 $ gcc -Wall -Wextra -Wpedantic -O0 -o main main.c && ./main
 
 Floating point exception   (core dumped) ./main
@@ -233,7 +233,7 @@ Floating point exception   (core dumped) ./main
 We can use `gdb` to learn more about what happened:
 
 {highlight="4,7,14"}
-``` Bash
+```fishshell
 $ gdb -q ./main -ex run -ex "set disassembly-flavor intel" \
      -ex disassemble -ex quit
 ...
@@ -268,7 +268,7 @@ This behavior is a *design decision*, arguably influenced by the time and the pu
 To showcase this, let's see three different implementations of C: [`GCC`](https://gcc.gnu.org/), [`Clang`](https://clang.llvm.org/) and [`Fil-C`](https://fil-c.org/):
 
 {highlight="4, 8"}
-``` Bash
+```fishshell
 $ gcc -g -O3 -o main main.c && gdb -q ./main -ex run \
 -ex "set disassembly-flavor intel" -ex disassemble -ex quit
 ...
@@ -283,7 +283,7 @@ End of assembler dump.
 Now the fault comes from our `main` function. Inspecting the assembly we see that the compiler optimized the whole program to a `ud2` instruction which generates a `#UD` (Invalid Opcode) exception. Now the program receives a `SIGILL` from the OS.
 
 {highlight="2, 11"}
-``` Bash
+```fishshell
 $ clang -O3 -o main main.c && ./main 
 151705912 
 
@@ -307,7 +307,7 @@ Fil-C[^Fil-C] is a fork of `Clang 20.1.8` that adds static and runtime memory sa
 
 [^Fil-C]: At the time of writing, it is at version 0.678. 
 
-``` Bash
+```fishshell
 $ ./build/bin/clang -g -O3 -o main main.c && ./main
 0
 ```
@@ -463,7 +463,7 @@ save_file(fake, "out_duck.txt")
 
 ```
 
-``` bash
+``` fishshell
 $ uv run main.py
 
 Traceback (most recent call last):
@@ -494,9 +494,10 @@ is said to be *invariant* in an argument if subtyping for the constructed type i
 
 To make any sense of that, let's define some generic types:
 
-``` Typescript
-// TypeScript actually tries to automatically infer the variance given the
-// position where the type parameter T appears in the signatures.
+``` TypeScript
+
+// TypeScript actually tries to automatically infer the variance given
+// the position where the type parameter `T` appears in the signature.
 //
 // The `out` keyword exists to explicitly tell the compiler that the relation
 // is a _covariance_, so this:
@@ -549,8 +550,10 @@ Since we preserve the subtyping relation, any code expecting a `Secret<Credentia
 With contravariance, the idea is that it enables us to design APIs that are more *general* in the values they can operate on:
 
 ``` TypeScript
-// The `in` keyword exists to explicitly tell the compiler that the relation
-// is a _contravariance_, so this:
+
+
+// The `in` keyword exists to explicitly tell the compiler that
+// the relation is a _contravariance_, so this:
 type Logger<T> = {
   //  would be equivalent to:
   // type Logger<in T>
@@ -650,7 +653,7 @@ const event_store: KVStore<Event> = login_store;
 
 Trying to create a `KVStore<Event>` this way or the other way around, declaring fist a event store and then trying to build a `KVStore<Login>` by assignment, creates an error because the compiler already inferred that the variance of the type constructor is invariant:
 
-``` Bash
+```fishshell
 $ deno check main.ts
 
 # I cleaned it up a little bit:
@@ -666,6 +669,7 @@ type 'KVStore<Event>'.
 If we really wanted the same type constructor to support both kinds of variance, the solution is to create two new generic types for producing and reading:
 
 ``` TypeScript
+
 type KVReader<out V> = {
   get: (key: string) => V | undefined;
 };
@@ -863,7 +867,7 @@ fn main() {
 }
 ```
 
-``` Bash
+```fishshell
 error[E0277]: `Rc<i32>` cannot be shared between threads safely
  --> src/main.rs:7:19
   |
@@ -881,7 +885,7 @@ error[E0277]: `Rc<i32>` cannot be shared between threads safely
 
 And if we tried to move the variable to another thread instead of sharing it, we would get the error:
 
-``` Bash
+```fishshell
 error[E0277]: `Rc<i32>` cannot be sent between threads safely
  --> src/main.rs:7:19
   |
@@ -922,7 +926,7 @@ fn main() {
 
 Would in turn, give you this error message:
 
-``` Bash
+```fishshell
 error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads safely
   --> src/main.rs:24:17
    |
