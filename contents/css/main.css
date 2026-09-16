@@ -313,10 +313,12 @@
     margin-bottom: 2rem;
 
     .site-name {
-      font-family: var(--block-font);
+        display: none;
+      /* font-family: var(--block-font); */
+      font-family: inherit;
       text-transform: uppercase;
       font-weight: 700;
-      font-size: 0.8em;
+      font-size: 1.1em;
     }
 
     & nav {

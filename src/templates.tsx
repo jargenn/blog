@@ -201,7 +201,9 @@ function Base(
           <nav aria-label="Main">
             <a class="title" href="/">
               <span class="site-name">
-                Lautaro<br />Acosta Quintana
+                Lautaro
+                <br />
+                Acosta Quintana
               </span>
             </a>
             <a href="/about.html">About</a>
