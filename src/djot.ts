@@ -83,7 +83,7 @@ export function render(
 
         if (reading_time_html && date_html) {
           return `<header>
-      <h1${r.renderAttributes(node)}>${children}</h1>
+      <h1 class = "article-title" ${r.renderAttributes(node)}>${children}</h1>
       <div class="meta-row">${date_html} · ${reading_time_html}</div>
     </header>`;
         }
