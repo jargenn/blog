@@ -324,8 +324,8 @@
 
       & a:hover {
         text-decoration: none;
-        font-weight: 700;
-        transition: 0.5s;
+        /* font-weight: 700; */
+        /* transition: 0.5s; */
       }
 
       & .title {
