@@ -136,6 +136,8 @@
 
     header {
       margin-bottom: 0;
+      display: flex;
+      flex-direction:column;
     }
 
     p {
@@ -314,6 +316,8 @@
 
     .site-name {
         display: none;
+          line-height: 1.2;
+          white-space: nowrap;
       /* font-family: var(--block-font); */
       font-family: inherit;
       text-transform: uppercase;
@@ -365,10 +369,6 @@
           }
         }
 
-        .site-name {
-          line-height: 1.2;
-          white-space: nowrap;
-        }
 
         &:hover {
           color: var(--accent);
@@ -752,8 +752,35 @@
   @media (max-width: 700px) {
     .post-list {
       max-width: none;
-      margin-inline: -2ch;
+      margin-inline: 0;
       padding-inline: 0;
+
+      .abstract {
+        display: none;
+      }
+
+      h3 a {
+        font-size: 1.25rem;
+        line-height: 1.3;
+      }
+
+      > li.latest-post h3 a {
+        font-size: 1.35rem;
+      }
+
+      .meta-row {
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+      }
+
+      > li {
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .tags {
+        display: none;
+      }
     }
   }
 
