@@ -177,6 +177,7 @@ export const Blog = {
     const pages = [
       "about",
       "links",
+      "reading",
       "404",
       "ai_transparency",
       "style_guidelines",
