@@ -15,7 +15,7 @@ import { ServeBlog } from "./http_server.ts";
 import { Blogroll } from "./blogroll.ts";
 import { copy_path, walk_dir, write_file } from "./Writer.ts";
 import type { Post } from "./Post.ts";
-import { reading_time_str } from "./Post.ts";
+import { reading_time_html } from "./Post.ts";
 
 class Ctx {
   constructor(
@@ -252,7 +252,7 @@ export const Blog = {
   },
 };
 
-async function page_html(page: string): Promise<HtmlString> {
+function page_html(page: string): Promise<HtmlString> {
   return page_html_djot(`contents/${page}.dj`);
 }
 
@@ -281,7 +281,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const ast = djot.parse(body);
     ctx.parse_ms += performance.now() - t;
 
-    const reading_time_html = reading_time_str(
+    const reading_time_html_str = reading_time_html(
       ast,
     );
 
@@ -298,7 +298,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       summary: undefined,
       title: undefined,
       sidenotes: [],
-      reading_time_html,
+      reading_time_html: reading_time_html_str,
       tags_html,
       stage: arch.stage,
     };
@@ -327,7 +327,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       year,
       month,
       day,
-      reading_time: reading_time_html,
+      reading_time: reading_time_html_str,
       slug,
       date_str,
       iso_date,

@@ -116,6 +116,7 @@
 
   .reading-time {
     display: inline-flex;
+      cursor: help;
     align-items: center;
   }
 

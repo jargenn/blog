@@ -143,7 +143,8 @@ export type Post = {
   src: string;
 };
 
-export function reading_time_str(doc: Doc): string {
+export function reading_time_html(doc: Doc): string {
+  const wpm = 200;
   let words = 0;
   let code_words = 0;
   let image_count = 0;
@@ -176,20 +177,29 @@ export function reading_time_str(doc: Doc): string {
   visit(doc);
 
   const totalMinutes = Math.round(
-    (words / 200) + (code_words / 150) + (image_count * 12 / 60),
+    (words / wpm) + (code_words / 150) + (image_count * 12 / 60),
   );
 
   const hours = Math.floor(totalMinutes / 60);
   const mins = totalMinutes % 60;
 
+  const title = `considering you read at ${wpm} WPM`;
+
+  let text: string;
+
   switch (true) {
     case totalMinutes < 1:
-      return "1 min";
+      text = "≈1 min";
+      break;
     case hours === 0:
-      return `${mins} min`;
+      text = `≈${mins} min`;
+      break;
     case mins === 0:
-      return `${hours}h`;
+      text = `≈${hours}h`;
+      break;
     default:
-      return `${hours}h ${mins}min`;
+      text = `≈${hours}h ${mins}min`;
   }
+
+  return `<span title="${title}">${text}</span>`;
 }

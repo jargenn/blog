@@ -404,7 +404,7 @@ export function PostList(
           <Time className="meta" date={post.iso_date} />
           <span>·</span>
           <span class="reading-time">
-            {post.reading_time}
+            <Raw unsafe={post.reading_time} />
           </span>
         </div>
         <div class="abstract">
