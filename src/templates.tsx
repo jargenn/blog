@@ -231,6 +231,10 @@ function Base(
               <FooterIcon name="linkedin" />
             </a>
 
+            <a href="mailto:me@lautaroacosta.com">
+              <FooterIcon name="email" />
+            </a>
+
             <a href={github_url}>
               <FooterIcon name="github" />
             </a>
@@ -262,6 +266,7 @@ function FooterIcon({ name }: { name: string }) {
     github: "github",
     rss: "rss",
     linkedin: "linkedin",
+    email: "maildotru",
   };
   const src = simple_icons[name];
   if (src) {
