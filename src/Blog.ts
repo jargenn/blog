@@ -341,7 +341,7 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
       src,
     });
   }
-  posts.sort((lhs, rhs) => rhs.date_str.localeCompare(lhs.date_str));
+  posts.sort((lhs, rhs) => lhs.date_str.localeCompare(rhs.date_str));
   ctx.collect_ms = performance.now() - start;
 
   return posts;

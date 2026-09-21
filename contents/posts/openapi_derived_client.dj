@@ -1,0 +1,215 @@
+---
+ {
+    "title":"OpenAPI Derived HTTP Client",
+    "stage":"finished",
+    "tags":["OpenAPI", "Typescript", "Rust"],
+    "date":"2026-09-19",
+    "abstract":"Deriving a client from an OpenAPI spec, so services in different languages can share one source of truth for their types."
+} 
+---
+
+# OpenAPI Derived HTTP Client
+
+Often times when you are working on a project where you have one or more services written in different languages[^service] that have to interact with each other, you face the problem of having to translate one type to another, making sure they match.
+
+Handling the divergence of each type across repos gets really tiring really fast. You may argue that this isn't much of an issue since you can ask an agent to take care of it, but I'd say that's not an excuse to half-ass things. Also, the code itself is not the only important part, the documentation describing _why_ the response is shaped like that is another.  
+
+One solution you may find is to use [Protobufs](https://protobuf.dev/) and you would be right, at a certain scale! In common cases where you don't have a large number of services (maybe you have a simple client-server architecture), this takes a lot more effort than warranted since you would be adding a third new language to the project. 
+
+For that kind of project, a nice solution I've found online is to create a HTTP Client derived from an [OpenAPI](https://www.openapis.org/) specification and publishing it as a library. 
+
+## The Pattern
+
+Say that you are writing a server using Rust that is primarily consumed by a React SPA, if you are using a library like [`utoipa`](https://github.com/juhaku/utoipa) to auto-generate OpenAPI documentation for your endpoints you may have something like this:[^types]
+
+```rust
+#[derive(ToSchema, Serialize, Deserialize)]
+pub struct Credentials {
+  pub email: String,
+  pub password: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, ToSchema)]
+pub struct LoginResponse {
+  pub id: UserId,
+  pub auth_token: AuthToken,
+  pub username: String,
+}
+
+#[utoipa::path(
+    post,
+    path = "/auth/login",
+    operation_id = "login",
+    request_body = Credentials,
+    responses(
+        (status = 200, description = "Login successful", body = LoginResponse, headers(("x-request-id" = String))),
+        LoginErrors
+    ),
+    tag = "login"
+)]
+pub async fn login(
+  State(state): State<ServiceState>,
+  Json(body): Json<Credentials>,
+) -> Reply<Json<LoginResponse>> {
+    ...
+}
+```
+
+Then, the generated OpenAPI specification for that endpoint would look like[^yaml]:
+
+```yaml
+/api/v1/auth/login:
+  post:
+    summary: Authenticates the given credentials and returns a new session token.
+
+    description: |
+      # Errors
+
+      Returns `401` if the credentials are invalid and `500` on internal
+      errors.
+
+    operationId: login
+
+    tags:
+      - login
+
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Credentials"
+
+    responses:
+      "200":
+        description: Login successful
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginResponse"
+        headers:
+          x-request-id:
+            schema:
+              type: string
+
+      "400":
+        description: Malformed request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+        headers:
+          x-request-id:
+            schema:
+              type: string
+
+      "401":
+        description: Invalid credentials
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+        headers:
+          x-request-id:
+            schema:
+              type: string
+
+      "500":
+        description: Internal error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+        headers:
+          x-request-id:
+            schema:
+              type: string`
+```
+
+From this point, you should look for what else your ecosystem offers you. In this case, you would be pretty covered, [`openapi-typescript`](https://openapi-ts.dev/introduction) supports recent versions of the spec and it allows to turn that schema to TypeScript. Pair that with [`openapi-fetch`](https://openapi-ts.dev/openapi-fetch/) to generate a fetch client based on it and you could create your own wrapper like:
+
+```Typescript
+import createClient from "openapi-fetch";
+import type { paths } from "./codegen.d.ts";
+
+const BASE_URL = ...
+
+function apiClient(options: { baseUrl: string; getToken: () => string | null }) {
+  const client = createClient<paths>(options);
+
+
+  client.use({
+    onRequest({ request }) {
+      const token = options.getToken();
+      if (token) {
+        request.headers.set("Authorization", `Bearer ${token}`);
+      }
+      return request;
+    },
+    onResponse({ response }) {
+      // You can support any business logic you want here 
+      return response;
+    },
+  });
+
+  return client;
+}
+
+const client = apiClient({ baseUrl: BASE_URL, getToken: () => tokenStorage.get() });
+
+client.POST("/api/v1/auth/login", {
+    body: {
+        email: "test@gmail.com",
+        password: "123456789"
+    }
+});
+```
+
+You get typed route paths and nice error messages when your input diverges from the schema:
+
+``` TypeScript
+client.POST("/api/v1/auth/login", {
+    body: {
+        email: "test@gmail.com",
+    }
+});
+
+// Diagnostics:
+// 1. Type '{ email: string; }' is not assignable to type 
+//     '{ email: string; password: string; } & {}'.
+// Property 'password' is missing in type '{ email: string; }'
+// but required in type '{ email: string; password: string; }'. [2322]
+
+client.POST("/api/v1/auth/login", {
+    body: {
+        email: 3.1415926535,
+        password: "123456789"
+    }
+});
+
+// Diagnostics:
+// 1. Type 'number' is not assignable to type 'string'. [2322]
+//    codegen.d.ts:1035:13: The expected type comes from property 'email' which is
+//    declared here on type '{ email: string; password: string; } & {}'
+```
+
+You can automate these steps however you want and integrate then into your CI pipelines. I find it specially useful to publish a library exposing this client, making it easier for your team to use.
+
+In the JavaScript ecosystem I've found that [`jsr.io`](https://jsr.io/) is the one that gets the in your way the least. In `npm` you would have to pay to publish a private package, which is fair yeah, but they also [make it as hard as possible to publish a public one](https://github.com/orgs/community/discussions/182325#discussioncomment-15418229). 
+
+You could go even one step further and make discoverability easier by doing a little bit of codegen and parsing the schema file (or the generated code) and build a client that exposes an API like `const response = client.users.getById(body)` by reading the `tags` and `operationId` of each route, a result of something like that looks like: [`oz-client`](https://jsr.io/@tanko/oz-client).
+
+## Conclusion
+
+I've found this technique useful because it allows me to maintain only one source of truth close to the source code. I've purposefully used a small endpoint to demonstrate it but there is a [lot more information](https://spec.openapis.org/oas/latest.html) you can bake in the spec.
+
+Some unrelated advantages of this is that by making an effort to write a good OpenAPI spec, you can easily create a website to share the documentation using something like [Scalar](https://scalar.com/).
+
+![Example of the generated UI by Scalar](https://cdn.lautaroacosta.com/scalar-api-client-2.avif)
+
+
+[^service]: I talk about services in a wide sense not only what's commonly referred as a "backend", a SPA would be a service.
+[^types]: Obviously to take any advantage for this you have to actually type your responses instead of sending and receiving untyped json blobs.
+[^yaml]: Reading yaml is not pleasant but it's easier than json.
+
+

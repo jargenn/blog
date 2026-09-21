@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-09-18T02:32:32.231Z",
+  "createdAt": "2026-09-21T23:30:04.141Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -32,14 +32,14 @@
       "date": "2024-10-16T00:00:00.000Z"
     },
     {
-      "title": "Artificial adventures",
-      "url": "https://www.scattered-thoughts.net/writing/artificial-adventures/",
-      "date": "2026-07-01T00:00:00.000Z"
+      "title": "0061: i'm not a cat, artificial adventures, synthetic sagas, anthropic, sponsors",
+      "url": "https://www.scattered-thoughts.net/log/0061/",
+      "date": "2026-09-20T00:00:00.000Z"
     },
     {
-      "title": "I'm not a cat",
-      "url": "https://www.scattered-thoughts.net/writing/im-not-a-cat/",
-      "date": "2026-06-24T00:00:00.000Z"
+      "title": "Synthetic sagas",
+      "url": "https://www.scattered-thoughts.net/writing/synthetic-sagas/",
+      "date": "2026-09-20T00:00:00.000Z"
     },
     {
       "title": "How well do agents use test and verification techniques?",
@@ -105,15 +105,15 @@
     },
     {
       "author": "Alex Kladov",
-      "title": "Static Allocation, Constant Work",
-      "url": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
-      "date": "2026-09-02T00:00:00.000Z"
+      "title": "Finding Bugs",
+      "url": "https://matklad.github.io/2026/09/19/finding-bugs.html",
+      "date": "2026-09-19T00:00:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "Cancelation Terminology",
-      "url": "https://matklad.github.io/2026/08/31/cancelation-terminology.html",
-      "date": "2026-08-31T00:00:00.000Z"
+      "title": "Static Allocation, Constant Work",
+      "url": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
+      "date": "2026-09-02T00:00:00.000Z"
     },
     {
       "author": "Nathaniel J. Smith",
@@ -138,14 +138,14 @@
       "date": "2026-09-06T00:00:00.000Z"
     },
     {
+      "title": "What's been going on in w64devkit the past year",
+      "url": "https://nullprogram.com/blog/2026/09/20/",
+      "date": "2026-09-20T01:49:36.000Z"
+    },
+    {
       "title": "A custom virtual machine for the Stars! 4X game",
       "url": "https://nullprogram.com/blog/2026/09/17/",
       "date": "2026-09-17T02:00:00.000Z"
-    },
-    {
-      "title": "Concurrent, atomic MSI hash tables",
-      "url": "https://nullprogram.com/blog/2026/05/06/",
-      "date": "2026-05-06T02:01:17.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -261,15 +261,15 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-37: The humans aren't dead, the humans are ahead",
-      "url": "https://anil.recoil.org/notes/2026w37",
-      "date": "2026-09-13T00:00:00.000Z"
+      "title": ".plan-26-38: Near, far, wherever you are, Tessera infers on",
+      "url": "https://anil.recoil.org/notes/2026w38",
+      "date": "2026-09-20T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Hitting a NERVE with attacks on AI-powered brain-computer interfaces",
-      "url": "https://anil.recoil.org/notes/nerve-attacks",
-      "date": "2026-09-11T00:00:00.000Z"
+      "title": ".plan-26-37: The humans aren't dead, the humans are ahead",
+      "url": "https://anil.recoil.org/notes/2026w37",
+      "date": "2026-09-13T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -296,26 +296,16 @@
       "date": "2026-08-07T00:00:00.000Z"
     },
     {
-      "title": "Australia's AI opportunity starts with data",
-      "url": "https://www.elastic.co/blog/australia-parliamentary-ai-showcase?utm_source=theconsensus.dev&utm_medium=referral",
-      "date": "2026-09-17T04:00:00.000Z"
-    },
-    {
-      "title": "MariaDB 13.0 Is Now Stable",
-      "url": "https://mariadb.org/mariadb-13-0-is-now-stable?utm_source=theconsensus.dev&utm_medium=referral",
-      "date": "2026-09-17T04:00:00.000Z"
+      "author": "Jepsen",
+      "title": "Lessons From Testing Distributed Systems",
+      "url": "https://jepsen.io/blog/2026-09-18-lessons-from-testing-distributed-systems",
+      "date": "2026-09-18T00:00:00.000Z"
     },
     {
       "author": "Jepsen",
       "title": "Bugbash 2026 - Paranormal Forms",
       "url": "https://jepsen.io/blog/2026-03-26-bugbash",
       "date": "2026-03-26T00:00:00.000Z"
-    },
-    {
-      "author": "Jepsen",
-      "title": "MariaDB Galera Cluster 12.1.2",
-      "url": "https://jepsen.io/blog/2026-03-16-mariadb-galera-cluster-12.1.2",
-      "date": "2026-03-16T00:00:00.000Z"
     },
     {
       "author": "Matthias Endler",
@@ -330,14 +320,14 @@
       "date": "2026-07-29T00:00:00.000Z"
     },
     {
-      "title": "Jev means structured output is interesting again",
-      "url": "https://seangoedecke.com/jev-means-structured-output-is-interesting-again/",
-      "date": "2026-09-16T00:00:00.000Z"
+      "title": "System One models like Jev can train their own replacements",
+      "url": "https://seangoedecke.com/system-one-models-can-train-their-own-replacements/",
+      "date": "2026-09-20T00:00:00.000Z"
     },
     {
-      "title": "Tell agents the why, not just the how",
-      "url": "https://seangoedecke.com/tell-agents-the-why/",
-      "date": "2026-09-15T00:00:00.000Z"
+      "title": "Grit your teeth and ship it",
+      "url": "https://seangoedecke.com/grit-your-teeth-and-ship-it/",
+      "date": "2026-09-20T00:00:00.000Z"
     },
     {
       "title": "Find Git Commits by Commit Message Text",
@@ -380,6 +370,16 @@
       "title": "P(doom)",
       "url": "https://lucumr.pocoo.org/2026/9/12/pdoom/",
       "date": "2026-09-12T00:00:00.000Z"
+    },
+    {
+      "title": "Jev introduces a new shape of LLM - System One, aka Decision Models",
+      "url": "https://simonwillison.net/2026/Sep/21/jev/",
+      "date": "2026-09-21T23:09:20.000Z"
+    },
+    {
+      "title": "Cloudflare Python Workers are now generally available",
+      "url": "https://simonwillison.net/2026/Sep/21/cloudflare-python-worker/",
+      "date": "2026-09-21T22:25:44.000Z"
     }
   ]
 }
