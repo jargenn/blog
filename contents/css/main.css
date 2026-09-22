@@ -66,6 +66,13 @@
     cursor: var(--cursor-pressed);
   }
 
+  /* Keep the pressed cursor while the pointer is held down. The explicit
+     state is more reliable than :active across quick clicks and navigation. */
+  html.is-pressing,
+  html.is-pressing a[href] {
+    cursor: var(--cursor-pressed);
+  }
+
   main {
     a {
       color: inherit;
