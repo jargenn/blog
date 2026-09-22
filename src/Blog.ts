@@ -322,7 +322,10 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
     const date_str = `${day}-${month}-${year}`;
 
     const slug = to_lower_snake_case(arch.title);
-    const src = `/contents/posts/${slug}.dj`;
+    // Keep the source path tied to the file we actually discovered. A post's
+    // title slug is used for its public URL, but it does not necessarily match
+    // the filename in contents/posts/.
+    const src = path.replace(/^\.\/contents\//, "/contents/");
 
     posts.push({
       year,
