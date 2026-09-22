@@ -4,7 +4,7 @@
     "stage":"finished",
     "tags":["OpenAPI", "Typescript", "Rust"],
     "date":"2026-09-19",
-    "abstract":"Deriving a client from an OpenAPI spec, so services in different languages can share one source of truth for their types."
+    "abstract":"Deriving a client from an OpenAPI schema, so services in different languages can share one source of truth for their types."
 } 
 ---
 
@@ -16,7 +16,7 @@ Handling the divergence of each type across repos gets really tiring really fast
 
 One solution you may find is to use [Protobufs](https://protobuf.dev/) and you would be right, at a certain scale! In common cases where you don't have a large number of services (maybe you have a simple client-server architecture), this takes a lot more effort than warranted since you would be adding a third new language to the project. 
 
-For that kind of project, a nice solution I've found online is to create a HTTP Client derived from an [OpenAPI](https://www.openapis.org/) specification and publishing it as a library. 
+For that kind of project, a nice solution I've found online is to create a HTTP Client derived from an [OpenAPI](https://www.openapis.org/) schema and publishing it as a library. 
 
 ## The Pattern
 
@@ -55,7 +55,7 @@ pub async fn login(
 }
 ```
 
-Then, the generated OpenAPI specification for that endpoint would look like[^yaml]:
+Then, the generated OpenAPI schema for that endpoint would look like[^yaml]:
 
 ```yaml
 /api/v1/auth/login:
@@ -201,9 +201,9 @@ You could go even one step further and make discoverability easier by doing a li
 
 ## Conclusion
 
-I've found this technique useful because it allows me to maintain only one source of truth close to the source code. I've purposefully used a small endpoint to demonstrate it but there is a [lot more information](https://spec.openapis.org/oas/latest.html) you can bake in the spec.
+I've found this technique useful because it allows me to maintain only one source of truth close to the source code. I've purposefully used a small endpoint to demonstrate it but there is a [lot more information](https://spec.openapis.org/oas/latest.html) you can bake in the schema.
 
-Some unrelated advantages of this is that by making an effort to write a good OpenAPI spec, you can easily create a website to share the documentation using something like [Scalar](https://scalar.com/).
+Some unrelated advantages of this is that by making an effort to write a good OpenAPI schema, you can easily create a website to share the documentation using something like [Scalar](https://scalar.com/).
 
 ![Example of the generated UI by Scalar](https://cdn.lautaroacosta.com/scalar-api-client-2.avif)
 
