@@ -4,6 +4,7 @@
   :root {
     --cursor-default: url("../assets/Cursor.cur") 6 2, default;
     --cursor-pointer: url("../assets/Hand.cur") 6 2, pointer;
+    --cursor-pressed: url("../assets/Hand-pressed.cur") 3 20, pointer;
     --code-font: "Iosevka";
     --code-tint: color-mix(in srgb, var(--accent) 15%, transparent);
     --block-font: "Iosevka", "et-book", Georgia, serif;
@@ -59,6 +60,10 @@
 
   a[href] {
     cursor: var(--cursor-pointer);
+  }
+
+  a[href]:active {
+    cursor: var(--cursor-pressed);
   }
 
   main {
