@@ -2,6 +2,8 @@
 
 @layer base {
   :root {
+    --cursor-default: url("../assets/Cursor.cur") 6 2, default;
+    --cursor-pointer: url("../assets/Hand.cur") 6 2, pointer;
     --code-font: "Iosevka";
     --code-tint: color-mix(in srgb, var(--accent) 15%, transparent);
     --block-font: "Iosevka", "et-book", Georgia, serif;
@@ -38,6 +40,7 @@
   }
 
   html {
+    cursor: var(--cursor-default);
     box-sizing: border-box;
     font-family: var(--regular-font);
     -webkit-font-smoothing: antialiased;
@@ -47,11 +50,15 @@
     color: var(--text);
     font-size-adjust: ex-height 0.53;
     font-kerning: normal;
-    /* font-weight: 500; */
     font-variant-ligatures: common-ligatures contextual;
     font-feature-settings: "kern", "liga", "clig";
     -webkit-text-size-adjust: 100%;
     line-height: var(--line-height);
+      min-height: 100%;
+  }
+
+  a[href] {
+    cursor: var(--cursor-pointer);
   }
 
   main {
@@ -76,7 +83,7 @@
     }
 
     .article-title {
-        font-size: 2.6rem;
+      font-size: 2.6rem;
     }
 
     :where(h2, h3) {
@@ -116,7 +123,7 @@
 
   .reading-time {
     display: inline-flex;
-      cursor: help;
+    cursor: help;
     align-items: center;
   }
 
@@ -138,7 +145,7 @@
     header {
       margin-bottom: 0;
       display: flex;
-      flex-direction:column;
+      flex-direction: column;
     }
 
     p {
@@ -206,10 +213,10 @@
         font-family: var(--block-font);
         font-weight: 500;
         font-style: normal;
-         em,
-  i {
-    font-style: normal;
-  }
+        em,
+        i {
+          font-style: normal;
+        }
       }
 
       &.code-block {
@@ -316,9 +323,9 @@
     margin-bottom: 2rem;
 
     .site-name {
-        display: none;
-          line-height: 1.2;
-          white-space: nowrap;
+      display: none;
+      line-height: 1.2;
+      white-space: nowrap;
       /* font-family: var(--block-font); */
       font-family: inherit;
       text-transform: uppercase;
@@ -369,7 +376,6 @@
             fill: currentColor;
           }
         }
-
 
         &:hover {
           color: var(--accent);
