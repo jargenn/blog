@@ -8,6 +8,11 @@ export interface FeedEntry {
   date: Date;
 }
 
+export interface BlogrollData {
+  entries: FeedEntry[];
+  updatedAt: Date;
+}
+
 type Cache = {
   createdAt: string;
   entries: FeedEntry[];
@@ -17,7 +22,7 @@ const BLOGROLL_CACHE_FILE = "contents/blogroll.json";
 const TTL = 1000 * 60 * 2880;
 
 export const Blogroll = {
-  async create(): Promise<FeedEntry[]> {
+  async create(): Promise<BlogrollData> {
     console.log("[Creating the Blogroll]");
 
     const cached = await read_cache();
@@ -25,7 +30,10 @@ export const Blogroll = {
     if (cached) {
       if (Date.now() - new Date(cached.createdAt).getTime() < TTL) {
         console.log("Using cached blogroll");
-        return sort_entries(rebuild(cached.entries));
+        return {
+          entries: sort_entries(rebuild(cached.entries)),
+          updatedAt: new Date(cached.createdAt),
+        };
       }
 
       console.log("Cache is stale, regenerating...");
@@ -53,7 +61,7 @@ export const Blogroll = {
 
     sort_entries(all_entries);
 
-    return all_entries;
+    return { entries: all_entries, updatedAt: new Date(cache.createdAt) };
   },
 };
 

@@ -94,12 +94,17 @@ export const Blog = {
       [...asset_map].filter(([k]) => k.endsWith(".woff2")),
     );
     if (blogroll) {
-      const posts = await Blogroll.create();
+      const { entries: posts, updatedAt } = await Blogroll.create();
       const preamble = await page_html_djot("src/blogroll.djot");
       await write_file(
         "dist/blogroll.html",
         html_ugly(
-          BlogRoll({ posts, preamble }, css_bundle, js_bundle, fonts),
+          BlogRoll(
+            { posts, preamble, updatedAt },
+            css_bundle,
+            js_bundle,
+            fonts,
+          ),
         ),
       );
     }

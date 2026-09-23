@@ -312,7 +312,11 @@ export function Page(
 }
 
 export function BlogRoll(
-  { posts, preamble }: { posts: FeedEntryData[]; preamble: HtmlString },
+  { posts, preamble, updatedAt }: {
+    posts: FeedEntryData[];
+    preamble: HtmlString;
+    updatedAt: Date;
+  },
   css: string,
   js: string,
   fonts: Map<string, string>,
@@ -365,6 +369,16 @@ export function BlogRoll(
     >
       <div class="normal-layout">
         <Raw unsafe={preamble.value} />
+        <p class="blogroll-updated">
+          Last updated at:{" "}
+          <time datetime={updatedAt.toISOString()}>
+            {updatedAt.toLocaleString("en-GB", {
+              timeZone: "America/Argentina/Buenos_Aires",
+              dateStyle: "medium",
+              timeStyle: "short",
+            })} UTC−3
+          </time>
+        </p>
         <ul class="blogroll">
           {list_items}
         </ul>

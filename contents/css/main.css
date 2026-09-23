@@ -651,6 +651,12 @@
     align-items: center;
   }
 
+  .blogroll-updated {
+    color: color-mix(in srgb, var(--text) 85%, var(--background));
+    font-size: 0.8rem;
+    font-family: var(--block-font);
+  }
+
   .tags {
     color: var(--text);
     display: flex;
