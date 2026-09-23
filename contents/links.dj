@@ -1,23 +1,28 @@
 
-Non-exhaustive list of content I've read/seen that left an impression or that I would recommend to anyone.
+Non-exhaustive list of content I've read/seen that left an impression or that I would recommend to anyone. I've tried to leave a small text for each one explaining _why_ they are here.
 
-It's a mix of everything related to software engineering: from _people_ to _processes_ and uh, well, _*software*_:
+It's a mix of everything related to software engineering: from _people_ to _processes_ and uh, well, _*software*_. They are kind of grouped by similar theme:
 
-- *[The Consensus](https://theconsensus.dev/about.html)*
-- *[Fallthrough](https://fallthrough.fm/)*
-- *[Choose Boring Technology](https://mcfunley.com/choose-boring-technology)*
-- *[Don't Call Yourself A Programmer, And Other Career Advice](https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/)*
+- *[The Consensus](https://theconsensus.dev/about.html)*: It's a really good website for everything hardcore software related.
+
+- *[My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey)*: In an avalance on AI doom/hype/hate content, I find Mitchell Hashimoto's take one of the most sensible, also because the man can back it up.
+> _"I really don't care one way or the other if AI is here to stay, I'm a software craftsman that just wants to build stuff for the love of the game."_
+- *[Fallthrough](https://fallthrough.fm/)*: I like how the hosts don't try to just sell you something, but actually try to reason on what's happening. They have really good guests.
+- *[Choose Boring Technology](https://mcfunley.com/choose-boring-technology)*: A good counterpoint to the _"use the right tool for the job"_ advice that gets thrown around sometimes without much thinking behind.
+- *[Java for Everything](https://www.teamten.com/lawrence/writings/java-for-everything.html)*: My main takeway is that one should really think about the trade-offs and the long-run before making decisions.
+- *[Don't Call Yourself A Programmer, And Other Career Advice](https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/)*: Even when I don't believe that the title "programmer" means what it says there, *it is* a well-written article about the reality of the profession and what we should keep focus on first, loving computers it's hardly the reason one is employed.
+- *[Value over replacement in software engineering](https://www.seangoedecke.com/value-over-replacement/)*: It's a nice framework to have when doing a self-evaluation of one's work.
+- *[Pure and impure software engineering](https://www.seangoedecke.com/pure-and-impure-engineering/)*: I see the classification as nothing but a vehicle to talk about the reality of engineers and software.
 - *[How to ask good questions](https://jvns.ca/blog/good-questions/)*
-- *[The one ring problem: abstraction and our quest for power](https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)*
-- *[You Might Be Better Off Without Pull Requests](https://hamvocke.com/blog/better-off-without-pull-requests/)*
-- *[Notes on structured concurrency, or: Go statement considered harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/)*
-- *[Value over replacement in software engineering](https://www.seangoedecke.com/value-over-replacement/)*
-- *[My Kind of REPL](https://ianthehenry.com/posts/my-kind-of-repl/)*
-- *[Java for Everything](https://www.teamten.com/lawrence/writings/java-for-everything.html)*
+- *[Get your work recognized: write a brag document](https://jvns.ca/blog/brag-documents/)*.
+- *[Cheerleading](https://notes.eatonphil.com/2025-05-26-cheerleading.html)*: This advice seems obvious once you hear it but *I am* someone whose default behaviour *is* to lay low and interact once in a while, since I often think that what I could share doesn't have any particular value. 
+- *[Publishing your work increases your luck ](https://github.com/readme/guides/publishing-your-work)*: Again, the mindset where you only posts something you think has real value is a disservice to your career. It's all about being present and having a signal.
 - *[About 40 hours](https://thesquareplanet.com/blog/about-40-hours/)*
-- *[Pure and impure software engineering](https://www.seangoedecke.com/pure-and-impure-engineering/)*
-- *[My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey)*
-- *[Metrics For Your Web Application's Dashboards](https://sirupsen.com/metrics)*
-- *[You can't design software you don't work on](https://www.seangoedecke.com/you-cant-design-software-you-dont-work-on/)*
-- *[A Design Space Exploration of Async/Await](https://cel.cs.brown.edu/blog/design-space-async-await/)*
+- *[You Might Be Better Off Without Pull Requests](https://hamvocke.com/blog/better-off-without-pull-requests/)*: I liked the history recap around VCSs and it mirrors my own experience feeling how bindly following what you're taught is not a good idea.
+- *[The one ring problem: abstraction and our quest for power](https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)*: A really good post about software design. Everything by Ted Kaminski is really good.
+- *[Test, don't (just) verify](https://alperenkeles.com/posts/test-dont-verify/)*: Proofs are not a silver bullet.
+- *[My Kind of REPL](https://ianthehenry.com/posts/my-kind-of-repl/)*: It's a fun read and I liked the _"testing-as-observation"_ mindset.
+- *[Notes on structured concurrency, or: Go statement considered harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful)*: Such a cool exploration of design decisions in language/libraries.
+
+- *[Why async Rust?](https://without.boats/blog/why-async-rust/)*: How `async/await` came to be, design decisions and trade-offs. It's a really good read if you are interested in language design.
 
