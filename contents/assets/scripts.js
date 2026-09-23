@@ -1,6 +1,5 @@
 const CODE_THEMES = {
-  light: "gruvbox-light",
-  // light: "ayu-light",
+  light: "alabaster",
   dark: "gruvbox-dark",
 };
 
@@ -12,9 +11,9 @@ const arboriumScript = document.querySelector(
 function setTheme(theme) {
   html.dataset.theme = theme;
 
-  if (arboriumScript && window.arborium?.highlightAll) {
+  if (arboriumScript && globalThis.arborium?.highlightAll) {
     arboriumScript.dataset.theme = CODE_THEMES[theme];
-    window.arborium.highlightAll();
+    globalThis.arborium.highlightAll();
   }
 }
 
@@ -47,5 +46,5 @@ document.addEventListener("pointerdown", (event) => {
 
 document.addEventListener("pointerup", clearPressedCursor);
 document.addEventListener("pointercancel", clearPressedCursor);
-window.addEventListener("blur", clearPressedCursor);
+globalThis.addEventListener("blur", clearPressedCursor);
 document.addEventListener("visibilitychange", clearPressedCursor);
