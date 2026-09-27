@@ -44,6 +44,50 @@ document.addEventListener("pointerdown", (event) => {
   }
 });
 
+// Lightbox for content images: click to view at full size, with caption.
+const lightbox = document.createElement("div");
+lightbox.className = "lightbox";
+lightbox.hidden = true;
+lightbox.innerHTML =
+  '<img alt=""><figcaption class="lightbox-caption"></figcaption>';
+const lightboxImg = lightbox.querySelector("img");
+const lightboxCaption = lightbox.querySelector(".lightbox-caption");
+document.body.appendChild(lightbox);
+
+function openLightbox(img) {
+  lightboxImg.src = img.currentSrc || img.src;
+  lightboxImg.alt = img.alt;
+  const caption = img.closest("figure")?.querySelector("figcaption");
+  lightboxCaption.textContent = caption?.textContent.trim() ?? "";
+  lightboxCaption.hidden = !caption;
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  lightboxImg.src = "";
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  if (!lightbox.hidden) {
+    closeLightbox();
+    return;
+  }
+  const img = target.closest("img[data-kind='media']");
+  if (img) {
+    event.preventDefault();
+    openLightbox(img);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+});
+
 document.addEventListener("pointerup", clearPressedCursor);
 document.addEventListener("pointercancel", clearPressedCursor);
 globalThis.addEventListener("blur", clearPressedCursor);
