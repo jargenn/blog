@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-09-27T00:27:03.131Z",
+  "createdAt": "2026-10-04T02:10:46.018Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -12,14 +12,14 @@
       "date": "2026-07-25T11:20:55.000Z"
     },
     {
+      "title": "Replacing the old battery on rechargeable bike lights",
+      "url": "https://jvns.ca/blog/2026/09/27/replacing-the-old-battery-on-rechargeable-bike-lights/",
+      "date": "2026-09-27T00:00:00.000Z"
+    },
+    {
       "title": "Some more things about Django I've been enjoying",
       "url": "https://jvns.ca/blog/2026/07/21/more-nice-django-things/",
       "date": "2026-07-21T00:00:00.000Z"
-    },
-    {
-      "title": "Learning a few things about running SQLite",
-      "url": "https://jvns.ca/blog/2026/07/17/learning-about-running-sqlite/",
-      "date": "2026-07-17T00:00:00.000Z"
     },
     {
       "title": "Generators with UnpinCell",
@@ -42,14 +42,14 @@
       "date": "2026-09-20T00:00:00.000Z"
     },
     {
+      "title": "There's no point at which turning your brain off will work",
+      "url": "https://danluu.com/brain-off/",
+      "date": "2026-09-18T00:00:00.000Z"
+    },
+    {
       "title": "How well do agents use test and verification techniques?",
       "url": "https://danluu.com/agentic-testing/",
       "date": "2026-09-07T00:00:00.000Z"
-    },
-    {
-      "title": "Ed Zitron's AI prediction track record",
-      "url": "https://danluu.com/zitron/",
-      "date": "2026-09-01T00:00:00.000Z"
     },
     {
       "title": "iddqd, or the hardest kind of unsafe Rust",
@@ -161,15 +161,15 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Lorenz and Little: How Much Does Your Tail Cost?",
-      "url": "http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html",
-      "date": "2026-07-29T00:00:00.000Z"
+      "title": "Small Decisions: Engineering a Leading Model",
+      "url": "http://brooker.co.za/blog/2026/09/28/engineering-system-one.html",
+      "date": "2026-09-28T00:00:00.000Z"
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Aurora DSQL: Scalable, Multi-Region OLTP",
-      "url": "http://brooker.co.za/blog/2026/07/19/dsql-paper.html",
-      "date": "2026-07-19T00:00:00.000Z"
+      "title": "Lorenz and Little: How Much Does Your Tail Cost?",
+      "url": "http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html",
+      "date": "2026-07-29T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -237,15 +237,15 @@
     },
     {
       "author": "Alperen Keles",
-      "title": "Source of truth is all you need",
-      "url": "https://alperenkeles.com/posts/source-of-truth/",
-      "date": "2026-08-10T00:00:00.000Z"
+      "title": "CS 101 for Political Scientists",
+      "url": "https://alperenkeles.com/posts/gwu-psc-cs-101/",
+      "date": "2026-09-27T00:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
-      "title": "Next Chapter!",
-      "url": "https://alperenkeles.com/posts/next-chapter/",
-      "date": "2026-07-01T00:00:00.000Z"
+      "title": "Source of truth is all you need",
+      "url": "https://alperenkeles.com/posts/source-of-truth/",
+      "date": "2026-08-10T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
@@ -261,15 +261,15 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Mapping millions of little trees across the Cairngorms with airborne LiDAR",
-      "url": "https://anil.recoil.org/notes/cairngorms-woodland-expansion",
-      "date": "2026-09-24T00:00:00.000Z"
+      "title": "LIFE, Zarr and everything",
+      "url": "https://anil.recoil.org/notes/life-zarr-and-everything",
+      "date": "2026-09-30T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-38: Near, far, wherever you are, Tessera infers on",
-      "url": "https://anil.recoil.org/notes/2026w38",
-      "date": "2026-09-20T00:00:00.000Z"
+      "title": ".plan-26-39: End of my sabbatical, and I feeeel fine!",
+      "url": "https://anil.recoil.org/notes/2026w39",
+      "date": "2026-09-27T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -309,25 +309,25 @@
     },
     {
       "author": "Matthias Endler",
-      "title": "We Have Named Arguments at Home",
-      "url": "https://corrode.dev/blog/named-arguments-at-home/",
-      "date": "2026-09-24T00:00:00.000Z"
+      "title": "Practical Rust API Design",
+      "url": "https://corrode.dev/blog/practical-rust-api-design/",
+      "date": "2026-10-02T00:00:00.000Z"
     },
     {
       "author": "Matthias Endler",
-      "title": "JetBrains",
-      "url": "https://corrode.dev/podcast/s06e09-jetbrains/",
-      "date": "2026-07-30T00:00:00.000Z"
+      "title": "Rust Conferences 2027",
+      "url": "https://corrode.dev/blog/rust-conferences-2027/",
+      "date": "2026-10-01T00:00:00.000Z"
     },
     {
-      "title": "Advice to a beginning software engineer",
-      "url": "https://seangoedecke.com/advice-to-a-beginning-software-engineer/",
-      "date": "2026-09-26T00:00:00.000Z"
+      "title": "Superpersuasion will look like bribery",
+      "url": "https://seangoedecke.com/superpersuasion-will-look-like-bribery/",
+      "date": "2026-10-03T00:00:00.000Z"
     },
     {
-      "title": "You should all be asking way more questions",
-      "url": "https://seangoedecke.com/you-should-all-be-asking-way-more-questions/",
-      "date": "2026-09-25T00:00:00.000Z"
+      "title": "Shipping is the foundation",
+      "url": "https://seangoedecke.com/shipping-is-the-foundation/",
+      "date": "2026-10-03T00:00:00.000Z"
     },
     {
       "title": "Find Git Commits by Commit Message Text",
@@ -362,24 +362,34 @@
       "date": "2026-09-07T09:50:00.000Z"
     },
     {
+      "title": "Deser: Rethinking Rust Serialization",
+      "url": "https://lucumr.pocoo.org/2026/9/29/deser/",
+      "date": "2026-09-29T00:00:00.000Z"
+    },
+    {
       "title": "Interpreting Pangram",
       "url": "https://lucumr.pocoo.org/2026/9/14/interpreting-pangram/",
       "date": "2026-09-14T00:00:00.000Z"
     },
     {
-      "title": "P(doom)",
-      "url": "https://lucumr.pocoo.org/2026/9/12/pdoom/",
-      "date": "2026-09-12T00:00:00.000Z"
+      "title": "We're going to need default hard budget caps on pretty much everything",
+      "url": "https://simonwillison.net/2026/Oct/3/default-hard-budget-caps/",
+      "date": "2026-10-03T23:34:02.000Z"
     },
     {
-      "title": "Kākāpō Party",
-      "url": "https://simonwillison.net/2026/Sep/26/kakapo-party/",
-      "date": "2026-09-26T23:39:06.000Z"
+      "title": "September sponsors-only newsletter",
+      "url": "https://simonwillison.net/2026/Oct/3/newsletter/",
+      "date": "2026-10-03T22:00:31.000Z"
     },
     {
-      "title": "Quoting John Gruber",
-      "url": "https://simonwillison.net/2026/Sep/25/john-gruber/",
-      "date": "2026-09-25T17:22:01.000Z"
+      "title": "Fool's Expertise",
+      "url": "https://bcantrill.dtrace.org/2026/09/27/fools-expertise/",
+      "date": "2026-09-27T00:00:00.000Z"
+    },
+    {
+      "title": "What Sun got wrong",
+      "url": "https://bcantrill.dtrace.org/2026/09/20/what-sun-got-wrong/",
+      "date": "2026-09-20T00:00:00.000Z"
     }
   ]
 }

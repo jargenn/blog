@@ -35,3 +35,4 @@ https://www.benjoffe.com/rss.xml
 https://lucumr.pocoo.org/feed.xml
 https://simonwillison.net/atom/everything/
 https://bcantrill.dtrace.org/index.xml
+https://herecomesthemoon.net/posts/index.xml
