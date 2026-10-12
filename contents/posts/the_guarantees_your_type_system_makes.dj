@@ -4,7 +4,7 @@
  "stage": "finished",
  "date": "2026-06-24", 
  "tags":["Rust", "OCaml", "TypeScript", "Type systems"],
-"abstract": "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, subtyping, variance, algebraic data types and others."
+"abstract": "A practical tour of what type systems can offer you. We explore ideas that empower how you can write software: type safety, sub-typing, variance, algebraic data types and others."
 } 
 ---
 
@@ -20,7 +20,7 @@ By the end, it'll work as a quite fun (for me at least) overview of what type sy
 
 ## Sound languages
 
-If you search for type safety, one of the first results will be something talking about the concept of a "safe language", so let's start there. I found two popular definitions for what a safe language is.
+If you search for type safety, one of the first results will be something talking about the concept of a “safe language”, so let's start there. I found two popular definitions for what a safe language is.
 
 The first from _"[The Practical Foundations of Programming Languages](https://www.cs.cmu.edu/~rwh/pfpl.html)"_ book by Robert Harper:
 
@@ -37,9 +37,9 @@ From here, we roughly learn that:
 
 Now we know the first thing about type safety: it _guarantees_ that the predictions made by the types are right.
 
-But now I have more doubts! What are typing judgements? What is all of that well and ill behaved jargon?
+But now I have more doubts! What are typing judgments? What is all of that well and ill behaved jargon?
 
-Well, luckily for us, Harper defines a language as "safe language" if *all* well-typed programs are well-behaved, meaning they exhibit only behaviors predicted by the statics. The fulfillment of this property is what marks a language as *safe* or *unsafe*.[^disclaimer]
+Well, luckily for us, Harper defines a language as “safe language” if *all* well-typed programs are well-behaved, meaning they exhibit only behaviors predicted by the statics. The fulfillment of this property is what marks a language as *safe* or *unsafe*.[^disclaimer]
 
 [^disclaimer]: Which I found often called *sound* or *unsound* because they don't allow programs that break the rules of the language semantics. We'll use both terms interchangeably.
 
@@ -60,7 +60,7 @@ He also defines type safety and type soundness as separate:
 Where _forbidden_ errors are a set that includes all the _untrapped_ errors and a previously defined subset of _trapped errors_.
 
 {cap="Venn-like diagram depicting the relation between the trapped, untrapped and forbidden sets"}
-![Venn-like diagram depicting the relation between the trapped, untrapped and foribdden sets](https://cdn.lautaroacosta.com/2/set.avif)
+![Venn-like diagram depicting the relation between the trapped, untrapped and forbidden sets](https://cdn.lautaroacosta.com/2/set.avif)
 
 
 Which is essentially the same idea seen from another perspective of the well-behaved programs that Harper talks about.
@@ -114,7 +114,7 @@ This program is clearly well-typed, but to state that the language is sound we n
 - The dynamics do not define what happens in this failure case, it is an untrapped error: the language is unsound.
 - This kind of error is accounted for in the dynamics of the language, it is a trapped error: the language is considered sound.
 
-In practice, this is done with static and/or dynamic checks, with the latter being the most commonly found because it's easier to implement: throwing errors, errors as values, crash-recovery, exceptions, panicking, choose your favourite. 
+In practice, this is done with static and/or dynamic checks, with the latter being the most commonly found because it's easier to implement: throwing errors, errors as values, crash-recovery, exceptions, panicking, choose your favorite. 
 
 There are more expressive type systems where it's possible to detect errors like the example before at compile time, such as the ones that have [dependent types](https://en.wikipedia.org/wiki/Dependent_type) like in [Idris](https://www.idris-lang.org/) or [F*](https://fstar-lang.org/), but the languages aren't as adopted and I know little of about them.
 
@@ -149,7 +149,7 @@ Preservation can be read as _"if under the typing context $`Γ`, $`e` has type $
 
 Progress and can be read as _"if under the empty typing context $`∅`, $`e` has type, $`τ` then $`e` is either a value or there exists an expression $`e'` reachable by a single step from $`e`"_. It ensures that well-typed closed expressions are either values or can be further evaluated. [^stuck]
 
-[^stuck]: A term is said to be "stuck" when it fails to satisfy the Progress theorem.
+[^stuck]: A term is said to be “stuck” when it fails to satisfy the Progress theorem.
 
 ****
 
@@ -157,7 +157,7 @@ Now it's a good time to stop and take another look at the division by zero, but 
 
 ## Division by zero strikes back
 
-We'll look at two snippets in Rust and C and compare what their specifications define the behaviour to be in front of this error and what ultimately ends up happenning when we execute _implementations_ of the spec. [^notice]
+We'll look at two snippets in Rust and C and compare what their specifications define the behavior to be in front of this error and what ultimately ends up happening when we execute _implementations_ of the spec. [^notice]
 
 [^notice]: This happens because type soundness is a property of the language and not the implementation!
 
@@ -319,7 +319,7 @@ This time, the Fil-C compiler ends up rewriting our program to always return `0`
 
 Until now, we've always talked about types and static phases so it seems that we always have some kind of static analysis going on. It's reasonable to wonder how any of this applies to dynamic languages, since we don't have types there do we?
 
-Dynamic languages are sometimes referred to as "untyped" languages, but the truth is that it's _types all the way down baby_. Turns out, dynamic languages embrace a model of computation where multiple _classes_ of values exist for a *single recursive type*. Harper addresses this:
+Dynamic languages are sometimes referred to as “untyped” languages, but the truth is that it's _types all the way down baby_. Turns out, dynamic languages embrace a model of computation where multiple _classes_ of values exist for a *single recursive type*. Harper addresses this:
 
 > _"Every dynamic language is inherently a static language in which we confine ourselves to a (needlessly) restricted type discipline to ensure safety."_
 
@@ -345,7 +345,7 @@ Since there exists only one singular recursive type, _Preservation_ plays lesser
 
 It's useful to look at an example in the wild. This single recursive type we mentioned can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
 
-Right now, it's looking like the static typing bois have won: Python has static type checkers like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/).  [TypeScript](https://www.typescriptlang.org/) is incredibly adopted and it's essentially a static type system layer over Javascript. More recently, even [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/00lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
+Right now, it's looking like the static typing bois have won: Python has static type checkers like [mypy](https://mypy-lang.org/) and [ty](https://docs.astral.sh/ty/).  [TypeScript](https://www.typescriptlang.org/) is incredibly adopted and it's essentially a static type system layer over JavaScript. More recently, even [Elixir](https://hexdocs.pm/elixir/main/gradual-set-theoretic-types.html) has been working on adding a [gradual type system!](https://drops.dagstuhl.de/storage/00lipics/lipics-vol032-snapl2015/LIPIcs.SNAPL.2015.274/LIPIcs.SNAPL.2015.274.pdf).
 
 ****
 
@@ -365,7 +365,7 @@ This relation essentially enlarges the set of well-typed programs, allowing the 
 
 This can sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and is key when making sense of class hierarchies.
 
-To understand subtyping is useful to think in matters of _behaviours_. We'll use $`T <: S`  to show that $`T` is a subtype of $`S`.
+To understand subtyping is useful to think in matters of _behaviors_. We'll use $`T <: S`  to show that $`T` is a subtype of $`S`.
 
 To work some quick examples, in languages with nominal typing like Java, one often needs to declare the relation explicitly:
 
@@ -396,7 +396,7 @@ Spren Rock = new Bridgeman();
 
 ```
 
-In contrast, TypeScript uses structural typing because it's meant to work around Javascript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
+In contrast, TypeScript uses structural typing because it's meant to work around JavaScript, where anonymous objects are what is commonly used, so we can do things that are invalid in Java:
 
 ``` TypeScript
 type Bridgeman = {
@@ -423,7 +423,7 @@ const run = (b: Bridgeman) => {
 run(jezrien);
 
 // This also works because the point of having structural typing in TS
-// is to still be able to write Javascript.
+// is to still be able to write JavaScript.
 run({
   run() {},
 });
@@ -778,7 +778,7 @@ impl Rollable for Dice {
 
 // Each pointer of a trait object includes a pointer to an instance
 // of the type `T` implementing the trait and a virtual method table
-// (vtable) containing, for each method of `T`, a function pointer
+// (called a vtable) containing, for each method of `T`, a function pointer
 // to `T`s implementation.
 // Roughly something like this:
 
@@ -859,7 +859,7 @@ fn main() {
     let bank_account = 10_000_000;
     let rc_bank = Rc::new(bank_account);
 
-    // Trying to share a reference betweem threads
+    // Trying to share a reference between threads
     // will cause a compile-time error because `Rc` is `!Sync` !
     thread::spawn(|| {
         do_something(&rc_bank);
@@ -946,7 +946,7 @@ error[E0277]: `std::sync::MutexGuard<'_, u32>` cannot be sent between threads sa
 
 [^cliffe]: If you want to read more why they look like that, [read here](https://cliffle.com/blog/rust-mutexes/)
 
-The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide "interior mutability" and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. So it's okay to give away ownership of it, but the idea of multiple writers with no synchronization is not fun.
+The opposite is also possible, the [`Cell<T>`](https://doc.rust-lang.org/std/cell/) types are `Send` but `!Sync` since they provide “interior mutability” and can be mutated through a shared reference `&T`, contrary to the usual borrowing rules. So it's okay to give away ownership of it, but the idea of multiple writers with no synchronization is not fun.
 
 [^os-scheduler]: The compiler isn't able to prevent _resource_ races product of the preemptive schedulers of the underlying operating system.
 
@@ -969,7 +969,7 @@ The reason behind that demand is that, at a high level, tokio uses a _thread poo
 
 When all the tasks in the worker's queue were resolved, it will either attempt to pick more tasks from the global queue or will *_steal_* from the local queue of another worker. In both cases, the future will need to cross a thread boundary and later be polled. If we check the signature for the `poll()` function above, we see that it takes an _exclusive_ reference `&mut`, that means we are _giving away ownership_ of everything inside that future to another thread, exactly the purpose of the `Send` trait! [^caveat] 
 
-[^caveat]: This behaviour is according to tokio's [multi-threaded runtime](https://docs.rs/tokio/latest/tokio/runtime/index.html#multi-threaded-runtime-behavior-at-the-time-of-writing), for `!Send` futures, tokio offers alternative runtimes.
+[^caveat]: This behavior is according to tokio's [multi-threaded runtime](https://docs.rs/tokio/latest/tokio/runtime/index.html#multi-threaded-runtime-behavior-at-the-time-of-writing), for `!Send` futures, tokio offers alternative runtimes.
 
 ## ADTs 
 
@@ -1050,7 +1050,7 @@ I can't express enough how much I can miss this features. Currently I'm writing 
 
 Before, I didn't elaborate on what the `option` type was because it was in fact a sum type! It's often used as the replacement of the concept of nullability that many other languages still have:
 
-``` OCaml
+```OCaml
 (*
   The `'a` annotation is called alpha and is virtually the same as the `T`
   used in the examples using TypeScript above!

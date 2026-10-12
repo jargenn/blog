@@ -10,7 +10,7 @@
 
 # OpenAPI Derived HTTP Client
 
-Often times when you are working on a project where you have one or more services written in different languages[^service] that have to interact with each other, you face the problem of having to translate one type to another, making sure they match.
+Often times when you are working on a project where you have one or more services written in different languages[^service] that have to interact, you face the problem of having to translate one type to another, making sure they match.
 
 Handling the divergence of each type across repos gets really tiring really fast. You may argue that this isn't much of an issue since you can ask an agent to take care of it, but I'd say that's not an excuse to half-ass things. Also, the code itself is not the only important part, the documentation describing _why_ the response is shaped like that is another.  
 
@@ -208,8 +208,8 @@ Some unrelated advantages of this is that by making an effort to write a good Op
 ![Example of the generated UI by Scalar](https://cdn.lautaroacosta.com/scalar-api-client-2.avif)
 
 
-[^service]: I talk about services in a wide sense not only what's commonly referred as a "backend", a SPA would be a service.
-[^types]: Obviously to take any advantage for this you have to actually type your responses instead of sending and receiving untyped json blobs.
+[^service]: I talk about services in a wide sense not only what's commonly referred as a “backend”, a SPA would be a service.
+[^types]: To take any advantage of this you have to actually type your responses instead of sending and receiving untyped json blobs.
 [^yaml]: Reading yaml is not pleasant but it's easier than json.
 
 
