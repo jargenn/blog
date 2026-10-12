@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-10-04T02:10:46.018Z",
+  "createdAt": "2026-10-06T21:41:04.059Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -105,15 +105,15 @@
     },
     {
       "author": "Alex Kladov",
-      "title": "Finding Bugs",
-      "url": "https://matklad.github.io/2026/09/19/finding-bugs.html",
-      "date": "2026-09-19T00:00:00.000Z"
+      "title": "Benchmark In Milliseconds",
+      "url": "https://matklad.github.io/2026/10/05/benchmark-milliseconds.html",
+      "date": "2026-10-05T00:00:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "Static Allocation, Constant Work",
-      "url": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
-      "date": "2026-09-02T00:00:00.000Z"
+      "title": "Finding Bugs",
+      "url": "https://matklad.github.io/2026/09/19/finding-bugs.html",
+      "date": "2026-09-19T00:00:00.000Z"
     },
     {
       "author": "Nathaniel J. Smith",
@@ -138,14 +138,14 @@
       "date": "2026-09-06T00:00:00.000Z"
     },
     {
+      "title": "A new, bespoke static site generator to replace Jekyll",
+      "url": "https://nullprogram.com/blog/2026/10/04/",
+      "date": "2026-10-04T16:35:49.000Z"
+    },
+    {
       "title": "What's been going on in w64devkit the past year",
       "url": "https://nullprogram.com/blog/2026/09/20/",
       "date": "2026-09-20T01:49:36.000Z"
-    },
-    {
-      "title": "A custom virtual machine for the Stars! 4X game",
-      "url": "https://nullprogram.com/blog/2026/09/17/",
-      "date": "2026-09-17T02:00:00.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -161,15 +161,15 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Small Decisions: Engineering a Leading Model",
-      "url": "http://brooker.co.za/blog/2026/09/28/engineering-system-one.html",
-      "date": "2026-09-28T00:00:00.000Z"
+      "title": "Strands Decider: Why Not an Encoder?",
+      "url": "http://brooker.co.za/blog/2026/10/04/encoders.html",
+      "date": "2026-10-04T00:00:00.000Z"
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Lorenz and Little: How Much Does Your Tail Cost?",
-      "url": "http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html",
-      "date": "2026-07-29T00:00:00.000Z"
+      "title": "Small Decisions: Engineering a Leading Model",
+      "url": "http://brooker.co.za/blog/2026/09/28/engineering-system-one.html",
+      "date": "2026-09-28T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -261,15 +261,15 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "LIFE, Zarr and everything",
-      "url": "https://anil.recoil.org/notes/life-zarr-and-everything",
-      "date": "2026-09-30T00:00:00.000Z"
+      "title": ".plan-26-40: A whole new world (of wall-to-wall Tessera embeddings)",
+      "url": "https://anil.recoil.org/notes/2026w40",
+      "date": "2026-10-04T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-39: End of my sabbatical, and I feeeel fine!",
-      "url": "https://anil.recoil.org/notes/2026w39",
-      "date": "2026-09-27T00:00:00.000Z"
+      "title": "LIFE, Zarr and everything",
+      "url": "https://anil.recoil.org/notes/life-zarr-and-everything",
+      "date": "2026-09-30T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -340,16 +340,16 @@
       "date": "2026-08-03T00:00:00.000Z"
     },
     {
+      "author": "austin@ersc.io (Austin Seipp)",
+      "title": "When random is not actually random enough",
+      "url": "https://ersc.io/blog/when-random-isnt-random-enough",
+      "date": "2026-10-06T00:00:00.000Z"
+    },
+    {
       "author": "steve@ersc.io (Steve Klabnik)",
       "title": "What comes after git",
       "url": "https://ersc.io/blog/what-comes-after-git",
       "date": "2026-09-10T00:00:00.000Z"
-    },
-    {
-      "author": "contact@ersc.io (East River Source Control)",
-      "title": "East River Source Control Names Jujutsu Creator Martin von Zweigbergk Chief Technology Officer",
-      "url": "https://ersc.io/blog/martin-joins-ersc",
-      "date": "2026-09-01T00:00:00.000Z"
     },
     {
       "title": "A New Equal-Area Map for Interactive Computer Use",
@@ -362,24 +362,24 @@
       "date": "2026-09-07T09:50:00.000Z"
     },
     {
+      "title": "What is Codemode",
+      "url": "https://lucumr.pocoo.org/2026/10/6/codemode/",
+      "date": "2026-10-06T00:00:00.000Z"
+    },
+    {
       "title": "Deser: Rethinking Rust Serialization",
       "url": "https://lucumr.pocoo.org/2026/9/29/deser/",
       "date": "2026-09-29T00:00:00.000Z"
     },
     {
-      "title": "Interpreting Pangram",
-      "url": "https://lucumr.pocoo.org/2026/9/14/interpreting-pangram/",
-      "date": "2026-09-14T00:00:00.000Z"
+      "title": "llm-mistral 0.16",
+      "url": "https://simonwillison.net/2026/Oct/6/llm-mistral/",
+      "date": "2026-10-06T21:32:34.000Z"
     },
     {
-      "title": "We're going to need default hard budget caps on pretty much everything",
-      "url": "https://simonwillison.net/2026/Oct/3/default-hard-budget-caps/",
-      "date": "2026-10-03T23:34:02.000Z"
-    },
-    {
-      "title": "September sponsors-only newsletter",
-      "url": "https://simonwillison.net/2026/Oct/3/newsletter/",
-      "date": "2026-10-03T22:00:31.000Z"
+      "title": "EmbeddingGemma 2",
+      "url": "https://simonwillison.net/2026/Oct/6/hn-49983751/",
+      "date": "2026-10-06T20:37:53.000Z"
     },
     {
       "title": "Fool's Expertise",
@@ -390,6 +390,18 @@
       "title": "What Sun got wrong",
       "url": "https://bcantrill.dtrace.org/2026/09/20/what-sun-got-wrong/",
       "date": "2026-09-20T00:00:00.000Z"
+    },
+    {
+      "author": "contact@herecomesthemoon.net (Mond)",
+      "title": "Async Rust: Where does the scheduler live?",
+      "url": "https://herecomesthemoon.net/2026/10/async-rust-where-does-the-scheduler-live/",
+      "date": "2026-10-03T00:00:00.000Z"
+    },
+    {
+      "author": "contact@herecomesthemoon.net (Mond)",
+      "title": "Commodified Intelligence",
+      "url": "https://herecomesthemoon.net/2026/09/commodified-intelligence/",
+      "date": "2026-09-25T00:00:00.000Z"
     }
   ]
 }
