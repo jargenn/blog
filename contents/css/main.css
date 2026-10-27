@@ -16,7 +16,7 @@
     --emphasis: #181818;
     --muted: #dbdbd6;
     --text: #0b0907;
-    --accent: #75aadb;
+    --accent: #3D36E8;
     --figure-width: calc(var(--measure) - 10ch);
     --figure-block-margin: 1.8em;
 
@@ -32,7 +32,6 @@
       --background: #181a1b;
       --lang-bg: #232628;
       --text: #dcd8d0;
-      --accent: #fcbf49;
       --emphasis: #f5f5f5;
       --muted: #2a2f36;
     }

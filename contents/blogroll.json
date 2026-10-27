@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-10-06T21:41:04.059Z",
+  "createdAt": "2026-10-27T01:29:18.906Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -42,24 +42,24 @@
       "date": "2026-09-20T00:00:00.000Z"
     },
     {
+      "title": "“We should be more ambitious with the software we build”",
+      "url": "https://danluu.com/ambitious/",
+      "date": "2026-10-24T00:00:00.000Z"
+    },
+    {
       "title": "There's no point at which turning your brain off will work",
       "url": "https://danluu.com/brain-off/",
       "date": "2026-09-18T00:00:00.000Z"
     },
     {
-      "title": "How well do agents use test and verification techniques?",
-      "url": "https://danluu.com/agentic-testing/",
-      "date": "2026-09-07T00:00:00.000Z"
+      "title": "More on Anthropic's Scion ripping off Mononoke",
+      "url": "https://sunshowers.io/posts/anthropic-mononoke-2/?utm_source=atom_feed",
+      "date": "2026-10-15T00:00:00.000Z"
     },
     {
-      "title": "iddqd, or the hardest kind of unsafe Rust",
-      "url": "https://sunshowers.io/posts/iddqd-unsafe/?utm_source=atom_feed",
-      "date": "2026-06-02T00:00:00.000Z"
-    },
-    {
-      "title": "In defense of lock poisoning in Rust",
-      "url": "https://sunshowers.io/posts/on-poisoning/?utm_source=atom_feed",
-      "date": "2025-12-02T00:00:00.000Z"
+      "title": "Anthropic's Scion is heavily inspired by Mononoke",
+      "url": "https://sunshowers.io/posts/anthropic-mononoke/?utm_source=atom_feed",
+      "date": "2026-10-14T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -82,14 +82,14 @@
       "date": "2025-11-30T00:00:00.000Z"
     },
     {
+      "title": "Linear Recurrences",
+      "url": "https://okmij.org/ftp/Algorithms/map-monoid-reduce.html#lin-rec",
+      "date": "2026-10-07T00:01:00.000Z"
+    },
+    {
       "title": "Parallel Fun with Monoids and Map-Reduce,",
       "url": "https://okmij.org/ftp/Algorithms/map-monoid-reduce.html",
       "date": "2026-09-08T00:01:00.000Z"
-    },
-    {
-      "title": "Summaries and impressions of papers and talks,",
-      "url": "https://okmij.org/ftp/Computation/Impressions/index.html",
-      "date": "2026-08-06T00:01:00.000Z"
     },
     {
       "author": "Ted Kaminski",
@@ -105,15 +105,15 @@
     },
     {
       "author": "Alex Kladov",
-      "title": "Benchmark In Milliseconds",
-      "url": "https://matklad.github.io/2026/10/05/benchmark-milliseconds.html",
-      "date": "2026-10-05T00:00:00.000Z"
+      "title": "On Git Refs",
+      "url": "https://matklad.github.io/2026/10/07/git-ref.html",
+      "date": "2026-10-07T00:00:00.000Z"
     },
     {
       "author": "Alex Kladov",
-      "title": "Finding Bugs",
-      "url": "https://matklad.github.io/2026/09/19/finding-bugs.html",
-      "date": "2026-09-19T00:00:00.000Z"
+      "title": "Benchmark In Milliseconds",
+      "url": "https://matklad.github.io/2026/10/05/benchmark-milliseconds.html",
+      "date": "2026-10-05T00:00:00.000Z"
     },
     {
       "author": "Nathaniel J. Smith",
@@ -128,24 +128,24 @@
       "date": "2018-09-10T19:00:00.000Z"
     },
     {
-      "title": "Query plan rewriting in PostgreSQL",
-      "url": "http://notes.eatonphil.com/2026-09-13-query-plan-rewriting-in-postgresql.html",
-      "date": "2026-09-13T00:00:00.000Z"
+      "title": "Deepthi Sigireddi from Supabase",
+      "url": "http://notes.eatonphil.com/2026-10-08-deepthi-sigireddi-from-supabase.html",
+      "date": "2026-10-08T00:00:00.000Z"
     },
     {
-      "title": "Data races and the limits of ThreadSanitizer in C and Go",
-      "url": "http://notes.eatonphil.com/2026-09-06-data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html",
-      "date": "2026-09-06T00:00:00.000Z"
+      "title": "Compression and concatenation on the web",
+      "url": "http://notes.eatonphil.com/2026-10-04-compression-and-concatenation-on-the-web.html",
+      "date": "2026-10-04T00:00:00.000Z"
+    },
+    {
+      "title": "tugz: a new deflate library with three applications",
+      "url": "https://nullprogram.com/blog/2026/10/13/",
+      "date": "2026-10-13T22:32:24.000Z"
     },
     {
       "title": "A new, bespoke static site generator to replace Jekyll",
       "url": "https://nullprogram.com/blog/2026/10/04/",
       "date": "2026-10-04T16:35:49.000Z"
-    },
-    {
-      "title": "What's been going on in w64devkit the past year",
-      "url": "https://nullprogram.com/blog/2026/09/20/",
-      "date": "2026-09-20T01:49:36.000Z"
     },
     {
       "author": "Alice Ryhl",
@@ -161,15 +161,15 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Strands Decider: Why Not an Encoder?",
-      "url": "http://brooker.co.za/blog/2026/10/04/encoders.html",
-      "date": "2026-10-04T00:00:00.000Z"
+      "title": "Animations for System Builders: Metastability and Lost Writes",
+      "url": "http://brooker.co.za/blog/2026/10/23/animations.html",
+      "date": "2026-10-23T00:00:00.000Z"
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Small Decisions: Engineering a Leading Model",
-      "url": "http://brooker.co.za/blog/2026/09/28/engineering-system-one.html",
-      "date": "2026-09-28T00:00:00.000Z"
+      "title": "Strands Decider: Why Not an Encoder?",
+      "url": "http://brooker.co.za/blog/2026/10/04/encoders.html",
+      "date": "2026-10-04T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -182,18 +182,6 @@
       "title": "The LogDrive: Flexible Composition Through Abstraction in Shared Logs",
       "url": "https://jack-vanlightly.com/blog/2026/8/25/the-logdrive-flexible-composition-through-abstraction-in-shared-logs",
       "date": "2026-08-25T12:11:33.000Z"
-    },
-    {
-      "author": "Julian Hyde",
-      "title": "Morel on Go, and why platforms shouldn’t matter",
-      "url": "http://blog.hydromatic.net/2026/08/01/morel-on-go.html",
-      "date": "2026-08-01T20:00:00.000Z"
-    },
-    {
-      "author": "Julian Hyde",
-      "title": "Expressing package queries in Morel",
-      "url": "http://blog.hydromatic.net/2026/05/29/package-queries.html",
-      "date": "2026-05-29T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -226,14 +214,14 @@
       "date": "2025-12-04T13:00:00.000Z"
     },
     {
+      "title": "AI scope creep & productivity",
+      "url": "http://ayende.com/204195-a/ai-scope-creep-productivity?Key=1a5c4f1b-f771-4cae-9d09-517df279ef5f",
+      "date": "2026-10-23T12:00:00.000Z"
+    },
+    {
       "title": "Doing it again, twenty years later: introducing Quill",
       "url": "http://ayende.com/204163-a/doing-it-again-twenty-years-later-introducing-quill?Key=9778e219-50e7-48b3-95e4-0ddb4b36e403",
       "date": "2026-09-09T12:00:00.000Z"
-    },
-    {
-      "title": "Database research, frontier AI, and idiot savants, oh my!",
-      "url": "http://ayende.com/204131-a/database-research-frontier-ai-and-idiot-savants-oh-my?Key=53bb569b-cf7f-4df2-8679-47bb246b102e",
-      "date": "2026-08-21T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -249,39 +237,45 @@
     },
     {
       "author": "Thomas Gazagnaire",
+      "title": "Thought Experiment #1",
+      "url": "https://gazagnaire.org/blog/2026-10-16-thought-experiment-1.html",
+      "date": "2026-10-16T00:00:00.000Z"
+    },
+    {
+      "author": "Thomas Gazagnaire",
       "title": "Rewriting Tailwind CSS in OCaml: Is It (Pixel-)Correct?",
       "url": "https://gazagnaire.org/blog/2026-09-23-tailwind-parity.html",
       "date": "2026-09-23T00:00:00.000Z"
     },
     {
-      "author": "Thomas Gazagnaire",
-      "title": "Reusing Buffers in Multicore OCaml",
-      "url": "https://gazagnaire.org/blog/2026-07-24-domain-safe-codecs.html",
-      "date": "2026-07-24T00:00:00.000Z"
+      "author": "Anil Madhavapeddy",
+      "title": ".plan-26-42: Tails of the unexpected",
+      "url": "https://anil.recoil.org/notes/2026w42",
+      "date": "2026-10-18T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-40: A whole new world (of wall-to-wall Tessera embeddings)",
-      "url": "https://anil.recoil.org/notes/2026w40",
-      "date": "2026-10-04T00:00:00.000Z"
-    },
-    {
-      "author": "Anil Madhavapeddy",
-      "title": "LIFE, Zarr and everything",
-      "url": "https://anil.recoil.org/notes/life-zarr-and-everything",
-      "date": "2026-09-30T00:00:00.000Z"
+      "title": ".plan-26-41: Hello, is it Part II you're looking for?",
+      "url": "https://anil.recoil.org/notes/2026w41",
+      "date": "2026-10-11T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
-      "title": "Production ML-DSA Verification in 350 Lines of Python",
-      "url": "https://words.filippo.io/mldsa-py/",
-      "date": "2026-07-26T11:45:08.000Z"
+      "title": "The NIST Elliptic Curves Seeds Bounty Has Been Claimed",
+      "url": "https://words.filippo.io/seeds-solved/",
+      "date": "2026-10-16T18:57:20.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
-      "title": "Opaque, Interoperable Passkey Records (and a Go API)",
-      "url": "https://words.filippo.io/passkey-record/",
-      "date": "2026-07-20T22:33:32.000Z"
+      "title": "(Post-Quantum) Cryptographic Right Answers",
+      "url": "https://words.filippo.io/right-answers/",
+      "date": "2026-10-12T12:00:27.000Z"
+    },
+    {
+      "author": "Ian Duncan",
+      "title": "Who Owns the Machines?",
+      "url": "https://iankduncan.com/personal/2026-10-15-who-owns-the-machines/",
+      "date": "2026-10-15T00:00:00.000Z"
     },
     {
       "author": "Ian Duncan",
@@ -290,22 +284,16 @@
       "date": "2026-09-16T00:00:00.000Z"
     },
     {
-      "author": "Ian Duncan",
-      "title": "Getting Freaky in the Age of AI",
-      "url": "https://iankduncan.com/engineering/2026-08-07-getting-freaky-in-the-age-of-ai/",
-      "date": "2026-08-07T00:00:00.000Z"
+      "author": "Jepsen",
+      "title": "Orkes Conductor 5.3.2",
+      "url": "https://jepsen.io/blog/2026-10-20-orkes-conductor-5.3.2",
+      "date": "2026-10-20T00:00:00.000Z"
     },
     {
       "author": "Jepsen",
-      "title": "Jepsen 0.3.14",
-      "url": "https://jepsen.io/blog/2026-09-22-jepsen-0.3.14",
-      "date": "2026-09-22T00:00:00.000Z"
-    },
-    {
-      "author": "Jepsen",
-      "title": "Lessons From Testing Distributed Systems",
-      "url": "https://jepsen.io/blog/2026-09-18-lessons-from-testing-distributed-systems",
-      "date": "2026-09-18T00:00:00.000Z"
+      "title": "Jepsen 0.3.15",
+      "url": "https://jepsen.io/blog/2026-10-16-jepsen-0.3.15",
+      "date": "2026-10-16T00:00:00.000Z"
     },
     {
       "author": "Matthias Endler",
@@ -320,14 +308,14 @@
       "date": "2026-10-01T00:00:00.000Z"
     },
     {
-      "title": "Superpersuasion will look like bribery",
-      "url": "https://seangoedecke.com/superpersuasion-will-look-like-bribery/",
-      "date": "2026-10-03T00:00:00.000Z"
+      "title": "Don't anthropomorphize big tech companies",
+      "url": "https://seangoedecke.com/dont-anthropomorphize-big-tech-companies/",
+      "date": "2026-10-25T00:00:00.000Z"
     },
     {
-      "title": "Shipping is the foundation",
-      "url": "https://seangoedecke.com/shipping-is-the-foundation/",
-      "date": "2026-10-03T00:00:00.000Z"
+      "title": "Software is slow because of bad design, not slow languages",
+      "url": "https://seangoedecke.com/software-is-slow-because-of-bad-design-not-slow-languages/",
+      "date": "2026-10-23T00:00:00.000Z"
     },
     {
       "title": "Find Git Commits by Commit Message Text",
@@ -352,14 +340,14 @@
       "date": "2026-09-10T00:00:00.000Z"
     },
     {
+      "title": "A faster way to compute signed 64-bit floor division by constants",
+      "url": "https://www.benjoffe.com/fast-floordiv",
+      "date": "2026-10-26T18:45:00.000Z"
+    },
+    {
       "title": "A New Equal-Area Map for Interactive Computer Use",
       "url": "https://www.benjoffe.com/map",
       "date": "2026-09-14T22:30:00.000Z"
-    },
-    {
-      "title": "A faster way to calculate the Time of Day",
-      "url": "https://www.benjoffe.com/fast-time-of-day",
-      "date": "2026-09-07T09:50:00.000Z"
     },
     {
       "title": "What is Codemode",
@@ -372,14 +360,14 @@
       "date": "2026-09-29T00:00:00.000Z"
     },
     {
-      "title": "llm-mistral 0.16",
-      "url": "https://simonwillison.net/2026/Oct/6/llm-mistral/",
-      "date": "2026-10-06T21:32:34.000Z"
+      "title": "GPT-6.1 Terra",
+      "url": "https://simonwillison.net/2026/Oct/26/gpt-61-terra/",
+      "date": "2026-10-26T23:53:07.000Z"
     },
     {
-      "title": "EmbeddingGemma 2",
-      "url": "https://simonwillison.net/2026/Oct/6/hn-49983751/",
-      "date": "2026-10-06T20:37:53.000Z"
+      "title": "Quoting Jason Koebler",
+      "url": "https://simonwillison.net/2026/Oct/26/jason-koebler/",
+      "date": "2026-10-26T19:00:25.000Z"
     },
     {
       "title": "Fool's Expertise",
@@ -402,6 +390,16 @@
       "title": "Commodified Intelligence",
       "url": "https://herecomesthemoon.net/2026/09/commodified-intelligence/",
       "date": "2026-09-25T00:00:00.000Z"
+    },
+    {
+      "title": "What agents mean for Rust (and vice versa)",
+      "url": "https://smallcultfollowing.com/babysteps/blog/2026/10/14/agentic-dev-and-rust/?utm_source=atom_feed",
+      "date": "2026-10-14T00:00:00.000Z"
+    },
+    {
+      "title": "Why 'externalized' proofs of cyclic trait impls does not work",
+      "url": "https://smallcultfollowing.com/babysteps/blog/2026/10/10/modular-vs-external-proofs/?utm_source=atom_feed",
+      "date": "2026-10-10T00:00:00.000Z"
     }
   ]
 }

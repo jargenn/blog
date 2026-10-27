@@ -1,5 +1,5 @@
 const CODE_THEMES = {
-  light: "alabaster",
+  light: "gruvbox-light",
   dark: "gruvbox-dark",
 };
 
