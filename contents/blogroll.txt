@@ -37,3 +37,4 @@ https://simonwillison.net/atom/everything/
 https://bcantrill.dtrace.org/index.xml
 https://herecomesthemoon.net/posts/index.xml
 https://smallcultfollowing.com/babysteps//atom.xml
+https://borretti.me/feed.xml
