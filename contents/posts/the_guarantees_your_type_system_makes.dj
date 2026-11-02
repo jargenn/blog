@@ -971,7 +971,7 @@ When all the tasks in the worker's queue were resolved, it will either attempt t
 
 [^caveat]: This behavior is according to tokio's [multi-threaded runtime](https://docs.rs/tokio/latest/tokio/runtime/index.html#multi-threaded-runtime-behavior-at-the-time-of-writing), for `!Send` futures, tokio offers alternative runtimes.
 
-## ADTs 
+## Algebraic Data Types 
 
 Algebraic Data Types (ADTs) is the name given to a [composite data type](https://en.wikipedia.org/wiki/Composite_data_type)(a type created by combining other types) where the building blocks are [sum types](https://en.wikipedia.org/wiki/Tagged_union) and [product types](https://en.wikipedia.org/wiki/Product_type). Product types are the easier ones to understand because they are often the first ones any programmer encounters, be it in the shape of structs in C or dataclasses in Python.
 
