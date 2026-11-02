@@ -1,11 +1,13 @@
 # About
 
-I'm Lautaro Acosta Quintana, a student from Argentina currently pursuing an Information Systems Engineering degree at [UTN](https://www.frre.utn.edu.ar/).
+I'm Lautaro Acosta Quintana, a programmer from Argentina with professional experience in web development. My experience is primarily in designing, implementing and deploying backend systems and, to a lesser degree, building user interfaces. You can email me at [*email protected*]{.email-address data-address="moc.atsocaoratual@em"}.
 
-I love solving problems by thinking about systems and looking for the best way to do things. I've found the intersection between software engineering and computer science such a deeply interesting space that I've decided to try to be great at it.
+I like to solve problems and figure out the best way to do things. I focus on building software that is reliable, efficient and understandable. My main interests right now range from system design and distributed computing to language design. 
+
+Currently, I'm also student pursuing an Information Systems Engineering degree at [UTN](https://www.frre.utn.edu.ar/).
 
 While I do spend a [*lot of time* reading](/reading.html), I try to [write about things I find interesting](/writing.html).
 
-{% You can find my résumé in [English](https://cdn.lautaroacosta.com/resume_us_3.pdf) or [Spanish](https://cdn.lautaroacosta.com/resume_es_3.pdf). %} 
-
+::: details
 The content on this blog is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The code for this site is licensed under the [MIT License](https://opensource.org/license/mit/).
+:::

@@ -8,6 +8,14 @@ const arboriumScript = document.querySelector(
   'script[src*="@arborium/arborium"]',
 );
 
+for (const placeholder of document.querySelectorAll(".email-address[data-address]")) {
+  const email = [...placeholder.dataset.address].reverse().join("");
+  const link = document.createElement("a");
+  link.href = `mailto:${email}`;
+  link.textContent = email;
+  placeholder.replaceChildren(link);
+}
+
 function setTheme(theme) {
   html.dataset.theme = theme;
 
