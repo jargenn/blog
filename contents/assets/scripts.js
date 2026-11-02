@@ -73,6 +73,23 @@ function closeLightbox() {
 document.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
+
+  const copyButton = target.closest(".code-copy");
+  if (copyButton) {
+    const code = copyButton.closest(".code-block")?.querySelector("pre code");
+    if (code) {
+      navigator.clipboard.writeText(code.textContent ?? "").then(() => {
+        copyButton.textContent = "Copied!";
+        copyButton.setAttribute("aria-label", "Code copied");
+        setTimeout(() => {
+          copyButton.textContent = "Copy";
+          copyButton.setAttribute("aria-label", "Copy code");
+        }, 1500);
+      });
+    }
+    return;
+  }
+
   if (!lightbox.hidden) {
     closeLightbox();
     return;

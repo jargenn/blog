@@ -261,17 +261,7 @@ export function render(
       const grammar_name = lang_name === "fishshell" ? "fish" : node.lang;
 
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
-        ${
-        node.lang
-          ? `<span class="language-tag" title="${node.lang}">
-             <img
-            class="language-icon"
-            alt="${node.lang}"
-            src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${lang_name}.svg"
-          >
-          </span>`
-          : ""
-      }
+        <button class="code-copy" type="button" aria-label="Copy code"><svg viewBox="0 0 24 24" aria-hidden="true" class="copy-icon" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         ${
         r.renderAstNodeDefault({
           ...node,
