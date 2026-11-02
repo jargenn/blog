@@ -5,10 +5,9 @@
     --cursor-default: url("../assets/Cursor.cur") 6 2, default;
     --cursor-pointer: url("../assets/Hand.cur") 6 2, pointer;
     --cursor-pressed: url("../assets/Hand-pressed.cur") 3 20, pointer;
-    --code-font: "Iosevka";
+    --code-font: "Iosevka", monospace;
     --code-tint: color-mix(in srgb, var(--accent) 15%, transparent);
-    --block-font: "Iosevka", "et-book", Georgia, serif;
-    --regular-font: "et-book", Georgia, serif;
+    --regular-font: "et-book", serif;
     --line-height: 1.8;
     --border-radius: 0.4rem;
     --background: #fdfcfc;
@@ -107,7 +106,6 @@
     }
 
     .post-title {
-      /* font-family: var(--block-font); */
       font-family: var(--regular-font);
       font-style: normal;
     }
@@ -214,7 +212,7 @@
 
       &.with-caption {
         border: 1px solid var(--muted);
-        font-family: var(--block-font);
+        font-family: var(--regular-font);
         border-radius: 6.9px;
         box-sizing: border-box;
         padding: 0.8em;
@@ -224,7 +222,7 @@
         background: var(--lang-bg);
         border-left: 3px solid var(--accent);
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06);
-        font-family: var(--block-font);
+        font-family: var(--regular-font);
         font-weight: 500;
         font-style: normal;
         em,
@@ -333,7 +331,7 @@
     background: var(--text);
     color: var(--background);
     z-index: 1000;
-    font-family: var(--block-font);
+    font-family: var(--regular-font);
     border-radius: var(--border-radius);
   }
 
@@ -348,7 +346,6 @@
       display: none;
       line-height: 1.2;
       white-space: nowrap;
-      /* font-family: var(--block-font); */
       font-family: inherit;
       text-transform: uppercase;
       font-weight: 700;
@@ -637,7 +634,7 @@
   .meta-row {
     color: color-mix(in srgb, var(--text) 85%, var(--background));
     font-size: 1.2rem;
-    font-family: var(--block-font);
+    font-family: var(--regular-font);
     line-height: 1.3;
     & time,
     & .reading-time {
@@ -653,7 +650,7 @@
   .blogroll-metadata {
     color: color-mix(in srgb, var(--text) 85%, var(--background));
     font-size: 0.8rem;
-    font-family: var(--block-font);
+    font-family: var(--regular-font);
     display: flex;
     align-items: center;
   }
@@ -661,7 +658,7 @@
   .blogroll-updated {
     color: color-mix(in srgb, var(--text) 85%, var(--background));
     font-size: 0.8rem;
-    font-family: var(--block-font);
+    font-family: var(--regular-font);
   }
 
   .tags {
