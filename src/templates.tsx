@@ -413,23 +413,13 @@ export function PostList(
 
     return (
       <li class={(latest && idx === 0) ? "latest-post" : ""}>
-        <h3>
-          <a class="post-title" href={post.path} rel="noopener">
-            {post.title}
-          </a>
-        </h3>
-
-        <div class="meta-row">
-          <Time className="meta" date={post.iso_date} />
-          <span>·</span>
-          <span class="reading-time">
-            <Raw unsafe={post.reading_time} />
-          </span>
-        </div>
-        <div class="abstract">
-          <a href={post.path} rel="noopener">
-            <p>{post.abstract}</p>
-          </a>
+        <div class="post-heading">
+          <Time className="meta-row" date={post.iso_date} />
+          <h3>
+            <a class="post-title" href={post.path} rel="noopener">
+              {post.title}
+            </a>
+          </h3>
         </div>
         <div class="tags">
           {tags}
