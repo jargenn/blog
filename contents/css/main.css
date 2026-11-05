@@ -16,6 +16,7 @@
     --muted: #dbdbd6;
     --text: #0b0907;
     --accent: #0A75AD;
+    --accent: #e01b24;
     --figure-width: calc(var(--measure) - 10ch);
     --figure-block-margin: 1.8em;
     --measure: 92ch;
@@ -190,7 +191,7 @@
       }
     }
 
-    p + p {
+    p+p {
       text-indent: 1.5em;
     }
 
