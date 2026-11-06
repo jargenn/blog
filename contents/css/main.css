@@ -247,11 +247,6 @@
       }
 
       &.code-block {
-        /* padding: 1em 1.25em; */
-        /* background: var(--lang-bg); */
-        /* box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06); */
-        /* border-radius: 0.4rem; */
-        /* border: 2px solid var(--muted); */
         position: relative;
 
         >pre>code {
@@ -728,8 +723,8 @@
     text-align: left;
 
     >li {
-      padding-bottom: 1.4rem;
-      margin-bottom: 1.4rem;
+      padding: 0.15rem 0.5rem;
+      margin: 0;
     }
 
     >li:last-child {
@@ -737,12 +732,25 @@
       padding-bottom: 0;
     }
 
+    >li:hover:not(:has(.tags:hover)) {
+      color: var(--accent);
+
+      .meta-row,
+      .tag,
+      .post-title,
+      .post-title:visited {
+        color: inherit;
+      }
+    }
+
     .post-heading {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      gap: 0.25rem;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .post-content {
+      min-width: 0;
     }
 
     .post-heading time {
@@ -752,8 +760,10 @@
 
     h3 {
       margin: 0;
-      font-size: 2rem;
-      line-height: 1.35;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      flex: 0 1 auto;
+      min-width: 0;
 
       a {
         font-size: inherit;
@@ -763,7 +773,6 @@
 
     a {
       text-decoration: none;
-      display: block;
 
       &::after {
         content: none;
@@ -772,7 +781,8 @@
 
     .meta-row {
       margin-top: 0;
-      font-size: 0.95rem;
+      font-size: inherit;
+      font-family: var(--regular-font);
       color: color-mix(in srgb, var(--text) 85%, var(--background));
       font-weight: 400;
       font-variant-numeric: tabular-nums;
@@ -780,11 +790,13 @@
 
     .tags {
       display: flex;
+      flex: 0 0 auto;
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-start;
-      gap: 0.6rem;
-      margin-top: 0.35rem;
+      gap: 0;
+      margin: 0;
+      font-family: var(--code-font);
     }
 
     .tag {
@@ -797,14 +809,19 @@
       text-transform: lowercase;
 
       &::before {
-        content: "#";
-        color: var(--accent);
+        content: none;
       }
+    }
+
+    .tags a:hover {
+      color: var(--accent);
+      text-decoration: none;
     }
 
     li::marker {
       content: none;
     }
+
   }
 
   .abstract {
@@ -824,8 +841,16 @@
   @media (max-width: 700px) {
     .post-list {
       >li {
-        padding-bottom: 1rem;
-        margin-bottom: 1rem;
+        padding: 0.35rem;
+      }
+
+      .post-heading {
+        flex-wrap: wrap;
+        column-gap: 0.5rem;
+      }
+
+      .tags {
+        max-width: 100%;
       }
     }
   }

@@ -171,7 +171,7 @@ export const Blog = {
       "dist/writing.html",
       html_ugly(
         PostList(
-          { posts: visible_posts, title: "", latest: true },
+          { posts: visible_posts, title: "", latest: true, showTags: false },
           css_bundle,
           js_bundle,
           fonts,

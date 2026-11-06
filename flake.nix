@@ -16,6 +16,10 @@
         packages = [
           pkgs.deno
           pkgs.vscode-css-languageserver
+          pkgs.rustc
+          pkgs.cargo
+          pkgs.rustfmt
+          pkgs.clippy
 
           pkgs.pkg-config
           pkgs.gmp
@@ -24,6 +28,7 @@
           pkgs.ispell
           pkgs.proselint
           pkgs.harper
+          pkgs.pandoc
         ];
       };
     };

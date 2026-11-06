@@ -189,16 +189,16 @@ export function reading_time_html(doc: Doc): string {
 
   switch (true) {
     case totalMinutes < 1:
-      text = "≈1 min";
+      text = "1 min";
       break;
     case hours === 0:
-      text = `≈${mins} min`;
+      text = `${mins} min`;
       break;
     case mins === 0:
-      text = `≈${hours}h`;
+      text = `${hours}h`;
       break;
     default:
-      text = `≈${hours}h ${mins}min`;
+      text = `${hours}h ${mins}min`;
   }
 
   return `<span title="${title}">${text}</span>`;

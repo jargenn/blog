@@ -388,17 +388,18 @@ export function BlogRoll(
 }
 
 export function PostList(
-  { posts, title, latest }: {
+  { posts, title, latest, showTags = true }: {
     posts: PostData[];
     title?: string;
     latest?: boolean;
+    showTags?: boolean;
   },
   css: string,
   js: string,
   fonts: Map<string, string>,
 ) {
   const list_items = posts.map((post, idx) => {
-    const tags = post.tags.map((tag) => {
+    const tags = post.tags.map((tag, tagIndex) => {
       const tag_slug = tag
         .toLowerCase()
         .trim()
@@ -406,7 +407,7 @@ export function PostList(
 
       return (
         <a class="tag" href={`/t/${tag_slug}.html`}>
-          {tag}
+          {tagIndex > 0 ? "; " : ""}{tag}
         </a>
       );
     });
@@ -415,14 +416,20 @@ export function PostList(
       <li class={(latest && idx === 0) ? "latest-post" : ""}>
         <div class="post-heading">
           <Time className="meta-row" date={post.iso_date} />
-          <h3>
-            <a class="post-title" href={post.path} rel="noopener">
-              {post.title}
-            </a>
-          </h3>
-        </div>
-        <div class="tags">
-          {tags}
+          <div class="post-content">
+            <h3>
+              <a class="post-title" href={post.path} rel="noopener">
+                {post.title}
+              </a>
+            </h3>
+            {showTags && (
+              <div class="tags">
+                <span aria-hidden="true">[</span>
+                {tags}
+                <span aria-hidden="true">]</span>
+              </div>
+            )}
+          </div>
         </div>
       </li>
     );
@@ -439,7 +446,7 @@ export function PostList(
       fonts={fonts}
     >
       <div class="normal-layout">
-        {title && <h1>{title}</h1>}
+          {title && <h1>{title}</h1>}
         <ul class="post-list">
           {list_items}
         </ul>
