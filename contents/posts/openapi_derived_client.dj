@@ -55,78 +55,9 @@ pub async fn login(
 }
 ```
 
-Then, the generated OpenAPI schema for that endpoint would look like[^yaml]:
+Then, depending on what you use, you'll have a build step or runtime function that'll give you a serialized representation of your API, a schema, following the OpenAPI specification.
 
-```yaml
-/api/v1/auth/login:
-  post:
-    summary: Authenticates the given credentials and returns a new session token.
-
-    description: |
-      # Errors
-
-      Returns `401` if the credentials are invalid and `500` on internal
-      errors.
-
-    operationId: login
-
-    tags:
-      - login
-
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Credentials"
-
-    responses:
-      "200":
-        description: Login successful
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginResponse"
-        headers:
-          x-request-id:
-            schema:
-              type: string
-
-      "400":
-        description: Malformed request body
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ErrorResponse"
-        headers:
-          x-request-id:
-            schema:
-              type: string
-
-      "401":
-        description: Invalid credentials
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ErrorResponse"
-        headers:
-          x-request-id:
-            schema:
-              type: string
-
-      "500":
-        description: Internal error
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ErrorResponse"
-        headers:
-          x-request-id:
-            schema:
-              type: string`
-```
-
-From this point, you should look for what else your ecosystem offers you. In this case, you would be pretty covered, [`openapi-typescript`](https://openapi-ts.dev/introduction) supports recent versions of the spec and it allows to turn that schema to TypeScript. Pair that with [`openapi-fetch`](https://openapi-ts.dev/openapi-fetch/) to generate a fetch client based on it and you could create your own wrapper like:
+After that, you should look for what else your ecosystem offers you. In this case, you would be pretty covered, [`openapi-typescript`](https://openapi-ts.dev/introduction) supports recent versions of the spec and it allows to turn that schema to TypeScript. Pair that with [`openapi-fetch`](https://openapi-ts.dev/openapi-fetch/) to generate a fetch client based on it and you could create your own wrapper:
 
 ```Typescript
 import createClient from "openapi-fetch";
@@ -210,6 +141,5 @@ Some unrelated advantages of this is that by making an effort to write a good Op
 
 [^service]: I talk about services in a wide sense not only what's commonly referred as a “backend”, a SPA would be a service.
 [^types]: To take any advantage of this you have to actually type your responses instead of sending and receiving untyped json blobs.
-[^yaml]: Reading yaml is not pleasant but it's easier than json.
 
 
