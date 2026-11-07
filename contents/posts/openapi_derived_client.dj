@@ -55,7 +55,7 @@ pub async fn login(
 }
 ```
 
-Then, depending on what you use, you'll have a build step or runtime function that'll give you a serialized representation of your API, a schema, following the OpenAPI specification.
+Then, depending on what you use, you'll have a build step or runtime function that'll give you a serialized representation of your API in some format (json, yaml, toml, etc) following the OpenAPI specification.
 
 After that, you should look for what else your ecosystem offers you. In this case, you would be pretty covered, [`openapi-typescript`](https://openapi-ts.dev/introduction) supports recent versions of the spec and it allows to turn that schema to TypeScript. Pair that with [`openapi-fetch`](https://openapi-ts.dev/openapi-fetch/) to generate a fetch client based on it and you could create your own wrapper:
 
