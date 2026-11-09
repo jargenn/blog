@@ -47,12 +47,14 @@ export function render(
 ): HtmlString {
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
-  let section_count: number = 0;
+  let has_rendered_first_draft_h2 = false;
 
   const overrides: Visitor<HTMLRenderer, string> = {
     section: (node: Section, r: HTMLRenderer): string => {
-      if (render_data.stage === "draft" && section_count === 3) {
-        return "";
+      const heading = get_child(node, "heading");
+      if (render_data.stage === "draft" && heading?.level === 2) {
+        if (has_rendered_first_draft_h2) return "";
+        has_rendered_first_draft_h2 = true;
       }
 
       const section_prev = section;
@@ -62,7 +64,6 @@ export function render(
         : r.renderAstNodeDefault(node);
       section = section_prev;
 
-      section_count++;
       return result;
     },
     heading: (node: Heading, r: HTMLRenderer) => {
