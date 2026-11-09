@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-11-06T16:48:41.902Z",
+  "createdAt": "2026-11-09T19:55:09.443Z",
   "entries": [
     {
       "title": "The real AI risk is inside the labs",
@@ -42,24 +42,24 @@
       "date": "2026-09-20T00:00:00.000Z"
     },
     {
+      "title": "Test and verification technique effectiveness with GPT-6 Astra",
+      "url": "https://danluu.com/astra-testing/",
+      "date": "2026-11-02T00:00:00.000Z"
+    },
+    {
       "title": "“We should be more ambitious with the software we build”",
       "url": "https://danluu.com/ambitious/",
       "date": "2026-10-24T00:00:00.000Z"
     },
     {
-      "title": "There's no point at which turning your brain off will work",
-      "url": "https://danluu.com/brain-off/",
-      "date": "2026-09-18T00:00:00.000Z"
+      "title": "*sshole, or when are we finally going to get rid of C?",
+      "url": "https://sunshowers.io/posts/sshole/?utm_source=atom_feed",
+      "date": "2026-11-06T00:00:00.000Z"
     },
     {
       "title": "More on Anthropic's Scion ripping off Mononoke",
       "url": "https://sunshowers.io/posts/anthropic-mononoke-2/?utm_source=atom_feed",
       "date": "2026-10-15T00:00:00.000Z"
-    },
-    {
-      "title": "Anthropic's Scion is heavily inspired by Mononoke",
-      "url": "https://sunshowers.io/posts/anthropic-mononoke/?utm_source=atom_feed",
-      "date": "2026-10-14T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -226,14 +226,14 @@
       "date": "2025-12-04T13:00:00.000Z"
     },
     {
+      "title": "What does \"XYZ developer\" mean?",
+      "url": "http://ayende.com/204291-a/what-does-xyz-developer-mean?Key=d57c7c5e-e4ce-4141-be50-8c8e6839a929",
+      "date": "2026-11-09T12:00:00.000Z"
+    },
+    {
       "title": "High performance data structures design & optimizing for the GC",
       "url": "http://ayende.com/204260-a/high-performance-data-structures-design-optimizing-for-the-gc?Key=7edcc96f-002a-4df6-8f75-c1517cb3612c",
       "date": "2026-11-04T12:00:00.000Z"
-    },
-    {
-      "title": "The value of long lived software in AI driven world",
-      "url": "http://ayende.com/204259-a/the-value-of-long-lived-software-in-ai-driven-world?Key=8e647a8d-4e8f-474d-8976-b95e70bf9d79",
-      "date": "2026-11-02T12:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -249,27 +249,27 @@
     },
     {
       "author": "Thomas Gazagnaire",
-      "title": "console: Making OCaml Command-Line Tools Look Good",
+      "title": "Alcotest: finding flaky OCaml tests with JUnit reports",
+      "url": "https://gazagnaire.org/blog/2026-11-09-alcotest-dune-release.html",
+      "date": "2026-11-09T00:00:00.000Z"
+    },
+    {
+      "author": "Thomas Gazagnaire",
+      "title": "console: making OCaml command-line tools look good",
       "url": "https://gazagnaire.org/blog/2026-11-02-console.html",
       "date": "2026-11-02T00:00:00.000Z"
     },
     {
-      "author": "Thomas Gazagnaire",
-      "title": "k7: Keeping CLI Animations in Sync with Your Code",
-      "url": "https://gazagnaire.org/blog/2026-10-26-k7.html",
-      "date": "2026-10-26T00:00:00.000Z"
+      "author": "Anil Madhavapeddy",
+      "title": "Tessera wins the OpenUK software of the year award",
+      "url": "https://anil.recoil.org/notes/openuk-tessera-award",
+      "date": "2026-11-06T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Local AI agents can now pass the IUCN Red List assessor exam",
-      "url": "https://anil.recoil.org/notes/ai-red-list-exam",
-      "date": "2026-11-03T00:00:00.000Z"
-    },
-    {
-      "author": "Anil Madhavapeddy",
-      "title": ".plan-26-44: Commons People",
-      "url": "https://anil.recoil.org/notes/2026w44",
-      "date": "2026-11-01T00:00:00.000Z"
+      "title": "Checking out the latest features in OxCaml 5.4.0+ox9",
+      "url": "https://anil.recoil.org/notes/oxcaml-ox9-improvements",
+      "date": "2026-11-06T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -320,14 +320,14 @@
       "date": "2026-10-02T00:00:00.000Z"
     },
     {
-      "title": "A database is a store for global variables",
-      "url": "https://seangoedecke.com/a-database-is-a-store-for-global-variables/",
-      "date": "2026-11-06T00:00:00.000Z"
+      "title": "LLMs are terrible at designing AI systems",
+      "url": "https://seangoedecke.com/llms-are-terrible-at-designing-ai-systems/",
+      "date": "2026-11-08T00:00:00.000Z"
     },
     {
-      "title": "LLMs are not superhuman at reading and writing neural network weights",
-      "url": "https://seangoedecke.com/llms-are-not-superhuman-at-reading-and-writing-neural-network-weights/",
-      "date": "2026-11-03T00:00:00.000Z"
+      "title": "Working with designers",
+      "url": "https://seangoedecke.com/working-with-designers/",
+      "date": "2026-11-07T00:00:00.000Z"
     },
     {
       "title": "Analyze Git Logs in Style With DuckDB",
@@ -362,24 +362,24 @@
       "date": "2026-09-14T22:30:00.000Z"
     },
     {
+      "title": "AI and Irontown",
+      "url": "https://lucumr.pocoo.org/2026/11/9/irontown/",
+      "date": "2026-11-09T00:00:00.000Z"
+    },
+    {
       "title": "Custom Voices With Qwen3-TTS",
       "url": "https://lucumr.pocoo.org/2026/10/29/qwen3-custom-voices/",
       "date": "2026-10-29T00:00:00.000Z"
     },
     {
-      "title": "What is Codemode",
-      "url": "https://lucumr.pocoo.org/2026/10/6/codemode/",
-      "date": "2026-10-06T00:00:00.000Z"
+      "title": "The Web Is More Than Enough, by Paul Ford",
+      "url": "https://simonwillison.net/2026/Nov/9/hn-50421091/",
+      "date": "2026-11-09T04:32:33.000Z"
     },
     {
-      "title": "Quoting Paul Ford",
-      "url": "https://simonwillison.net/2026/Nov/5/paul-ford/",
-      "date": "2026-11-05T17:34:03.000Z"
-    },
-    {
-      "title": "datasette-llm 0.1a10",
-      "url": "https://simonwillison.net/2026/Nov/4/datasette-llm/",
-      "date": "2026-11-04T15:26:02.000Z"
+      "title": "Hide your slop PR descriptions behind <details><summary>",
+      "url": "https://simonwillison.net/2026/Nov/9/details-summary/",
+      "date": "2026-11-09T04:25:05.000Z"
     },
     {
       "title": "Fool's Expertise",

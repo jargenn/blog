@@ -20,6 +20,10 @@
           pkgs.cargo
           pkgs.rustfmt
           pkgs.clippy
+          pkgs.ocamlPackages.ocaml
+          pkgs.ocamlPackages.dune_3
+          pkgs.ocamlPackages.ocaml-lsp
+          pkgs.ocamlPackages.ocamlformat
 
           pkgs.pkg-config
           pkgs.gmp
