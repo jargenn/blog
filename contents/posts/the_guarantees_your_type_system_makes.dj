@@ -134,6 +134,20 @@ Let's introduce some notation to express these theorems precisely:
 
 ![Notation to express the Preservation and Progress theorems](https://cdn.lautaroacosta.com/1/table_125.avif)
 
+| Symbol | Meaning | Example |
+|:--|:--|:--|
+| $`\Gamma` | Typing context. It maps variables to their types and carries all assumptions currently in scope. | $`\Gamma = \{x : \mathrm{Int},\ f : \mathrm{Int} \to \mathrm{Bool}\}` |
+| $`\vdash` | Turnstile operator. Read as "under the assumption of". Separates the context from the typing conclusion. | $`\Gamma \vdash e : \tau` — in context $`\Gamma`, $`e` has type $`\tau` |
+| $`\tau` | Stands for any concrete type in a judgment. | $`\vdash 42 : \tau` where $`\tau = \mathrm{Int}` |
+| $`:` | Typing relation. It relates an expression to its type. | $`\mathrm{true} : \mathrm{Bool}` — true has type Bool |
+| $`\rightarrow` | Single-step evaluation. It is one reduction step in the semantics of the language. | $`1 + 1 \rightarrow 2` |
+| $`\mathrm{val}` | Value predicate. Denotes that an expression is a value and cannot reduce further. | $`e\ \mathrm{val}` means $`e` is a value |
+| $`\land` | Logical "and". Both propositions on either side must hold simultaneously. | $`e\ \mathrm{val} \land e : \tau` |
+| $`\lor` | Logical "or". At least one of the propositions must hold. | $`\tau = \mathrm{Int} \lor \tau = \mathrm{Bool}` |
+| $`\varnothing` | Empty typing context. No variable assumptions are in scope. | $`\varnothing \vdash 5 : \mathrm{Int}` is a closed term |
+| $`\exists` | Existential quantifier. Witnesses some value or type satisfying a given property. | $`\exists \tau.\ \Gamma \vdash e : \tau` |
+| $`.` | Binder operator. Read as "such that". | $`\exists x.\ P(x)` — there exists $`x` such that $`P(x)` |
+
 Where $`Γ` represents all the variables that are in the scope alongside their types. It's used in the relation $`Γ ⊢ e : τ` that can be read as "the typing context _shows_ that $`e` has type $`τ`".
 
 *Preservation* can be expressed as:
@@ -484,7 +498,7 @@ Subtyping is really there to make programs easier to write, but at the same time
 
 ### Variance
 
-Due to this, in languages that support generics, we'll also need to talk about *variance*, which in layman's terms is about _how_ the subtyping relations translates to the type constructor, or how we try to _reconcile_ two forms of genericity: [parametric](https://pin.it/1qXpf49jH) and subtype polymorphism.
+Due to this, in languages that support generics, we'll also need to talk about *variance*, which in layman's terms is about _how_ the subtyping relations translates to the type constructor, or how we try to _reconcile_ two forms of genericity: parametric and subtype polymorphism.
 
 
 Harper states that:
