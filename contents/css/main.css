@@ -272,6 +272,13 @@
       &.code-block {
         position: relative;
 
+        >figcaption {
+          margin-top: 0.35em;
+          font-family: var(--code-font), monospace;
+          font-style: normal;
+          text-align: center;
+        }
+
         >pre>code {
           display: block;
           overflow-x: auto;
@@ -637,7 +644,6 @@
     vertical-align: baseline;
     font-size: 0.8rem;
     top: -0.5rem;
-    left: 0.1rem;
     color: var(--accent);
   }
 
@@ -649,8 +655,7 @@
   }
 
   label.sidenote-number {
-    display: inline-block;
-    max-height: 2rem;
+    display: inline;
   }
 
   input.margin-toggle {

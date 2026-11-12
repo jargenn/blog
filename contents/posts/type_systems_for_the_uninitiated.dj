@@ -1,45 +1,44 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"draft","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
+ {"title":"Type Systems For The Uninitiated","stage":"finished","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
 ---
 
 # Type Systems For The Uninitiated
 
-Since the recent [^chatgpt] boom of AI assisted programming, there's been a steadily increasing interest about programming languages, specially around type systems. If you are even remotelly present in Twitter/X, Youtube or HackerNews you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/) or work being done to strenght guarantees in languages like [Typescript]() and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with heavy focus on types.  
+Since the recent [^chatgpt] boom of AI assisted programming, there's been a steadily increasing interest about programming languages, specially around type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/) or work being done to strengthen guarantees in languages like [Typescript]() and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with heavy focus on types.  
 
-
-The running hypothesis is clearly stated: *Type Systems make Agentic Engineering better and easier*.
-
-But *why?* What even _is_ a type system and what does it do?
-
-> This post is written aiming at people who are comfortable with the basic ideas of programming or even have had professional experience, in which case you are already using all the concepts introduced, even if unaware.
+The running hypothesis is clearly stated: *Type Systems make Agentic Engineering better and easier*. But *why?* What even _is_ a type system and what does it do?
 
 ## Introduction
 
-I've have always been drawn to programming languages, ever since first learning to code by writing little C exercises, just the notion of having all these little verbs and names make the computer do something was incredible to me. Six years forward, after learning what it takes for that to happen, from microcode to syscalls, the amazement hasn't really wane. I truly believe that learning about them is a crucial part of developing a literacy on the field.
+I've always been drawn to programming languages, ever since first learning to code by writing little C exercises, just the notion of having all these little verbs and names make the computer do something was incredible to me. Six years forward, after learning what's behind all that, from microcode to syscalls, that amazement hasn't really waned. I truly believe that learning about them is a crucial part of developing a literacy on the field.
 
-I, like many of you, have not had a _formal_ education on programming languages. I've essentially did what most out there do, just messed around until all the concepts and jargon you can see being thrown around everywhere online start making sense, and the first thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/). Because of that, many concepts will not be explained formally because that's not the audience this is meant for.
+I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. Because of my background, and the intended reader of the article, a lot of concepts are shown informally but many should be intuitive for someone who already programs.
 
 ## Type Systems
 
-To start talking about type systems we have to first talk about what is a type. Since this is can go a lot of different ways lets adopt the nomenclature of the _"[Type Systems](https://web.archive.org/web/20260917195400/https://courses.grainger.illinois.edu/cs421/fa2018/CS421A/resources/cardelli.pdf)"_ paper by Luca Cardelli and say that:
+To start talking about type systems we have to first talk about what is a type. Already that is kind of a land-mine, the answer could depend heavily on who are you asking, it could be really technical and rich or reductive and tell you its only how memory is interpreted. For this I'd liked to adopt Luca Cardelli's use of it in _"[Type Systems](https://web.archive.org/web/20260917195400/https://courses.grainger.illinois.edu/cs421/fa2018/CS421A/resources/cardelli.pdf)"_, where he calls a type:
 
 > "A program variable can assume a range of values during the execution of a program. An upper bound of such a range is called a *type* of the variable."  
 
-For example, you can be sure that in a *typed language* a variable explictily or implicitly[^milner] declared as 16-bit signed will only range from the values $`-2^{15}` to $`2^{15}-1` throught the program execution because there is a component, the type system, which has the job of rejecting any program that breaks the _type rules_ by making _judgements_ on the types in a program, it essentially tries very hard to prevent execution errors.
+For example, in a language  with a 16-bit signed integer type, a variable explicitly or implicitly[^milner] declared with it can hold values ranging from $`-2^{15}` to $`2^{15}-1`. The type system ensures that operations on these values follow the language's rules, including error cases.
+
+This is achieved by two pieces working in tandem, first is the *type system*: a set of rules that together defines what is a _well-typed_ expression in the language. Then there is the *type-checker*: an actual, possibly partial, implementation of the type systems rules, which has the job of rejecting any program that breaks them by making _judgments_ on a program using said type rules.
+
+These rules can be enforced in different ways depending on the language. In statically typed languages (Rust, C or OCaml) they are checked at compile-time before the program is executed. Other languages, often dynamic languages, rely on runtime checks to know if an operation is valid on a given value. Type-checking can be done independently of program execution, for example, in TypeScript every type gets erased when compiled to JavaScript. In practice, languages often combine both kinds of checks. 
 
 ### Safe languages
 
-Before, I stated that there is a trend of moving to "safer" languages, I intently use quotes around safer because it's important to understand that type safety[^safety] is defined as the property of a program which has ruled out any errors that silently corrupt the program, which Cardelli names _unexpected errors_. But what each language chooses to consider as an unexpected errors can vary, so that's why they can be compared as less or more safe in respect to each other.
+Before, I stated that there is a trend of moving to *"safer"* languages, I intently use quotes for it because it's important to understand that *type safety[^safety] is defined as the property of a program*. Borrowing again from Cardelli's, it's a program which has ruled out errors that don't immediately stop computation (he names them _unexpected errors_), also he expands this idea by using the term _forbidden errors_ to name the set formed by all the unexpected and a subset of the trapped errors (errors which stop the program immediately) and states that a program that doesn't cause forbidden errors is *type sound*. Therefore he states that any language where all programs are type safe is itself a safe language and the same approach is done with sound languages.
 
- Cardelli often uses the term _forbidden errors_ for a set formed by all the unexpected and a subset of the trapped errors (errors which stop the program immediately, think like trying to divide a number by zero) and states that a program that doesn't cause forbidden errors is *type sound*.
 
-Languages try to enforce these behaviours by relying on static and runtime checks during the program execution, independently that they are typed or untyped, think about every compile time error you've faced in Typescript or every runtime check error in Python.
+This may sound good and all, it surely _makes sense_ but it starts to become less useful when you realize that every language chooses what to consider as an unexpected or a trapped error. Even more so, each *language implementation* can add more checks and guard against more errors than what are defined in the rules of the language, this [post](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html) by Matklad makes a better case for it than what I could write.
 
-It's important to emphasize again that *language safety is a binary property*, you are either completely safe or you are not. Because of that, the actual useful part of the dicussion is how many errors can be prevented, *how much of the potential space of programs written in that language are type safe*.
+
+It's important to emphasize again that *language safety is a binary property*, you are either completely safe or you are not. Because of that, the actual useful part of the discussion is how many errors can be prevented. For that, you have to also account for the actual implementation of the language and what guarantees it upholds when push comes to shove.
 
 ### Preservation and Progress
 
-It's not trivial to prove type soundness in a program. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program, by definition, can't get stuck at any time. Getting stuck means that during the execution of the program, it can never reach a point where no evaluation rule in the language applies, if that happens we are talking about a expression that should have been rejected by the type system. This is where the theorems of Preservation and Progress are applied. 
+It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program  can't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
 
 First, let's introduce some notation to express these theorems precisely:
 
@@ -64,13 +63,13 @@ Where $`Γ` represents all the variables that are in the scope alongside their t
 $$`\Gamma \vdash e : \tau \land e \rightarrow e' \Longrightarrow \Gamma \vdash e' : \tau`
 
 
-Preservation can be read as _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the variable, remember what we talked about ranges before.
+Preservation can be read as _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
 
 and *Progress* as:
 
 $$`\varnothing \vdash e : \tau \Longrightarrow (e\ \mathrm{val}) \lor (\exists\ e'.\ e \rightarrow e')`
 
-Progress and can be read as _"if under the empty typing context $`∅`, $`e` has type $`τ` then $`e` is either a value or there exists an expression $`e'` reachable by a single step from $`e`"_. It ensures that well-typed closed expressions (essentialy a whole type sound program) are either values or can be further evaluated and will not get stuck. 
+Progress and can be read as _"if under the empty typing context $`∅`, $`e` has type $`τ` then $`e` is either a value or there exists an expression $`e'` reachable by a single step from $`e`"_. It ensures that well-typed closed expressions (essentially a whole type sound program) are either values or can be further evaluated and will not get stuck. 
 
 ## What about untyped languages?
 
@@ -78,8 +77,9 @@ Also referred to as "Dynamic Languages", they are languages that embrace a model
 
 > _"Every dynamic language is inherently a static language in which we confine ourselves to a (needlessly) restricted type discipline to ensure safety."_
 
-Here every value is _tagged_ to indicate which _class_ of value they belong through a process called _Classification_. Since the only static check done is that the expression is well-formed, meaning it parsed correctly, and that there are _no free variables_ in the expression; Checks for errors that would have never show up in a statically-typed language are done at runtime by a process called _Class Checking_ using the tags each value was given.
+Here every value is _tagged_ to indicate which _class_ of value they belong through a process called _Classification_. The only static check done is that the expression is well-formed,  and that there are _no free variables_ in the expression[^theory]; Checks for errors that would have never show up in a statically-typed language are done at runtime by a process called _Class Checking_ using the tags each value was given.
 
+[^theory]: This is, of course, in theory. Python is a dynamic language that has no issues parsing a program with free variables, remember that this is a general description not a unbreakable rule.
 
 This changes how the theorems are proven. Progress is expressed as:
 
@@ -93,153 +93,126 @@ $$`\forall\ d : \text{exactly one of } (d\ \mathrm{val}),\ (d\ \mathrm{err}),\ (
 
 Which states that, for any $`d` in the language, _exactly one_ of these outcomes must be true at any given time.
 
-In the previous model, these errors were guaranteed not to happen! But, since catching those errors before evaluation requires static typing, now they have become part of the behaviour (the semantics) of the language! Since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! 
+In the previous model, these errors were guaranteed not to happen! But, since catching those errors before evaluation requires static typing, now they have become part of the behavior (the semantics) of the language! Since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! 
 
 *** 
 
-It's useful to look at an example in the wild. This single recursive type idea can be found in the [CPython Language Reference](https://docs.python.org/3/), where it defines a type called [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject), where *all object types are extensions of this type* and one of its fields, `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) that encodes _the object type_ which is exactly the idea of tagging a value to know which class of value they belong to.
+It's useful to look at an example in the wild. This single recursive type idea can be found in the [CPython Language Reference](https://docs.python.org/3/), so lets get the source code:
+
+``` fishshell
+> wget https://www.python.org/ftp/python/3.11.18/Python-3.11.18.tgz
+> tar -xzf Python-3.11.18.tgz
+> z Python-3.11.18/
+```
+
+In there, it defines a type [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject) and all objects share a common header that lets the interpreter treat them as being of this type, this is like inheritance done in C:
+
+{path="Include/pytypedefs.h"}
+``` C
+typedef struct _object PyObject;
+typedef struct _typeobject PyTypeObject;
+```
+
+{path="Include/object.h"}
+``` C
+/* Nothing is actually declared to be a PyObject, but every pointer to
+ * a Python object can be cast to a PyObject*.  This is inheritance built
+ * by hand. ... 
+ */
+struct _object {
+    _PyObject_HEAD_EXTRA
+    Py_ssize_t ob_refcnt;
+    PyTypeObject *ob_type;
+};
+```
+
+The field `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) which encodes _the object type_, name and memory layout.
+
+{path="Include/cpython/object.h"}
+``` C
+struct _typeobject {
+    PyObject_VAR_HEAD
+    const char *tp_name; /* For printing, in format "<module>.<name>" */
+    Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
+    ...
+}
+```
+
+This is *exactly* the idea of tagging a value to later know which class of they belong to. If you look closely, it also includes a `PyObject` header, which we saw before also has a `PyTypeObject`, this illustrates the recursive notion mentioned before! Now, whats left to see is Class Checking, for an example of that there is this function:
+
+{path="Include/object.h"}
+``` C
+static inline int PyObject_TypeCheck(PyObject *ob, PyTypeObject *type) {
+    return Py_IS_TYPE(ob, type) || PyType_IsSubtype(Py_TYPE(ob), type);
+}
+```
+
+Which is easy enough to parse and you can see that it expects an object and a given type to check if the object is of said type or a _subtype_ of it! This function is used in _a lot_ of places to check if a necessary method description applies to an object. For example, if we grab the `descr_check` function and add a print statement before checking: 
+
+``` C
+static int descr_check(PyDescrObject *descr, PyObject *obj) {
+  printf("I am checking!\n"); // <--------------- here!
+  if (!PyObject_TypeCheck(obj, descr->d_type)) {
+    PyErr_Format(PyExc_TypeError,
+     "descriptor '%V' for '%.100s' objects "
+     "doesn't apply to a '%.100s' object",
+     descr_name((PyDescrObject *)descr), "?",
+     descr->d_type->tp_name,
+     Py_TYPE(obj)->tp_name);
+    return -1;
+  }
+  return 0;
+}
+```
+
+And we then compile the project:
+
+```
+> ./configure
+> make -j"$(nproc)"
+> ./python
+```
+
+You will get this message spammed _everywhere_.
 
 ### Subtyping
 
-Subtyping is essentially a way to extend a type system, by treating types as a collection of values, by the *subsumption principle*:
+In the example above, I mentioned that the `PyObject_TypeCheck` looked if an object was a _subtype_ of another. What exactly is that? Subtyping is way to extend a type system. It does so by treating types as a collection of values, following the *subsumption principle*:
 
 > If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whenever a value of type $`τ` is required.
 
-This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex]
+This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex] To understand Subtyping, is useful to think in matters of behaviors. 
 
-[^complex]: Since an expression doesn't fully reveal the information about the underlying value, proving safety is more delicate and the proofs of preservation and progress change but we'll skip showing them.
+This will sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, where [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this Subtyping relation and a really common feature in OOP languages while being a strong claim because it also demands that the behavior should be preserved in the relation. The type-checker can validate that it follows the typing rules but it can't verify that the behavior is preserved. 
 
-This will sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, since [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this subtyping relation and it's a really common feature in OOP languages.
+For example, in Java a [`SSLSocket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/javax/net/ssl/SSLSocket.html) class is a subclass of [`Socket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/net/Socket.html) and, by inheritance, can do everything his parent class can. On the contrary, I could write my own class that extends `Socket` and violate the caller's expectations but it would still compile, provided I follow the typing rules. This is a case of *Nominal Subtyping*, where the relation is explicitly stated by using the `extends/implements` keywords. 
 
-To understand subtyping, is useful to think in matters of _behaviors_. We'll use $`T <: S`  to show that $`T` is a subtype of $`S`.
-
-To work some quick examples, in languages with nominal typing like Java, nominal essentialy means that types have an identity that makes them unique, one often needs to declare the relation explicitly:
-
-``` Java
-class Spren {
-    void fly() {}
-}
-
-class Bridgeman {
-   void fly() {}
-  
-}
-
-// We explicitly declare Herald as subtype of Spren.
-// Herald <: Spren
-class Herald extends Spren {
-  void fly() { }
-
-  void do_nothing() {}
-}
-
-// This works
-Spren Jezrien = new Herald();
-
-// Bridgeman has `fly()` but because we don't declare it
-// as a subtype of Spren, it will fail to compile.
-Spren Rock = new Bridgeman();
-
-```
-
-For comparison, TypeScript uses structural typing, where types are identified by their definition[^javascript], so we can do things that would've been illegal in Java:
-
-[^javascript]: because it's meant to have backwards compatibility around JavaScript, where anonymous objects are what is commonly used.
-
-``` TypeScript
-type Bridgeman = {
-  run(): void;
-};
-
-type Herald = {
-  fly(): void;
-  do_nothing(): void;
-  run(): void;
-};
-
-const jezrien: Herald = {
-  fly() {},
-  do_nothing() {},
-  run() {},
-};
-
-const run = (b: Bridgeman) => {
-  b.run();
-};
-
-// This works because subtyping is based solely on the type's members.
-run(jezrien);
-
-// This also works because the point of having structural typing in TS
-// is to still be able to write JavaScript.
-run({
-  run() {},
-});
-
-```
-
-This example can look awfully similar to duck typing in Python, but it is not. Structural subtyping in typescript is verified statically, while in duck typing there is no subtyping relation taking place, the program will attempt to dispatch the required method function at runtime, and will fail if it isn't there: [^static-duck]
-
-``` Python
-from io import BytesIO
-
-class FakeFile:
-    def __init__(self, content: bytes, name: str):
-        self._buf = BytesIO(content)
-        self.name = name
-
-    def seek(self, pos):
-        self._buf.seek(pos)
-
-
-# I don't really care what file_like is, as long as it has a `read()` method.
-def save_file(file_like, destination: str):
-    with open(destination, "wb") as out:
-        out.write(file_like.read())
-
-
-with open("real.txt", "wb") as f:
-    f.write(b"i am a real file")
-
-with open("real.txt", "rb") as real:
-    save_file(real, "out_real.txt")
-
-fake = FakeFile(b"i am a duck", "duck.txt")
-save_file(fake, "out_duck.txt")
-
-```
-
-``` fishshell
-$ uv run main.py
-
-Traceback (most recent call last):
-  File "/home/lautaro/Documents/Development/pypypy/main.py", line 25,
- in <module>
-    save_file(fake, "out_duck.txt")
-  File "/home/lautaro/Documents/Development/pypypy/main.py", line 15, in
- save_file
-    out.write(file_like.read())
-            ^^^^^^^^^^^^^^
-AttributeError: 'FakeFile' object has no attribute 'read'
-
-```
-
-[^static-duck]: Python actually supports structural subtyping (named static duck-typing) in the shape of `protocols`. [Check PEP 544](https://peps.python.org/pep-0544/)
+ Another kind of Subtyping is *Structural Subtyping*, in this case the relation is implicitly built by matching on its definition. You can find examples of this in a lot of TypeScript code or on how Go interfaces are implicitly implemented for a type that matches the methods signatures. 
 
 ## Conclusion
 
-This is it! There are still a lot of things I didn't cover, but I focused on those I've had experience with (that's why I don't give more examples using dynamic languages!).
+This is it! There are still a lot of things I didn't cover, but I choose to stop here because otherwise it would become too long and it would miss the point.
 
-I'm sure there are more interesting applications of types from languages like [Haskell](https://www.haskell.org/), [Elixir](https://elixir-lang.org/), and Lisps like [Clojure](https://clojure.org/) but I haven't used them.
+We explored both typed and untyped languages and saw that they both are able to offer meaningful safety guarantees on the behavior of our programs. To give a possible answer to the hypothesis stated at the beginning, I think that the increasing interest on strong statically typed languages is directly related to AI assisted programming becoming the norm in the industry. In big part because of the same reasons they were effective for humans in the first place: *you find errors sooner and aggresively encode properties in types*[^errors].
 
-If you want to keep learning how to use types to write efficient software I can't recommend enough to read the archive of [Ted Kaminski](https://www.tedinski.com/archive/), especially "_[The One Ring Problem](https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_"! 
+The strenghts of an expressive type system are being able to offload reasoning about your program to the compiler, enabling you to focus more on the design of better abstractions. How much this ideas end up shaping the future of agentic engineering remain to be seen. 
+
+These are truly exciting times to be living in!  
+
+## Further reading
+
+Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can see a shift in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
+
+I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.org/web/20261111231739/https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_" article around abstraction design, if your jam is testing, I too like [Alperen Keles](https://alperenkeles.com/) articles around automated testing and verification methods.
 
 ## References
 
 - Harper, Robert. (2016) _Practical Foundations for Programming Languages_. 2nd ed. Cambridge University Press.
 - Cardelli, Luca. (1996) _“Type Systems.”_ In The Computer Science and Engineering Handbook, edited by Allen B. Tucker, chapter 140.
 
-
-[^chatgpt]: Chatgpt 2 was released only three years ago.
-[^safety]: Which is *not* the same as memory safety.
+[^complex]: Since an expression doesn't fully reveal the information about the underlying value, proving safety is more delicate and the proofs of preservation and progress change but we'll skip showing them.
+[^chatgpt]: ChatGPT 3.5 was released only almost four years ago.
+[^safety]: Which is *not* the same as [memory safety](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html).
 [^milner]: By implicitly think of languages with type inference or [Hindley-Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) type systems where you don't need to annotate.
+[^propo]: [Curry-Howard Correspondence](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
+[^errors]: By this I don't mean to say that a type system catches all errors possible, the key is that it frees us of a whole subset of possible errors.

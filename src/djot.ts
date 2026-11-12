@@ -27,7 +27,29 @@ import {
 import { Stage } from "./Post.ts";
 
 export function parse(source: string): Doc {
-  return djot_parse(source);
+  const doc = djot_parse(source);
+  attachCodeBlockCaptions(doc);
+  return doc;
+}
+
+function attachCodeBlockCaptions(node: AstNode): void {
+  if (!("children" in node) || !Array.isArray(node.children)) return;
+
+  const children = node.children as AstNode[];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (child.tag === "code_block" && i > 0 && children[i - 1].tag === "para") {
+      const previous = children[i - 1] as AstNode & { tag: "para" };
+      const caption = get_string_content(previous).trim();
+      const match = /^\{path="([^"\n]+)"\}$/.exec(caption);
+      if (match) {
+        (child as typeof child & { caption?: string }).caption = match[1];
+        children.splice(i - 1, 1);
+        i--;
+      }
+    }
+    attachCodeBlockCaptions(child);
+  }
 }
 
 export type RenderData = {
@@ -261,6 +283,10 @@ export function render(
       const aria_label = node.lang ? `${node.lang} code block` : "text block";
       const grammar_name = lang_name === "fishshell" ? "fish" : node.lang;
 
+      const caption = (node as typeof node & { caption?: string }).caption ??
+        node.attributes?.path;
+      if (caption && node.attributes?.path) delete node.attributes.path;
+
       return `<figure class="code-block" role="region" aria-label="${aria_label}">
         <button class="code-copy" type="button" aria-label="Copy code"><svg viewBox="0 0 24 24" aria-hidden="true" class="copy-icon" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         ${
@@ -268,7 +294,9 @@ export function render(
           ...node,
           lang: grammar_name,
         })
-      }</figure>`;
+      }
+        ${caption ? `<figcaption><cite>${escapeHtmlText(caption)}</cite></figcaption>` : ""}
+      </figure>`;
     },
     span: (node: Span, r: HTMLRenderer) => {
       if (has_class(node, "code")) {
@@ -397,6 +425,16 @@ const get_string_content = function (node: AstNode): string {
   add_string_content(node, buffer);
   return buffer.join("");
 };
+
+function escapeHtmlText(text: string): string {
+  return text.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[char]!);
+}
 
 const add_string_content = function (
   node: AstNode,
