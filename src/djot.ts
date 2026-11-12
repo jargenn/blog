@@ -70,8 +70,38 @@ export function render(
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
   let has_rendered_first_draft_h2 = false;
+  let renderingHeading = false;
+
+  const renderHeadingChildren = (node: Heading, r: HTMLRenderer): string => {
+    const previous = renderingHeading;
+    renderingHeading = true;
+    const children = r.renderChildren(node);
+    renderingHeading = previous;
+    return children;
+  };
+
+  const faviconHtml = (href: string): string => {
+    let destination: URL;
+    try {
+      destination = new URL(href, "https://lautaroacosta.com");
+    } catch {
+      return "";
+    }
+
+    if (destination.protocol !== "http:" && destination.protocol !== "https:") {
+      return "";
+    }
+
+    const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(destination.hostname)}&sz=16`;
+    return `<img class="external-link-favicon" src="${favicon}" width="14" height="14" loading="lazy" alt="" aria-hidden="true"/>`;
+  };
 
   const overrides: Visitor<HTMLRenderer, string> = {
+    link: (node: Link, r: HTMLRenderer): string => {
+      const html = r.renderAstNodeDefault(node);
+      if (renderingHeading || !node.destination) return html;
+      return html + faviconHtml(node.destination);
+    },
     section: (node: Section, r: HTMLRenderer): string => {
       const heading = get_child(node, "heading");
       if (render_data.stage === "draft" && heading?.level === 2) {
@@ -92,7 +122,7 @@ export function render(
       if (node.level === 1) render_data.title = get_string_content(node);
 
       if (node.level === 1) {
-        const children = r.renderChildren(node);
+        const children = renderHeadingChildren(node, r);
 
         const date_html = render_data.date
           ? time_html(render_data.date, "meta")
@@ -118,7 +148,7 @@ export function render(
 
       const tag = `h${node.level}`;
       const id = node.level > 1 && section?.autoAttributes?.id;
-      const children = r.renderChildren(node);
+      const children = renderHeadingChildren(node, r);
       const children_anchored = id
         ? `<a href="#${id}">${children}</a>`
         : children;
@@ -325,7 +355,8 @@ export function render(
     },
     url: (node: Url, r: HTMLRenderer) => {
       add_class(node, "url");
-      return r.renderAstNodeDefault(node);
+      const html = r.renderAstNodeDefault(node);
+      return renderingHeading ? html : html + faviconHtml(node.text);
     },
 
     doc: (node: Doc, r: HTMLRenderer) => {

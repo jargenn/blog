@@ -1,8 +1,7 @@
 // Based on https://github.com/matklad/matklad.github.io/blob/caf0614156a379abffc4491b46aae8a872ac939f/src/tsx.ts
 /** @jsx h */
 /** @jsxFrag Fragment */
-// deno-lint-ignore-file no-explicit-any
-import { escapeHtml, h, Raw, render, VNode } from "./tsx.ts";
+import { h, Raw, render, VNode } from "./tsx.ts";
 import { Post as PostData } from "./Post.ts";
 import { FeedEntry as FeedEntryData } from "./blogroll.ts";
 import { HtmlString } from "./HtmlString.ts";
@@ -536,7 +535,9 @@ export function Post(
     >
       <div class="post-layout">
         <article>
-          <Raw unsafe={post.content.value} />
+          <div class="article-body">
+            <Raw unsafe={post.content.value} />
+          </div>
           {post.stage === "draft" ? draft_wall() : ""}
           <p class="meta-links">
             ({" "}
@@ -570,23 +571,6 @@ function yyyy_mm_dd(date: Date): string {
 
 export function time_html(date: Date, className: string) {
   return render(<Time date={date} className={className} />);
-}
-
-export function Redirect({ path }: { path: string }) {
-  return (
-    <html lang="en-US">
-      <meta charset="utf-8" />
-      <title>Redirecting…</title>
-      <link rel="canonical" href={path} />
-      <script>
-        <Raw unsafe={`location="${path}"`} />
-      </script>
-      <meta http-equiv="refresh" content={`0; url=${path}`} />
-      <meta name="robots" content="noindex" />
-      <h1>Redirecting…</h1>
-      <a href={path}>Click here if you are not redirected.</a>
-    </html>
-  );
 }
 
 export function feed_xml(posts: PostData[]): string {
@@ -642,17 +626,3 @@ function FeedEntry({ post }: { post: PostData }) {
   );
 }
 
-export function html(
-  strings: ArrayLike<string>,
-  ...values: any[]
-): HtmlString {
-  function content(value: any): string[] {
-    if (value === undefined) return [];
-    if (value instanceof HtmlString) return [value.value];
-    if (Array.isArray(value)) return value.flatMap(content);
-    return [escapeHtml(value)];
-  }
-  return new HtmlString(
-    String.raw({ raw: strings }, ...values.map((it) => content(it).join(""))),
-  );
-}

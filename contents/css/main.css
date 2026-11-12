@@ -953,6 +953,16 @@
     background: var(--background);
   }
 
+  .article-body .external-link-favicon {
+    display: inline-block;
+    width: 0.875em;
+    height: 0.875em;
+    margin-left: 0.3em;
+    vertical-align: -0.08em;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+
   kbd {
     font-family:
       var(--code-font), monospace;
