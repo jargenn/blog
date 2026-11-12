@@ -746,7 +746,7 @@
   .post-list {
     box-sizing: border-box;
     margin: 2rem auto;
-    padding: 0;
+    padding-top: rem;
     list-style: none;
     width: 80ch;
     max-width: 100%;
@@ -754,7 +754,7 @@
 
     >li {
       padding: 0.15rem 0.5rem;
-      margin: 0;
+      margin: 1rem;
     }
 
     >li:last-child {
