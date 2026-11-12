@@ -4,41 +4,42 @@
 
 # Type Systems For The Uninitiated
 
-Since the recent [^chatgpt] boom of AI assisted programming, there's been a steadily increasing interest about programming languages, specially around type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/) or work being done to strengthen guarantees in languages like TypeScript and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with heavy focus on types.  
+Since the recent [^chatgpt] boom of AI assisted programming, there's been a growing interest around programming languages, particulary their type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/), efforst to strengthen guarantees in languages like TypeScript and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with emphasis on types.  
 
 The running hypothesis is clearly stated: *Type Systems make Agentic Engineering better and easier*. But *why?* What even _is_ a type system and what does it do?
 
 ## Introduction
 
-I've always been drawn to programming languages, ever since first learning to code by writing little C exercises, just the notion of having all these little verbs and names make the computer do something was incredible to me. Six years forward, after learning what's behind all that, from microcode to syscalls, that amazement hasn't really waned. I truly believe that learning about them is a crucial part of developing a literacy on the field.
-
-I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. Because of my background, and the intended reader of the article, a lot of concepts are shown informally but many should be intuitive for someone who already programs.
+I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. Because of my background, and the intended reader of the article, a lot of concepts are shown informally and in an explorative way, but many should be intuitive for someone who already programs.
 
 ## Type Systems
 
-To start talking about type systems we have to first talk about what is a type. Already that is kind of a land-mine, the answer could depend heavily on who are you asking, it could be really technical and rich or reductive and tell you its only how memory is interpreted. For this I'd liked to adopt Luca Cardelli's use of it in _"[Type Systems](https://web.archive.org/web/20260917195400/https://courses.grainger.illinois.edu/cs421/fa2018/CS421A/resources/cardelli.pdf)"_, where he calls a type:
+To start talking about type systems we have to first talk about what is a type. Already that is kind of a land-mine, the answer could depend heavily on whom you ask, it could be really technical and rich or bit reductive and tell you its only how memory is interpreted. That difference stems from different point of views on the importance on the role of a type system. For this I'd liked to adopt Luca Cardelli's use of it in _"[Type Systems](https://web.archive.org/web/20260917195400/https://courses.grainger.illinois.edu/cs421/fa2018/CS421A/resources/cardelli.pdf)"_, where he calls a type:
 
 > "A program variable can assume a range of values during the execution of a program. An upper bound of such a range is called a *type* of the variable."  
 
 For example, in a language  with a 16-bit signed integer type, a variable explicitly or implicitly[^milner] declared with it can hold values ranging from $`-2^{15}` to $`2^{15}-1`. The type system ensures that operations on these values follow the language's rules, including error cases.
 
-This is achieved by two pieces working in tandem, first is the *type system*: a set of rules that together defines what is a _well-typed_ expression in the language. Then there is the *type-checker*: an actual, possibly partial, implementation of the type systems rules, which has the job of rejecting any program that breaks them by making _judgments_ on a program using said type rules.
+This is achieved by two pieces working in together, first is the *type system*: a set of rules that together defines _what_ is a well-typed expression in a language. These type rules are computed in the abstract (think of how a formal grammar is detached of the actual parsing algorithm that gets executed) and they are built from the ground-up using *judgements*, particular claims done under a set of assumptions [^winded]. It's important to understand that the quality of a type system is not measured by the number of rules it has, but by how it shapes the semantics of the language. A program being well-typed should serve to ensure good program behavior.
 
-These rules can be enforced in different ways depending on the language. In statically typed languages (Rust, C or OCaml) they are checked at compile-time before the program is executed. Other languages, often dynamic languages, rely on runtime checks to know if an operation is valid on a given value. Type-checking can be done independently of program execution, for example, in TypeScript every type gets erased when compiled to JavaScript. In practice, languages often combine both kinds of checks. 
+ Then, there is the *type-checker*: an algorithm that implements the type systems rules (completely or partially) and works to check if a program _is_ well-typed by excercising the rules and failing if it's unable to guard against possible errors .
+
+ These rules can be enforced in different ways depending on the language and algorithm. In statically typed languages (Rust, C or OCaml) they are checked at compile-time before the program is executed. Other languages, often dynamic languages, rely on runtime checks to know if an operation is valid on a given value. Type-checking can be done independently of program execution, for example, in TypeScript every type gets erased when compiled to JavaScript. In practice, languages often combine both kinds of checks. 
+
+> It's important to remember that a particular type-checker for a language can, for many reasons, diverge from the formal specification of the type system. In many cases there is *no complete formal description of the type system* to begin with, instead, the closest resource is the actual type-checker implementation or a collection of prose describing the rules in an intuitive form. Take [WebAssembly's](https://webassembly.github.io/spec/core/valid/conventions.html), [OCaml's](https://ocaml.org/manual/5.3/language.html) and [Kotlin's](https://kotlinlang.org/spec/type-system.html) as examples of varying degrees of formality.
+
 
 ### Safe languages
 
-Before, I stated that there is a trend of moving to *"safer"* languages, I intently use quotes for it because it's important to understand that *type safety[^safety] is defined as the property of a program*. Borrowing again from Cardelli's, it's a program which has ruled out errors that don't immediately stop computation (he names them _unexpected errors_), also he expands this idea by using the term _forbidden errors_ to name the set formed by all the unexpected and a subset of the trapped errors (errors which stop the program immediately) and states that a program that doesn't cause forbidden errors is *type sound*. Therefore he states that any language where all programs are type safe is itself a safe language and the same approach is done with sound languages.
+Before, I stated that there is a trend of moving to *"safer"* languages, I used quotes because it's important to understand that *type safety[^safety] can be defined as the property of a program*. Borrowing from Cardelli's framework, a type safe program has ruled out errors that don't immediately stop computation (named _untrapped errors_) and defines a safe language as one where all programs are safe.
 
+He expands this idea by declaring a subset of the possible execution errors as _forbidden errors_, formed by all the unexpected and a subset of the trapped errors (errors which stop the program immediately) and, similarly, states that a program without forbidden errors can be considered well-behaved, and a language where all programs are well-behaved is *strongly checked*. There's also the notion of *type soundness* which, in this framework, is too a property of a program stated to not cause forbidden errors. In a more pragmatic sense, it means that the program doesn't break the type system's rules.
 
-This may sound good and all, it surely _makes sense_ but it starts to become less useful when you realize that every language chooses what to consider as an unexpected or a trapped error. Even more so, each *language implementation* can add more checks and guard against more errors than what are defined in the rules of the language, this [post](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html) by Matklad makes a better case for it than what I could write.
-
-
-It's important to emphasize again that *language safety is a binary property*, you are either completely safe or you are not. Because of that, the actual useful part of the discussion is how many errors can be prevented. For that, you have to also account for the actual implementation of the language and what guarantees it upholds when push comes to shove.
+This may sound good and all, it surely _makes sense_ but it starts to become less useful when you realize that every language chooses what to consider as an unexpected or a trapped error. Even more so, each *language implementation* can add more checks and guard against more errors than what are defined in the rules of the language, this [post](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html) makes a better case about it than what I could write. Because *language safety is a binary property*, you are either completely safe or you are not, so maybe the actual useful part of the discussion is how many errors can be prevented. You have to account for the actual implementation of the language and what guarantees it upholds when push comes to shove.
 
 ### Preservation and Progress
 
-It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program  can't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
+It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program shouldn't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
 
 First, let's introduce some notation to express these theorems precisely:
 
@@ -63,7 +64,7 @@ Where $`Γ` represents all the variables that are in the scope alongside their t
 $$`\Gamma \vdash e : \tau \land e \rightarrow e' \Longrightarrow \Gamma \vdash e' : \tau`
 
 
-Preservation can be read as _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
+Preservation can be read as a judgement stating that _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
 
 and *Progress* as:
 
@@ -73,7 +74,7 @@ Progress and can be read as _"if under the empty typing context $`∅`, $`e` has
 
 ## What about untyped languages?
 
-Also referred to as "Dynamic Languages", they are languages that embrace a model of computation where they do not have any types whatsoever or multiple _classes_ of values exist for a single recursive type. Quoting Robert Harper's Practical Foundations for Programming Languages: 
+Also referred to as "Dynamic Languages", borrowing from Robert Harper's Practical Foundations for Programming Languages, they are languages that embrace a model of computation where they do not have any types whatsoever or multiple _classes_ of values exist for a single recursive type. A quote from the book states: 
 
 > _"Every dynamic language is inherently a static language in which we confine ourselves to a (needlessly) restricted type discipline to ensure safety."_
 
@@ -195,7 +196,7 @@ This is it! There are still a lot of things I didn't cover, but I choose to stop
 
 We explored both typed and untyped languages and saw that they both are able to offer meaningful safety guarantees on the behavior of our programs. To give a possible answer to the hypothesis stated at the beginning, I think that the increasing interest on strong statically typed languages is directly related to AI assisted programming becoming the norm in the industry. In big part because of the same reasons they were effective for humans in the first place: *you find errors sooner and aggresively encode properties in types*[^errors].
 
-The strenghts of an expressive type system are being able to offload reasoning about your program to the compiler, enabling you to focus more on the design of better abstractions. How much this ideas end up shaping the future of agentic engineering remain to be seen. 
+The strenght of an expressive type system lies in the ability to offload reasoning about your program to the compiler, enabling you to focus more on the design of better abstractions. How much this ideas will end up shaping the future of agentic engineering remains to be seen. Early signs suggest they're playing a role [right now](https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/#:~:text=angle%2E-,Among,check%2E).
 
 These are truly exciting times to be living in!  
 
@@ -213,6 +214,7 @@ I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.arc
 [^complex]: Since an expression doesn't fully reveal the information about the underlying value, proving safety is more delicate and the proofs of preservation and progress change but we'll skip showing them.
 [^chatgpt]: ChatGPT 3.5 was released only almost four years ago.
 [^safety]: Which is *not* the same as [memory safety](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html).
-[^milner]: By implicitly think of languages with type inference or [Hindley-Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) type systems where you don't need to annotate.
+[^milner]: By implicitly think of languages with type inference or [Hindley-Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) type-checking algorithms where you don't usually need to annotate.
 [^propo]: [Curry-Howard Correspondence](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
 [^errors]: By this I don't mean to say that a type system catches all errors possible, the key is that it frees us of a whole subset of possible errors.
+[^winded]: I avoided giving examples in fear of making the part too big. If you want to go deeper on that defer to the _"Type Systems"_ paper above.
