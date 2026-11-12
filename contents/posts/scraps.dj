@@ -1,0 +1,19 @@
+---
+ {"title":"Scraps","stage":"private","tags":[""],"date":"2026-11-12","abstract":"placeholder"} 
+---
+ # Scraps
+
+### Subtyping
+
+In the example above, I mentioned that the `PyObject_TypeCheck` looked if an object was a _subtype_ of another. What exactly is that? Subtyping is way to extend a type system. It does so by treating types as a collection of values, following the *subsumption principle*:
+
+> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whenever a value of type $`τ` is required.
+
+This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex] To understand Subtyping, is useful to think in matters of behaviors. 
+
+This will sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, where [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this Subtyping relation and a really common feature in OOP languages while being a strong claim because it also demands that the behavior should be preserved in the relation. The type-checker can validate that it follows the typing rules but it can't verify that the behavior is preserved. 
+
+For example, in Java a [`SSLSocket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/javax/net/ssl/SSLSocket.html) class is a subclass of [`Socket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/net/Socket.html) and, by inheritance, can do everything his parent class can. On the contrary, I could write my own class that extends `Socket` and violate the caller's expectations but it would still compile, provided I follow the typing rules. This is a case of *Nominal Subtyping*, where the relation is explicitly stated by using the `extends/implements` keywords. 
+
+ Another kind of Subtyping is *Structural Subtyping*, in this case the relation is implicitly built by matching on its definition. You can find examples of this in a lot of TypeScript code or on how Go interfaces are implicitly implemented for a type that matches the methods signatures. 
+

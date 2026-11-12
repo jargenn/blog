@@ -33,6 +33,7 @@
           pkgs.proselint
           pkgs.harper
           pkgs.pandoc
+          pkgs.html-tidy
         ];
       };
     };

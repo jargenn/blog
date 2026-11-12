@@ -1,16 +1,16 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"finished","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
+ {"title":"Type Systems For The Uninitiated","stage":"draft","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
 ---
 
 # Type Systems For The Uninitiated
 
-Since the recent [^chatgpt] boom of AI assisted programming, there's been a growing interest around programming languages, particulary their type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/), efforst to strengthen guarantees in languages like TypeScript and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with emphasis on types.  
+Since the recent [^chatgpt] boom of AI assisted programming, there's been a growing interest around programming languages, particularly their type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/), efforts to strengthen guarantees in languages like TypeScript and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with emphasis on types.  
 
-The running hypothesis is clearly stated: *Type Systems make Agentic Engineering better and easier*. But *why?* What even _is_ a type system and what does it do?
+One recurring argument is that *expressive type systems make programming with agents easier*. But what does type safety even mean? What does a type system have to offer?
 
 ## Introduction
 
-I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. Because of my background, and the intended reader of the article, a lot of concepts are shown informally and in an explorative way, but many should be intuitive for someone who already programs.
+I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. This is an informal exploration of type systems and their use, intended for to someone who already programs.
 
 ## Type Systems
 
@@ -20,7 +20,7 @@ To start talking about type systems we have to first talk about what is a type. 
 
 For example, in a language  with a 16-bit signed integer type, a variable explicitly or implicitly[^milner] declared with it can hold values ranging from $`-2^{15}` to $`2^{15}-1`. The type system ensures that operations on these values follow the language's rules, including error cases.
 
-This is achieved by two pieces working in together, first is the *type system*: a set of rules that together defines _what_ is a well-typed expression in a language. These type rules are computed in the abstract (think of how a formal grammar is detached of the actual parsing algorithm that gets executed) and they are built from the ground-up using *judgements*, particular claims done under a set of assumptions [^winded]. It's important to understand that the quality of a type system is not measured by the number of rules it has, but by how it shapes the semantics of the language. A program being well-typed should serve to ensure good program behavior.
+This is achieved by two pieces working in together, first is the *type system*: a set of rules that together defines _what_ is a well-typed expression in a language. These type rules are computed in the abstract (think of how a formal grammar is detached of the actual parsing algorithm that gets executed) and they are built from the ground-up using *judgments*, particular claims done under a set of assumptions [^winded]. It's important to understand that the quality of a type system is not measured by the number of rules it has, but by how it shapes the semantics of the language. A program being well-typed should serve to ensure good program behavior.
 
  Then, there is the *type-checker*: an algorithm that implements the type systems rules (completely or partially) and works to check if a program _is_ well-typed by excercising the rules and failing if it's unable to guard against possible errors .
 
@@ -31,7 +31,7 @@ This is achieved by two pieces working in together, first is the *type system*: 
 
 ### Safe languages
 
-Before, I stated that there is a trend of moving to *"safer"* languages, I used quotes because it's important to understand that *type safety[^safety] can be defined as the property of a program*. Borrowing from Cardelli's framework, a type safe program has ruled out errors that don't immediately stop computation (named _untrapped errors_) and defines a safe language as one where all programs are safe.
+Earlier, I mentioned a trend of moving projects to *"safer"* languages. To understand that, we have to understand that *type safety[^safety] can be defined as the property of a program*. Borrowing from Cardelli's framework, a type safe program has ruled out errors that don't immediately stop computation (named _untrapped errors_) and defines a safe language as one where all programs are safe.
 
 He expands this idea by declaring a subset of the possible execution errors as _forbidden errors_, formed by all the unexpected and a subset of the trapped errors (errors which stop the program immediately) and, similarly, states that a program without forbidden errors can be considered well-behaved, and a language where all programs are well-behaved is *strongly checked*. There's also the notion of *type soundness* which, in this framework, is too a property of a program stated to not cause forbidden errors. In a more pragmatic sense, it means that the program doesn't break the type system's rules.
 
@@ -176,33 +176,19 @@ And we then compile the project:
 
 You will get this message spammed _everywhere_.
 
-### Subtyping
-
-In the example above, I mentioned that the `PyObject_TypeCheck` looked if an object was a _subtype_ of another. What exactly is that? Subtyping is way to extend a type system. It does so by treating types as a collection of values, following the *subsumption principle*:
-
-> If $`τ'` is a subtype of $`τ`, then a value of type $`τ'` may be provided whenever a value of type $`τ` is required.
-
-This relation essentially enlarges the set of well-typed programs, allowing the type system to consider values of one type to be treated as values of another. [^complex] To understand Subtyping, is useful to think in matters of behaviors. 
-
-This will sound familiar if you read about the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, where [Barbara Liskov's substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle) is indeed one definition of this Subtyping relation and a really common feature in OOP languages while being a strong claim because it also demands that the behavior should be preserved in the relation. The type-checker can validate that it follows the typing rules but it can't verify that the behavior is preserved. 
-
-For example, in Java a [`SSLSocket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/javax/net/ssl/SSLSocket.html) class is a subclass of [`Socket`](https://docs.oracle.com/en/java/javase/27/docs/api/java.base/java/net/Socket.html) and, by inheritance, can do everything his parent class can. On the contrary, I could write my own class that extends `Socket` and violate the caller's expectations but it would still compile, provided I follow the typing rules. This is a case of *Nominal Subtyping*, where the relation is explicitly stated by using the `extends/implements` keywords. 
-
- Another kind of Subtyping is *Structural Subtyping*, in this case the relation is implicitly built by matching on its definition. You can find examples of this in a lot of TypeScript code or on how Go interfaces are implicitly implemented for a type that matches the methods signatures. 
-
 ## Conclusion
 
-This is it! There are still a lot of things I didn't cover, but I choose to stop here because otherwise it would become too long and it would miss the point.
+This is it! There are still a lot of things I didn't cover around type systems [^name], but the rabbit hole goes so deep I choose to stop here because otherwise it would become too long and it would miss the point.
 
-We explored both typed and untyped languages and saw that they both are able to offer meaningful safety guarantees on the behavior of our programs. To give a possible answer to the hypothesis stated at the beginning, I think that the increasing interest on strong statically typed languages is directly related to AI assisted programming becoming the norm in the industry. In big part because of the same reasons they were effective for humans in the first place: *you find errors sooner and aggresively encode properties in types*[^errors].
+We explored both statically and dynamically typed languages and saw how they can offer meaningful safety guarantees about the behavior of our programs. The strength of an expressive static type system lies in its ability to offload some of the reasoning about the program's behavior to the compiler, enabling us to focus more on the design of better abstractions. By encoding properties in types and using them as building blocks we can rule out entire classes of errors by construction.
 
-The strenght of an expressive type system lies in the ability to offload reasoning about your program to the compiler, enabling you to focus more on the design of better abstractions. How much this ideas will end up shaping the future of agentic engineering remains to be seen. Early signs suggest they're playing a role [right now](https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/#:~:text=angle%2E-,Among,check%2E).
+That has always been the case with statically typed languages, but it may become more widely adopted as AI assisted programming is becoming the norm in the industry and the volume of code grows beyond what can be reviewed. How much this ideas will end up shaping the future of agentic engineering remains to be seen. Early signs suggest they're playing a role [right now](https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/#:~:text=angle%2E-,Among,check%2E).
 
 These are truly exciting times to be living in!  
 
 ## Further reading
 
-Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can see a shift in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
+Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can see the shift towards static typing in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
 
 I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.org/web/20261111231739/https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_" article around abstraction design, if your jam is testing, I too like [Alperen Keles](https://alperenkeles.com/) articles around automated testing and verification methods.
 
@@ -211,10 +197,9 @@ I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.arc
 - Harper, Robert. (2016) _Practical Foundations for Programming Languages_. 2nd ed. Cambridge University Press.
 - Cardelli, Luca. (1996) _“Type Systems.”_ In The Computer Science and Engineering Handbook, edited by Allen B. Tucker, chapter 140.
 
-[^complex]: Since an expression doesn't fully reveal the information about the underlying value, proving safety is more delicate and the proofs of preservation and progress change but we'll skip showing them.
 [^chatgpt]: ChatGPT 3.5 was released only almost four years ago.
 [^safety]: Which is *not* the same as [memory safety](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html).
 [^milner]: By implicitly think of languages with type inference or [Hindley-Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) type-checking algorithms where you don't usually need to annotate.
 [^propo]: [Curry-Howard Correspondence](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
-[^errors]: By this I don't mean to say that a type system catches all errors possible, the key is that it frees us of a whole subset of possible errors.
 [^winded]: I avoided giving examples in fear of making the part too big. If you want to go deeper on that defer to the _"Type Systems"_ paper above.
+[^name]: Parametric and subtype polymorphism and variance, to name a few.
