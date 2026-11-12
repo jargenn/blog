@@ -4,7 +4,7 @@
 
 # Type Systems For The Uninitiated
 
-Since the recent [^chatgpt] boom of AI assisted programming, there's been a steadily increasing interest about programming languages, specially around type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/) or work being done to strengthen guarantees in languages like [Typescript]() and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with heavy focus on types.  
+Since the recent [^chatgpt] boom of AI assisted programming, there's been a steadily increasing interest about programming languages, specially around type systems. If you are even remotely present in Twitter/X, YouTube or Hacker-News you've seen many projects being rewritten to more "type safe" languages like [Rust](https://rust-lang.org/) or work being done to strengthen guarantees in languages like TypeScript and even [new languages](https://x.com/kitlangton/status/2119137520529375499) with heavy focus on types.  
 
 The running hypothesis is clearly stated: *Type Systems make Agentic Engineering better and easier*. But *why?* What even _is_ a type system and what does it do?
 
