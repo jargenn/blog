@@ -41,9 +41,18 @@ function attachCodeBlockCaptions(node: AstNode): void {
     if (child.tag === "code_block" && i > 0 && children[i - 1].tag === "para") {
       const previous = children[i - 1] as AstNode & { tag: "para" };
       const caption = get_string_content(previous).trim();
-      const match = /^\{path="([^"\n]+)"\}$/.exec(caption);
-      if (match) {
-        (child as typeof child & { caption?: string }).caption = match[1];
+      const attributes = /^\{([^{}]+)\}$/.exec(caption)?.[1];
+      const path = attributes?.match(/(?:^|[\s,]+)path="([^"\n]+)"/)?.[1];
+      const highlight = attributes?.match(
+        /(?:^|[\s,]+)hl="?([\d,\s-]+)"?(?=[\s,]|$)/,
+      )?.[1].replace(/\s/g, "");
+      if (path || highlight) {
+        const codeBlock = child as typeof child & {
+          caption?: string;
+          highlight?: string;
+        };
+        if (path) codeBlock.caption = path;
+        if (highlight) codeBlock.highlight = highlight;
         children.splice(i - 1, 1);
         i--;
       }
@@ -315,9 +324,12 @@ export function render(
 
       const caption = (node as typeof node & { caption?: string }).caption ??
         node.attributes?.path;
+      const highlight = (node as typeof node & { highlight?: string }).highlight ??
+        node.attributes?.hl?.replace(/["\s]/g, "");
+      if (node.attributes?.hl) delete node.attributes.hl;
       if (caption && node.attributes?.path) delete node.attributes.path;
 
-      return `<figure class="code-block" role="region" aria-label="${aria_label}">
+      return `<figure class="code-block"${highlight ? ` data-highlight-lines="${highlight}"` : ""} role="region" aria-label="${aria_label}">
         <button class="code-copy" type="button" aria-label="Copy code"><svg viewBox="0 0 24 24" aria-hidden="true" class="copy-icon" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         ${
         r.renderAstNodeDefault({

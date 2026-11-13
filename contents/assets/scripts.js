@@ -22,8 +22,42 @@ function setTheme(theme) {
   if (arboriumScript && globalThis.arborium?.highlightAll) {
     arboriumScript.dataset.theme = CODE_THEMES[theme];
     globalThis.arborium.highlightAll();
+    applyCodeLineHighlights();
   }
 }
+
+function applyCodeLineHighlights() {
+  for (const figure of document.querySelectorAll(".code-block[data-highlight-lines]")) {
+    const code = figure.querySelector("pre code");
+    if (!code) continue;
+    const ranges = figure.dataset.highlightLines.split(",").map((part) => {
+      const [start, end = start] = part.split("-").map(Number);
+      return [start, end];
+    });
+    const lineHeight = Number.parseFloat(getComputedStyle(code).lineHeight) || 19.2;
+    const lineCount = Math.max(1, code.textContent.replace(/\n$/, "").split("\n").length);
+    const stops = [];
+    for (let index = 0; index < lineCount; index++) {
+      const color = ranges.some(([start, end]) => index + 1 >= start && index + 1 <= end)
+        ? "color-mix(in srgb, #FFD54F 28%, transparent)"
+        : "transparent";
+      stops.push(
+        `${color} ${index * lineHeight}px`,
+        `${color} ${(index + 1) * lineHeight}px`,
+      );
+    }
+    code.style.backgroundImage = `linear-gradient(to bottom, ${stops.join(", ")})`;
+    code.style.backgroundSize = `100% ${lineCount * lineHeight}px`;
+    code.style.backgroundRepeat = "no-repeat";
+  }
+}
+
+// Arborium may finish replacing the code contents after highlightAll returns.
+// Reapply the marker when its line spans are inserted or replaced.
+new MutationObserver(applyCodeLineHighlights).observe(document.body, {
+  childList: true,
+  subtree: true,
+});
 
 const systemTheme = matchMedia("(prefers-color-scheme: dark)");
 systemTheme.addEventListener(

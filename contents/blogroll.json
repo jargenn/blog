@@ -1,16 +1,6 @@
 {
-  "createdAt": "2026-11-11T19:56:27.532Z",
+  "createdAt": "2026-11-16T21:42:50.484Z",
   "entries": [
-    {
-      "title": "The real AI risk is inside the labs",
-      "url": "http://antirez.com/news/172",
-      "date": "2026-07-28T09:00:11.000Z"
-    },
-    {
-      "title": "Being Linux Torvalds",
-      "url": "http://antirez.com/news/171",
-      "date": "2026-07-25T11:20:55.000Z"
-    },
     {
       "title": "Replacing the old battery on rechargeable bike lights",
       "url": "https://jvns.ca/blog/2026/09/27/replacing-the-old-battery-on-rechargeable-bike-lights/",
@@ -42,7 +32,7 @@
       "date": "2026-09-20T00:00:00.000Z"
     },
     {
-      "title": "Test and verification technique effectiveness with GPT-6 Astra",
+      "title": "Test/verification technique effectiveness with Astra",
       "url": "https://danluu.com/astra-testing/",
       "date": "2026-11-02T00:00:00.000Z"
     },
@@ -52,14 +42,14 @@
       "date": "2026-10-24T00:00:00.000Z"
     },
     {
-      "title": "*sshole, or when are we finally going to get rid of C?",
-      "url": "https://sunshowers.io/posts/sshole/?utm_source=atom_feed",
-      "date": "2026-11-06T00:00:00.000Z"
+      "title": "Designing nextest's install scripts",
+      "url": "https://sunshowers.io/posts/nextest-install-scripts/?utm_source=atom_feed",
+      "date": "2026-11-14T00:00:00.000Z"
     },
     {
-      "title": "More on Anthropic's Scion ripping off Mononoke",
-      "url": "https://sunshowers.io/posts/anthropic-mononoke-2/?utm_source=atom_feed",
-      "date": "2026-10-15T00:00:00.000Z"
+      "title": "Contra \"Glue work considered harmful\"",
+      "url": "https://sunshowers.io/posts/glue-work/?utm_source=atom_feed",
+      "date": "2026-11-12T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -161,15 +151,15 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Animations for System Builders: Metastability and Lost Writes",
-      "url": "http://brooker.co.za/blog/2026/10/23/animations.html",
-      "date": "2026-10-23T00:00:00.000Z"
+      "title": "What does it mean to understand what we built?",
+      "url": "http://brooker.co.za/blog/2026/11/16/understanding.html",
+      "date": "2026-11-16T00:00:00.000Z"
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Strands Decider: Why Not an Encoder?",
-      "url": "http://brooker.co.za/blog/2026/10/04/encoders.html",
-      "date": "2026-10-04T00:00:00.000Z"
+      "title": "Animations for System Builders: Metastability and Lost Writes",
+      "url": "http://brooker.co.za/blog/2026/10/23/animations.html",
+      "date": "2026-10-23T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -182,18 +172,6 @@
       "title": "The LogDrive: Flexible Composition Through Abstraction in Shared Logs",
       "url": "https://jack-vanlightly.com/blog/2026/8/25/the-logdrive-flexible-composition-through-abstraction-in-shared-logs",
       "date": "2026-08-25T12:11:33.000Z"
-    },
-    {
-      "author": "Julian Hyde",
-      "title": "Morel on Go, and why platforms shouldn’t matter",
-      "url": "http://blog.hydromatic.net/2026/08/01/morel-on-go.html",
-      "date": "2026-08-01T20:00:00.000Z"
-    },
-    {
-      "author": "Julian Hyde",
-      "title": "Expressing package queries in Morel",
-      "url": "http://blog.hydromatic.net/2026/05/29/package-queries.html",
-      "date": "2026-05-29T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -226,26 +204,26 @@
       "date": "2025-12-04T13:00:00.000Z"
     },
     {
+      "title": "The exponential growth of shadow IT",
+      "url": "http://ayende.com/204292-a/the-exponential-growth-of-shadow-it?Key=92955703-406d-4a7e-a645-f513581f03b3",
+      "date": "2026-11-12T12:00:00.000Z"
+    },
+    {
       "title": "What does \"XYZ developer\" mean?",
       "url": "http://ayende.com/204291-a/what-does-xyz-developer-mean?Key=d57c7c5e-e4ce-4141-be50-8c8e6839a929",
       "date": "2026-11-09T12:00:00.000Z"
     },
     {
-      "title": "High performance data structures design & optimizing for the GC",
-      "url": "http://ayende.com/204260-a/high-performance-data-structures-design-optimizing-for-the-gc?Key=7edcc96f-002a-4df6-8f75-c1517cb3612c",
-      "date": "2026-11-04T12:00:00.000Z"
+      "author": "Alperen Keles",
+      "title": "Formal Verification is Not Verifiable",
+      "url": "https://alperenkeles.com/posts/formal-verification-is-not-verifiable/",
+      "date": "2026-11-13T00:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
       "title": "Bug Finding Considered Harmful?",
       "url": "https://alperenkeles.com/posts/bug-finding-considered-harmful/",
       "date": "2026-11-04T00:00:00.000Z"
-    },
-    {
-      "author": "Alperen Keles",
-      "title": "CS 101 for Political Scientists",
-      "url": "https://alperenkeles.com/posts/gwu-psc-cs-101/",
-      "date": "2026-09-27T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
@@ -261,14 +239,14 @@
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Tessera wins the OpenUK software of the year award",
-      "url": "https://anil.recoil.org/notes/openuk-tessera-award",
-      "date": "2026-11-06T00:00:00.000Z"
+      "title": ".plan-26-45: Welcome to the House of Fun",
+      "url": "https://anil.recoil.org/notes/2026w45",
+      "date": "2026-11-08T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": "Checking out the latest features in OxCaml 5.4.0+ox9",
-      "url": "https://anil.recoil.org/notes/oxcaml-ox9-improvements",
+      "title": "Tessera wins the OpenUK software of the year award",
+      "url": "https://anil.recoil.org/notes/openuk-tessera-award",
       "date": "2026-11-06T00:00:00.000Z"
     },
     {
@@ -320,14 +298,14 @@
       "date": "2026-10-02T00:00:00.000Z"
     },
     {
+      "title": "How to find meaning in large tech companies",
+      "url": "https://seangoedecke.com/how-to-find-meaning-in-large-tech-companies/",
+      "date": "2026-11-14T00:00:00.000Z"
+    },
+    {
       "title": "Glue work is still harmful in the age of AI",
       "url": "https://seangoedecke.com/glue-work-is-still-harmful-in-the-age-of-ai/",
       "date": "2026-11-11T00:00:00.000Z"
-    },
-    {
-      "title": "LLMs are terrible at designing AI systems",
-      "url": "https://seangoedecke.com/llms-are-terrible-at-designing-ai-systems/",
-      "date": "2026-11-08T00:00:00.000Z"
     },
     {
       "title": "Analyze Git Logs in Style With DuckDB",
@@ -372,14 +350,14 @@
       "date": "2026-10-29T00:00:00.000Z"
     },
     {
-      "title": "Browse tools.simonwillison.net by tag",
-      "url": "https://simonwillison.net/2026/Nov/11/tools-tags/",
-      "date": "2026-11-11T18:42:50.000Z"
+      "title": "datasette-maplibre 0.1a0",
+      "url": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
+      "date": "2026-11-15T23:58:36.000Z"
     },
     {
-      "title": "llm 0.37.2",
-      "url": "https://simonwillison.net/2026/Nov/11/llm/",
-      "date": "2026-11-11T17:19:52.000Z"
+      "title": "datasette 1.0a43",
+      "url": "https://simonwillison.net/2026/Nov/15/datasette/",
+      "date": "2026-11-15T23:20:27.000Z"
     },
     {
       "title": "Fool's Expertise",
@@ -393,15 +371,15 @@
     },
     {
       "author": "contact@herecomesthemoon.net (Mond)",
-      "title": "For the first time, a C++ standard failed to pass the national bodies",
-      "url": "https://herecomesthemoon.net/2026/11/cpp26-failed-the-national-bodies/",
-      "date": "2026-11-11T00:00:00.000Z"
+      "title": "How my friends and I play Doppelkopf",
+      "url": "https://herecomesthemoon.net/2026/11/how-my-friends-and-i-play-doppelkopf/",
+      "date": "2026-11-16T00:00:00.000Z"
     },
     {
       "author": "contact@herecomesthemoon.net (Mond)",
-      "title": "Async Rust: Where does the scheduler live?",
-      "url": "https://herecomesthemoon.net/2026/10/async-rust-where-does-the-scheduler-live/",
-      "date": "2026-10-03T00:00:00.000Z"
+      "title": "You should learn to play Doppelkopf",
+      "url": "https://herecomesthemoon.net/2026/11/you-should-learn-to-play-doppelkopf/",
+      "date": "2026-11-15T00:00:00.000Z"
     },
     {
       "title": "'Trust but verify'; or, 'the correctness ratchet'",
@@ -414,14 +392,14 @@
       "date": "2026-10-14T00:00:00.000Z"
     },
     {
-      "title": "We Won’t “Just Hang Out”",
-      "url": "https://borretti.me/article/we-wont-just-hang-out",
-      "date": "2026-10-27T13:00:00.000Z"
+      "title": "ASI as a Black Box",
+      "url": "https://borretti.me/article/asi-as-a-black-box",
+      "date": "2026-11-15T13:00:00.000Z"
     },
     {
-      "title": "No Man Is an Island",
-      "url": "https://borretti.me/article/no-man-is-an-island",
-      "date": "2026-10-08T13:00:00.000Z"
+      "title": "Taking AI Seriously",
+      "url": "https://borretti.me/article/taking-ai-seriously",
+      "date": "2026-11-14T13:00:00.000Z"
     }
   ]
 }
