@@ -1,5 +1,5 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"draft","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
+ {"title":"Type Systems For The Uninitiated","stage":"private","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
 ---
 
 # Type Systems For The Uninitiated
@@ -10,7 +10,7 @@ One recurring argument is that *expressive type systems make programming with ag
 
 ## Introduction
 
-I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you see being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. This is an informal exploration of type systems and their use, intended for to someone who already programs.
+I, like many of you, have not had a _formal_ education on programming languages. I've essentially done what most out there do, just messed around until all the concepts you being thrown around online start making sense, the best thing I did was exposing myself to languages that force you to [_think_](https://doc.rust-lang.org/book/) because it helped me develop a good surface understanding of the layers involved. That's why this is an informal exploration of type systems and their use, intended for to someone who already programs.
 
 ## Type Systems
 
@@ -39,7 +39,7 @@ This may sound good and all, it surely _makes sense_ but it starts to become les
 
 ### Preservation and Progress
 
-It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program shouldn't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
+> It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program shouldn't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
 
 First, let's introduce some notation to express these theorems precisely:
 
@@ -96,63 +96,85 @@ Which states that, for any $`d` in the language, _exactly one_ of these outcomes
 
 In the previous model, these errors were guaranteed not to happen! But, since catching those errors before evaluation requires static typing, now they have become part of the behavior (the semantics) of the language! Since there exists only one singular recursive type, _Preservation_ plays lesser of a role here, there is no static type information to preserve between evaluations! 
 
-*** 
+A little example for this can be done by manipulating a list in Python, we can try something thats obviously wrong and we’ll still see the error only at runtime and not before!
 
-It's useful to look at an example in the wild. This single recursive type idea can be found in the [CPython Language Reference](https://docs.python.org/3/), so lets get the source code:
+```fishshell
+> python3
+>>> list.append([], 3.14) # This works without issue, because why not, I am passing a list!
+>>> list.append("obviosuly not a list", 3.14)
+Traceback (most recent call last):
+  File "<python-input-4>", line 1, in <module>
+    list.append("obviously not a list", 3.14)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' object
+```
 
-``` fishshell
+Since it wasn’t able to resolve to a value nor be further evaluated, it resulted in a runtime error.
+
+If we look deeper, we can see that this is done implementing a similar idea to that of a single recursive type Haper talks about. In the CPython Language Reference, there is a type [PyObject](https://docs.python.org/3/c-api/structures.html#c.PyObject) described as “All object types are extensions of this type. This is a type which contains the information Python needs to treat a pointer to an object as an object”. How does that look like? Well, lets check the source code:
+
+```fishshell
 > wget https://www.python.org/ftp/python/3.11.18/Python-3.11.18.tgz
 > tar -xzf Python-3.11.18.tgz
 > z Python-3.11.18/
 ```
 
-In there, it defines a type [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject) and all objects share a common header that lets the interpreter treat them as being of this type, this is like inheritance done in C:
-
 {path="Include/pytypedefs.h"}
-``` C
+```c
 typedef struct _object PyObject;
 typedef struct _typeobject PyTypeObject;
 ```
 
 {path="Include/object.h"}
-``` C
+```c
 /* Nothing is actually declared to be a PyObject, but every pointer to
  * a Python object can be cast to a PyObject*.  This is inheritance built
  * by hand. ... 
  */
 struct _object {
-    _PyObject_HEAD_EXTRA
     Py_ssize_t ob_refcnt;
     PyTypeObject *ob_type;
 };
 ```
 
-The field `ob_type`, is a pointer to a [`PyTypeObject`](https://docs.python.org/3/c-api/type.html#c.PyTypeObject) which encodes _the object type_, name and memory layout.
+You can see that the definition is small enough, it only has a field to counter the number of references pointing to it and a pointer to a `PyTypeObject` holding a bunch of metadata about the type. To understand how this "inheritance" is done in CPython you'll need to know that in C, the fields in a struct are laid out in memory in the order they are declared. CPython leverages this by having every specialized type start its definition with a `PyObject`, the float type for example:
+
+{path="Include/cpython/floatobject.h" hl="2-3"}
+```c
+typedef struct {
+    // This is a macro that gets expanded in normal builds to a ob_base field of type PyObject
+    PyObject_HEAD
+    double ob_fval;
+} PyFloatObject;
+```
+
+Thanks to this, as the comments say in the `_object` definition, it allows any pointer to an object to be interpreter as a pointer to a `PyObject`, creating the relation in which any object *is a* `PyObject`. In turn, the `_typeobject` holds key information like the type name and its size, which is how CPython implements the idea of tagging a value to be able to do Class Checking later. Also you can see the definition has a `PyObject` field so it is recursive, again, similar to how Harper states.
 
 {path="Include/cpython/object.h"}
-``` C
+```c
 struct _typeobject {
     PyObject_VAR_HEAD
-    const char *tp_name; /* For printing, in format "<module>.<name>" */
+    const char tp_name; / For printing, in format "<module>.<name>" */
     Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
     ...
 }
 ```
 
-This is *exactly* the idea of tagging a value to later know which class of they belong to. If you look closely, it also includes a `PyObject` header, which we saw before also has a `PyTypeObject`, this illustrates the recursive notion mentioned before! Now, whats left to see is Class Checking, for an example of that there is this function:
+To see Class Checking in action, we can see:
 
 {path="Include/object.h"}
-``` C
+```c
 static inline int PyObject_TypeCheck(PyObject *ob, PyTypeObject *type) {
     return Py_IS_TYPE(ob, type) || PyType_IsSubtype(Py_TYPE(ob), type);
 }
 ```
 
-Which is easy enough to parse and you can see that it expects an object and a given type to check if the object is of said type or a _subtype_ of it! This function is used in _a lot_ of places to check if a necessary method description applies to an object. For example, if we grab the `descr_check` function and add a print statement before checking: 
+The function expects an object and a given type to check if the object is of said type or a subtype of it! This function is used in a lot of places to check if a necessary method description applies to an object. For example, if we grab the `descr_check` function and add a print statement before checking:
 
-``` C
+{path="Objects/descrobject.c" hl="2"}
+```c
 static int descr_check(PyDescrObject *descr, PyObject *obj) {
-  printf("I am checking!\n"); // <--------------- here!
+  printf("I am checking!\n"); 
   if (!PyObject_TypeCheck(obj, descr->d_type)) {
     PyErr_Format(PyExc_TypeError,
      "descriptor '%V' for '%.100s' objects "
@@ -166,15 +188,22 @@ static int descr_check(PyDescrObject *descr, PyObject *obj) {
 }
 ```
 
-And we then compile the project:
+Then we compile it again and run our first example against it:
 
-```
+{hl="5"}
+```fishshell
 > ./configure
 > make -j"$(nproc)"
 > ./python
-```
+>>> list.append("obviosuly not a list", 3.14)
+I am checking!
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' object
+````
 
-You will get this message spammed _everywhere_.
+You'll see that this function was the one who created the message printed before! (I cleaned up a lot of the terminal output because this `descr_check` seems to be called a lot, so if you do it yourself, you'll see the message spammed everywhere).
+
 
 ## Conclusion
 
@@ -188,7 +217,7 @@ These are truly exciting times to be living in!
 
 ## Further reading
 
-Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can see the shift towards static typing in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
+Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/) or [Rocq](https://rocq-prover.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can also see the shift towards static typing in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
 
 I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.org/web/20261111231739/https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_" article around abstraction design, if your jam is testing, I too like [Alperen Keles](https://alperenkeles.com/) articles around automated testing and verification methods.
 
