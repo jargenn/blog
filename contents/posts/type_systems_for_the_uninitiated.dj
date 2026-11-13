@@ -1,5 +1,5 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"private","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
+ {"title":"Type Systems For The Uninitiated","stage":"finished","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
 ---
 
 # Type Systems For The Uninitiated
@@ -202,12 +202,12 @@ Traceback (most recent call last):
 TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' object
 ````
 
-You'll see that this function was the one who created the message printed before! (I cleaned up a lot of the terminal output because this `descr_check` seems to be called a lot, so if you do it yourself, you'll see the message spammed everywhere).
+You'll see that this function was the one who created the message printed before![^clean]
 
 
 ## Conclusion
 
-This is it! There are still a lot of things I didn't cover around type systems [^name], but the rabbit hole goes so deep I choose to stop here because otherwise it would become too long and it would miss the point.
+This is it! There are still a lot of things I didn't cover about how type systems are leveraged, the rabbit hole goes so deep I choose to stop here because otherwise it would become too long and it would miss the point.
 
 We explored both statically and dynamically typed languages and saw how they can offer meaningful safety guarantees about the behavior of our programs. The strength of an expressive static type system lies in its ability to offload some of the reasoning about the program's behavior to the compiler, enabling us to focus more on the design of better abstractions. By encoding properties in types and using them as building blocks we can rule out entire classes of errors by construction.
 
@@ -217,9 +217,11 @@ These are truly exciting times to be living in!
 
 ## Further reading
 
-Sound type systems, have interesting properties for the coming times, types can combine to create programs that act like proofs for properties in them[^propo], really, there are people burning millions of tokens [right](https://x.com/broyojo42/status/2119846041214206286) [now](https://x.com/kaepora/status/2120219455401984449) to create proofs in [Lean](https://lean-lang.org/) or [Rocq](https://rocq-prover.org/), [no matter how useful they turn out to be](https://alperenkeles.com/posts/verifiability-is-the-limit/). You can also see the shift towards static typing in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
+Sound type systems, have interesting properties for the coming times, types can combine to create programs that work as proofs for properties[^propo], really, there are people burning millions of tokens as [you](https://x.com/broyojo42/status/2119846041214206286) [read](https://x.com/kaepora/status/2120219455401984449) [this](https://www.anthropic.com/research/formal-verification#:~:text=180%20million%20lines%20of%20Rocq) to create proofs in [Lean](https://lean-lang.org/) or [Rocq](https://rocq-prover.org/), [no matter how useful](https://alperenkeles.com/posts/verifiability-is-the-limit/) [they turn out to be](https://alperenkeles.com/posts/formal-verification-is-not-verifiable/).
 
-I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.org/web/20261111231739/https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_" article around abstraction design, if your jam is testing, I too like [Alperen Keles](https://alperenkeles.com/) articles around automated testing and verification methods.
+You can also see the shift towards static typing in languages like Elixir that now have a [gradual type system](https://web.archive.org/web/20261111234141/https://elixir.hexdocs.pm/main/gradual-set-theoretic-types.html) or further efforts to leverage the existing type system like in TypeScript with libraries like [effect](https://effect.website/) and [gdp-ts](https://x.com/rauchg/status/2107119811444748555).
+
+I recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.org/web/20261111231739/https://www.tedinski.com/2018/01/30/the-one-ring-problem-abstraction-and-power.html)_" article around abstraction design, if your jam is testing, I too like [Alperen Keles](https://alperenkeles.com/) articles around automated testing and verification methods.
 
 ## References
 
@@ -229,6 +231,6 @@ I also recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.arc
 [^chatgpt]: ChatGPT 3.5 was released only almost four years ago.
 [^safety]: Which is *not* the same as [memory safety](https://web.archive.org/web/20261020205914/https://matklad.github.io/2025/12/30/memory-safety-is.html).
 [^milner]: By implicitly think of languages with type inference or [Hindley-Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) type-checking algorithms where you don't usually need to annotate.
-[^propo]: [Curry-Howard Correspondence](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
+[^propo]: [Types As Propositions](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
 [^winded]: I avoided giving examples in fear of making the part too big. If you want to go deeper on that defer to the _"Type Systems"_ paper above.
-[^name]: Parametric and subtype polymorphism and variance, to name a few.
+[^clean]: I cleaned up a lot of the terminal output because it seems to be called a lot so, if you do it yourself, you'll see the message spammed everywhere.
