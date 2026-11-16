@@ -39,9 +39,9 @@ This may sound good and all, it surely _makes sense_ but it starts to become les
 
 ### Preservation and Progress
 
-> It's not trivial to prove type soundness in a type system. Even if the language has a reduced set of keywords and is really careful on the features it adds, language design is a combinatorial problem and the evaluation of a type sound program shouldn't get stuck at any time. Getting stuck means that during the execution of the program it reached a point where it's not a value and no evaluation rule in the language applies, if that happens we are talking about an expression that should have been rejected by the type system. For this, the theorems of Preservation and Progress are applied. 
+Proving type soundness for a type system is not trivial, it is a discipline by itself, language design is a combinatorial problem and you'll have to make sure all the programs written with it never get stuck, meaning that it can never reach a point in execution where an expression is not a value and no evaluation rule aplies, that should have been rejected! For this, its good to know at least two of the theorems used: Preservation and Progress. 
 
-First, let's introduce some notation to express these theorems precisely:
+First, let's introduce some notation to express these theorems somewhat precisely:
 
 | Symbol | Meaning | Example |
 |:--|:--|:--|
@@ -62,7 +62,6 @@ Where $`Γ` represents all the variables that are in the scope alongside their t
 *Preservation* can be expressed as:
 
 $$`\Gamma \vdash e : \tau \land e \rightarrow e' \Longrightarrow \Gamma \vdash e' : \tau`
-
 
 Preservation can be read as a judgement stating that _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
 
@@ -111,7 +110,7 @@ TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' objec
 
 Since it wasn’t able to resolve to a value nor be further evaluated, it resulted in a runtime error.
 
-If we look deeper, we can see that this is done implementing a similar idea to that of a single recursive type Haper talks about. In the CPython Language Reference, there is a type [PyObject](https://docs.python.org/3/c-api/structures.html#c.PyObject) described as “All object types are extensions of this type. This is a type which contains the information Python needs to treat a pointer to an object as an object”. How does that look like? Well, lets check the source code:
+If we look deeper, we can see that this is done implementing a similar idea to that of a single recursive type Haper talks about. In the CPython Language Reference, there is a type [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject) described as _“All object types are extensions of this type. This is a type which contains the information Python needs to treat a pointer to an object as an object”_. How does that look like? Well, lets check the source code:
 
 ```fishshell
 > wget https://www.python.org/ftp/python/3.11.18/Python-3.11.18.tgz
