@@ -1,5 +1,5 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"finished","tags":[""],"date":"2026-11-06","abstract":"placeholder"} 
+ {"title":"Type Systems For The Uninitiated","stage":"finished","tags":["Python, Rust, Type Systems"],"date":"2026-11-06","abstract":"This is an informal exploration of type systems and their use, intended for to someone who already programs."}
 ---
 
 # Type Systems For The Uninitiated
@@ -22,7 +22,7 @@ For example, in a language  with a 16-bit signed integer type, a variable explic
 
 This is achieved by two pieces working in together, first is the *type system*: a set of rules that together defines _what_ is a well-typed expression in a language. These type rules are computed in the abstract (think of how a formal grammar is detached of the actual parsing algorithm that gets executed) and they are built from the ground-up using *judgments*, particular claims done under a set of assumptions [^winded]. It's important to understand that the quality of a type system is not measured by the number of rules it has, but by how it shapes the semantics of the language. A program being well-typed should serve to ensure good program behavior.
 
- Then, there is the *type-checker*: an algorithm that implements the type systems rules (completely or partially) and works to check if a program _is_ well-typed by excercising the rules and failing if it's unable to guard against possible errors .
+ Then, there is the *type-checker*: an algorithm that implements the type systems rules (completely or partially) and works to check if a program _is_ well-typed by exercising the rules and failing if it's unable to guard against possible errors .
 
  These rules can be enforced in different ways depending on the language and algorithm. In statically typed languages (Rust, C or OCaml) they are checked at compile-time before the program is executed. Other languages, often dynamic languages, rely on runtime checks to know if an operation is valid on a given value. Type-checking can be done independently of program execution, for example, in TypeScript every type gets erased when compiled to JavaScript. In practice, languages often combine both kinds of checks. 
 
@@ -39,7 +39,7 @@ This may sound good and all, it surely _makes sense_ but it starts to become les
 
 ### Preservation and Progress
 
-Proving type soundness for a type system is not trivial, it is a discipline by itself, language design is a combinatorial problem and you'll have to make sure all the programs written with it never get stuck, meaning that it can never reach a point in execution where an expression is not a value and no evaluation rule aplies, that should have been rejected! For this, its good to know at least two of the theorems used: Preservation and Progress. 
+Proving type soundness for a type system is not trivial, it is a discipline by itself, language design is a combinatorial problem and you'll have to make sure all the programs written with it never get stuck, meaning that it can never reach a point in execution where an expression is not a value and no evaluation rule applies to move that expression forwards, that should have been rejected! For this, its good to know at least two of the theorems used: Preservation and Progress. 
 
 First, let's introduce some notation to express these theorems somewhat precisely:
 
@@ -63,7 +63,7 @@ Where $`Γ` represents all the variables that are in the scope alongside their t
 
 $$`\Gamma \vdash e : \tau \land e \rightarrow e' \Longrightarrow \Gamma \vdash e' : \tau`
 
-Preservation can be read as a judgement stating that _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
+Preservation can be read as a judgment stating that _"if under the typing context $`Γ`, $`e` has type $`τ`, and $`e` steps to $`e'` in one step, then $`e'` also has type $`τ` under $`Γ`"_. It ensures that each step of evaluation preserves the type of the expression, remember what we talked about ranges before.
 
 and *Progress* as:
 
@@ -100,7 +100,7 @@ A little example for this can be done by manipulating a list in Python, we can t
 ```fishshell
 > python3
 >>> list.append([], 3.14) # This works without issue, because why not, I am passing a list!
->>> list.append("obviosuly not a list", 3.14)
+>>> list.append("obviously not a list", 3.14)
 Traceback (most recent call last):
   File "<python-input-4>", line 1, in <module>
     list.append("obviously not a list", 3.14)
@@ -110,7 +110,7 @@ TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' objec
 
 Since it wasn’t able to resolve to a value nor be further evaluated, it resulted in a runtime error.
 
-If we look deeper, we can see that this is done implementing a similar idea to that of a single recursive type Haper talks about. In the CPython Language Reference, there is a type [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject) described as _“All object types are extensions of this type. This is a type which contains the information Python needs to treat a pointer to an object as an object”_. How does that look like? Well, lets check the source code:
+If we look deeper, we can see that this is done implementing a similar idea to that of a single recursive type Harper talks about. In the CPython Language Reference, there is a type [`PyObject`](https://docs.python.org/3/c-api/structures.html#c.PyObject) described as _“All object types are extensions of this type. This is a type which contains the information Python needs to treat a pointer to an object as an object”_. How does that look like? Well, lets check the source code:
 
 ```fishshell
 > wget https://www.python.org/ftp/python/3.11.18/Python-3.11.18.tgz
@@ -153,7 +153,7 @@ Thanks to this, as the comments say in the `_object` definition, it allows any p
 ```c
 struct _typeobject {
     PyObject_VAR_HEAD
-    const char tp_name; / For printing, in format "<module>.<name>" */
+    const char *tp_name; / For printing, in format "<module>.<name>" */
     Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
     ...
 }
@@ -194,7 +194,7 @@ Then we compile it again and run our first example against it:
 > ./configure
 > make -j"$(nproc)"
 > ./python
->>> list.append("obviosuly not a list", 3.14)
+>>> list.append("obviously not a list", 3.14)
 I am checking!
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
@@ -203,6 +203,87 @@ TypeError: descriptor 'append' for 'list' objects doesn't apply to a 'str' objec
 
 You'll see that this function was the one who created the message printed before![^clean]
 
+## Types As Design Tools
+
+When I was thinking on what to show as an example of static typing, I didn't want to do a basic example of, I don't know, passing the wrong value to a function and have the compiler scream at me, *it is* the most basic example and it would showcase the point but it is boring. To showcase how static typing can be used to design software, in this case an API, in the most brief way possible, I thought of the *typestate pattern*[^readit] and how it is applied in [`rustls`](https://docs.rs/rustls/latest/rustls/).
+`rustls` is a rust crate (a library) that implements the [TLS Protocol](https://en.wikipedia.org/wiki/Transport_Layer_Security) and [it's features](https://docs.rs/rustls/latest/rustls/manual/_04_features/index.html). The crate has a type [`ConfigBuilder`](https://docs.rs/rustls/latest/rustls/struct.ConfigBuilder.html) that leverages the pattern to encode the states of a process in the type system and enforces them at compile-time:
+
+{hl="17-20"}
+```rust
+/// ...
+/// # Types
+///
+/// ConfigBuilder uses the [typestate] pattern to ensure at compile time that each required
+/// configuration item is provided exactly once. This is tracked in the `State` type parameter,
+/// which can have these values:
+///
+/// - [`WantsVersions`]
+/// - [`WantsVerifier`]
+/// - [`WantsClientCert`]
+/// - [`WantsServerCert`]
+///
+/// The other type parameter is `Side`, which is either `ServerConfig` or `ClientConfig`
+/// depending on whether the ConfigBuilder was built with [`ServerConfig::builder()`] or
+/// [`ClientConfig::builder()`].
+///
+/// You won't need to write out either of these type parameters explicitly. If you write a
+/// correct chain of configuration calls they will be used automatically. If you write an
+/// incorrect chain of configuration calls you will get an error message from the compiler
+/// mentioning some of these types.
+/// ...
+///
+#[derive(Clone)]
+pub struct ConfigBuilder<Side: ConfigSide, State> {
+  state: State,
+  provider: Arc<CryptoProvider>,
+  time_provider: Arc<dyn TimeProvider>,
+  side: PhantomData<Side>,
+}
+```
+
+Focus on the highlighted part of the comments which showcase the pattern[^mix], if we go and try to configure the verifier twice for our config, in other languages you could be overwriting the previous config, but here that would result in an error!
+
+```rust
+use rustls::server::{ServerConfig};
+
+fn main() {
+  let builder = ServerConfig::builder()
+    .with_no_client_auth()
+    .with_client_cert_verifier(todo!());
+}
+```
+
+```fishshell
+> cargo c
+    Checking example v0.1.0 (/home/lautaro/Documents/Development/example)
+error[E0599]: no method named `with_client_cert_verifier` found for
+struct `ConfigBuilder<ServerConfig, WantsServerCert>` in the current scope
+ --> src/main.rs:4:109
+  |
+4 |     let builder = ServerConfig::builder()
+  |       .with_no_client_auth().with_client_cert_verifier(todo!());
+  |                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |          method not found in `ConfigBuilder<ServerConfig, WantsServerCert>`
+  |
+  = note: the method was found for `ConfigBuilder<ServerConfig, WantsVerifier>`
+```
+
+This is because once we configure the verifier by using `with_no_client_auth()` we moved from the `WantsVerifier` state to the `WantsServerCert` state, which simply doesn't have a method for that. With the same mechanism, the `builder()` method from `ServerConfig` returns a `ConfigBuilder<ServerConfig, WantsVerifier`, so we are forced to set that first before anything else . All of those state transitions are encoded in type signatures:
+
+```rust
+impl ServerConfig {
+  pub fn builder() -> ConfigBuilder<Self, WantsVerifier>;
+}
+
+impl ConfigBuilder<ServerConfig, WantsVerifier> {
+  pub fn with_no_client_auth(self) -> ConfigBuilder<ServerConfig, WantsServerCert>;
+  pub fn with_client_cert_verifier(self, client_cert_verifier: Arc<dyn ClientCertVerifier>) -> ConfigBuilder<ServerConfig, WantsServerCert>;
+}
+```
+
+Before, I mentioned that types are different things depending on whom you ask. This is a good example of that. Instead of only being used to describe the shape of data, they express the _semantic intent_ of the maintainers of the crate.
+
+This idea extends beyond this particular pattern. Rust's standard library provides abstractions that express the behavior of computations. Take, for example, [`Future`](https://doc.rust-lang.org/std/future/trait.Future.html), [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) or good old [`Result`](https://doc.rust-lang.org/std/result/), expressing asynchronous computations, pull based iteration and the outcome of a fallible operation, respectively. 
 
 ## Conclusion
 
@@ -233,3 +314,5 @@ I recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.
 [^propo]: [Types As Propositions](https://web.archive.org/web/20261111232544/https://cs3110.github.io/textbook/chapters/adv/curry-howard.html#computing-with-evidence).
 [^winded]: I avoided giving examples in fear of making the part too big. If you want to go deeper on that defer to the _"Type Systems"_ paper above.
 [^clean]: I cleaned up a lot of the terminal output because it seems to be called a lot so, if you do it yourself, you'll see the message spammed everywhere.
+[^readit]: If you want to read an explanation of it, read [Cliff Biffle's article](https://cliffle.com/blog/rust-typestate/)
+[^mix]: Fully understanding each feature in the snippet would take a much longer article, but you can search them yourself: [parametric polymorphism](https://doc.rust-lang.org/book/ch10-01-syntax.html#generic-data-types), [phantom data](https://doc.rust-lang.org/nomicon/phantom-data.html)(which isn't the same as [phantom types](https://kataskeue.com/gdp.pdf)!) and [dynamic sized types](https://doc.rust-lang.org/nomicon/exotic-sizes.html?highlight=Dst#dynamically-sized-types-dsts) 
