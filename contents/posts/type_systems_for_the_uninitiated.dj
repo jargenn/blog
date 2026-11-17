@@ -241,7 +241,7 @@ pub struct ConfigBuilder<Side: ConfigSide, State> {
 }
 ```
 
-Focus on the highlighted part of the comments which showcase the pattern[^mix], if we go and try to configure the verifier twice for our config, in other languages you could be overwriting the previous config, but here that would result in an error!
+Focus on the highlighted part of the comments which showcase the pattern[^mix], if we go and try to configure the verifier twice for our config, in other languages you could be overwriting the previous config, but here that would result in an error:
 
 ```rust
 use rustls::server::{ServerConfig};
@@ -268,7 +268,7 @@ struct `ConfigBuilder<ServerConfig, WantsServerCert>` in the current scope
   = note: the method was found for `ConfigBuilder<ServerConfig, WantsVerifier>`
 ```
 
-This is because once we configure the verifier by using `with_no_client_auth()` we moved from the `WantsVerifier` state to the `WantsServerCert` state, which simply doesn't have a method for that. With the same mechanism, the `builder()` method from `ServerConfig` returns a `ConfigBuilder<ServerConfig, WantsVerifier`, so we are forced to set that first before anything else . All of those state transitions are encoded in type signatures:
+This is because once we configure the verifier by using `with_no_client_auth()` we moved from the `WantsVerifier` state to the `WantsServerCert` state, which simply doesn't have a method for that. With the same mechanism, the `builder()` method from `ServerConfig` returns a `ConfigBuilder<ServerConfig, WantsVerifier`, so we are forced to set that first before anything else[^playground]. All of those state transitions are encoded in type signatures:
 
 ```rust
 impl ServerConfig {
@@ -316,3 +316,4 @@ I recommend reading Ted Kaminski's "_[The One Ring Problem](https://web.archive.
 [^clean]: I cleaned up a lot of the terminal output because it seems to be called a lot so, if you do it yourself, you'll see the message spammed everywhere.
 [^readit]: If you want to read an explanation of it, read [Cliff Biffle's article](https://cliffle.com/blog/rust-typestate/)
 [^mix]: Fully understanding each feature in the snippet would take a much longer article, but you can search them yourself: [parametric polymorphism](https://doc.rust-lang.org/book/ch10-01-syntax.html#generic-data-types), [phantom data](https://doc.rust-lang.org/nomicon/phantom-data.html)(which isn't the same as [phantom types](https://kataskeue.com/gdp.pdf)!) and [dynamic sized types](https://doc.rust-lang.org/nomicon/exotic-sizes.html?highlight=Dst#dynamically-sized-types-dsts) 
+[^playground]: You can [try it yourself](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&code=use%20rustls%3A%3Aserver%3A%3A%7BServerConfig%7D%3B%20%2F%2F%200.23.46%0A%0Afn%20main()%20%7B%0A%20%20let%20builder%20%3D%20ServerConfig%3A%3Abuilder()%0A%20%20%20%20.with_no_client_auth()%0A%20%20%20%20.with_client_cert_verifier(todo!())%3B%0A%7D%0A)
