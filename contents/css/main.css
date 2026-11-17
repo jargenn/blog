@@ -30,8 +30,10 @@
       --background: #181a1b;
       --lang-bg: #232628;
       --text: #dcd8d0;
-      --accent: #0A75AD;
+      /* --accent: #0A75AD; */
+      --accent: #1D45E3;
       --emphasis: #f5f5f5;
+
       --muted: #2a2f36;
     }
 
