@@ -205,8 +205,9 @@ You'll see that this function was the one who created the message printed before
 
 ## Types As Design Tools
 
-When I was thinking on what to show as an example of static typing, I didn't want to do a basic example of, I don't know, passing the wrong value to a function and have the compiler scream at me, *it is* the most basic example and it would showcase the point but it is boring. To showcase how static typing can be used to design software, in this case an API, in the most brief way possible, I thought of the *typestate pattern*[^readit] and how it is applied in [`rustls`](https://docs.rs/rustls/latest/rustls/).
-`rustls` is a rust crate (a library) that implements the [TLS Protocol](https://en.wikipedia.org/wiki/Transport_Layer_Security) and [it's features](https://docs.rs/rustls/latest/rustls/manual/_04_features/index.html). The crate has a type [`ConfigBuilder`](https://docs.rs/rustls/latest/rustls/struct.ConfigBuilder.html) that leverages the pattern to encode the states of a process in the type system and enforces them at compile-time:
+When I was thinking on what to show as an example of static typing, I didn't want to do a basic example of, I don't know, passing the wrong value to a function and have the compiler scream at me, *it is* the most basic example and it would showcase the point but it is boring.
+
+To showcase how static typing can be used to design software, in this case an API, in the most brief way possible, I thought of the *typestate pattern*[^readit] and how it is applied in [`rustls`](https://docs.rs/rustls/latest/rustls/), a crate (a library) that implements the [TLS Protocol](https://en.wikipedia.org/wiki/Transport_Layer_Security) and [it's features](https://docs.rs/rustls/latest/rustls/manual/_04_features/index.html). The crate has a type [`ConfigBuilder`](https://docs.rs/rustls/latest/rustls/struct.ConfigBuilder.html) that leverages the pattern to encode the states of a process in the type system and enforces them at compile-time:
 
 {hl="17-20"}
 ```rust
