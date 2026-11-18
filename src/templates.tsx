@@ -239,13 +239,13 @@ function Base(
             </a>
           </p>
           <p class="copyr">
-            © 2026 Lautaro Acosta Quintana. All rights reserved.
+            © 2026 Lautaro Acosta Quintana.
             <a class="emphasis statement" href="/ai_transparency.html">
               AI Transparency
             </a>
           </p>
           <p class="credit">
-            Icons by <a href="https://simpleicons.org">Simple Icons</a>
+            Icons by <a href="https://simpleicons.org">Simple Icons</a> - All the content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
           </p>
         </footer>
       </body>
