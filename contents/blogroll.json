@@ -1,6 +1,16 @@
 {
-  "createdAt": "2026-11-16T21:42:50.484Z",
+  "createdAt": "2026-11-25T23:50:12.744Z",
   "entries": [
+    {
+      "title": "The real AI risk is inside the labs",
+      "url": "http://antirez.com/news/172",
+      "date": "2026-07-28T09:00:11.000Z"
+    },
+    {
+      "title": "Being Linux Torvalds",
+      "url": "http://antirez.com/news/171",
+      "date": "2026-07-25T11:20:55.000Z"
+    },
     {
       "title": "Replacing the old battery on rechargeable bike lights",
       "url": "https://jvns.ca/blog/2026/09/27/replacing-the-old-battery-on-rechargeable-bike-lights/",
@@ -42,14 +52,14 @@
       "date": "2026-10-24T00:00:00.000Z"
     },
     {
+      "title": "When science communicators spread misinformation",
+      "url": "https://sunshowers.io/posts/science-communicator-misinformation/?utm_source=atom_feed",
+      "date": "2026-11-25T00:00:00.000Z"
+    },
+    {
       "title": "Designing nextest's install scripts",
       "url": "https://sunshowers.io/posts/nextest-install-scripts/?utm_source=atom_feed",
       "date": "2026-11-14T00:00:00.000Z"
-    },
-    {
-      "title": "Contra \"Glue work considered harmful\"",
-      "url": "https://sunshowers.io/posts/glue-work/?utm_source=atom_feed",
-      "date": "2026-11-12T00:00:00.000Z"
     },
     {
       "title": "2025 Recap: so many projects",
@@ -118,14 +128,14 @@
       "date": "2018-09-10T19:00:00.000Z"
     },
     {
+      "title": "How to make sure your developers never write for the company blog",
+      "url": "http://notes.eatonphil.com/2026-11-25-how-to-make-sure-developers-never-write-for-the-company-blog.html",
+      "date": "2026-11-25T00:00:00.000Z"
+    },
+    {
       "title": "NYC",
       "url": "http://notes.eatonphil.com/2026-10-29-nyc.html",
       "date": "2026-10-29T00:00:00.000Z"
-    },
-    {
-      "title": "Deepthi Sigireddi from Supabase",
-      "url": "http://notes.eatonphil.com/2026-10-08-deepthi-sigireddi-from-supabase.html",
-      "date": "2026-10-08T00:00:00.000Z"
     },
     {
       "title": "We can do better than line-buffered output",
@@ -151,15 +161,15 @@
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "What does it mean to understand what we built?",
-      "url": "http://brooker.co.za/blog/2026/11/16/understanding.html",
-      "date": "2026-11-16T00:00:00.000Z"
+      "title": "Traffic mix matters",
+      "url": "http://brooker.co.za/blog/2026/11/18/workload-mix.html",
+      "date": "2026-11-18T00:00:00.000Z"
     },
     {
       "author": "marcbrooker@gmail.com (Marc Brooker)",
-      "title": "Animations for System Builders: Metastability and Lost Writes",
-      "url": "http://brooker.co.za/blog/2026/10/23/animations.html",
-      "date": "2026-10-23T00:00:00.000Z"
+      "title": "What does it mean to understand what we built?",
+      "url": "http://brooker.co.za/blog/2026/11/16/understanding.html",
+      "date": "2026-11-16T00:00:00.000Z"
     },
     {
       "author": "Jack Vanlightly",
@@ -172,6 +182,18 @@
       "title": "The LogDrive: Flexible Composition Through Abstraction in Shared Logs",
       "url": "https://jack-vanlightly.com/blog/2026/8/25/the-logdrive-flexible-composition-through-abstraction-in-shared-logs",
       "date": "2026-08-25T12:11:33.000Z"
+    },
+    {
+      "author": "Julian Hyde",
+      "title": "Morel on Go, and why platforms shouldn’t matter",
+      "url": "http://blog.hydromatic.net/2026/08/01/morel-on-go.html",
+      "date": "2026-08-01T20:00:00.000Z"
+    },
+    {
+      "author": "Julian Hyde",
+      "title": "Expressing package queries in Morel",
+      "url": "http://blog.hydromatic.net/2026/05/29/package-queries.html",
+      "date": "2026-05-29T20:00:00.000Z"
     },
     {
       "title": "Get Oracle Partition High Values as VARCHAR2 types instead of LONG in Oracle 19c and earlier",
@@ -204,14 +226,20 @@
       "date": "2025-12-04T13:00:00.000Z"
     },
     {
+      "title": "The ghost in the write",
+      "url": "http://ayende.com/204323-a/the-ghost-in-the-write?Key=5fe87f98-047c-43b1-a3ea-e8029a64d67a",
+      "date": "2026-11-18T12:00:00.000Z"
+    },
+    {
       "title": "The exponential growth of shadow IT",
       "url": "http://ayende.com/204292-a/the-exponential-growth-of-shadow-it?Key=92955703-406d-4a7e-a645-f513581f03b3",
       "date": "2026-11-12T12:00:00.000Z"
     },
     {
-      "title": "What does \"XYZ developer\" mean?",
-      "url": "http://ayende.com/204291-a/what-does-xyz-developer-mean?Key=d57c7c5e-e4ce-4141-be50-8c8e6839a929",
-      "date": "2026-11-09T12:00:00.000Z"
+      "author": "Alperen Keles",
+      "title": "Ephyra: A new agentic property-based testing library to find the bugs you missed",
+      "url": "https://alperenkeles.com/posts/agentic-property-based-testing-with-ephyra/",
+      "date": "2026-11-24T00:00:00.000Z"
     },
     {
       "author": "Alperen Keles",
@@ -220,10 +248,10 @@
       "date": "2026-11-13T00:00:00.000Z"
     },
     {
-      "author": "Alperen Keles",
-      "title": "Bug Finding Considered Harmful?",
-      "url": "https://alperenkeles.com/posts/bug-finding-considered-harmful/",
-      "date": "2026-11-04T00:00:00.000Z"
+      "author": "Thomas Gazagnaire",
+      "title": "Chaos engineering as a library",
+      "url": "https://gazagnaire.org/blog/2026-11-23-eio-fs-net.html",
+      "date": "2026-11-23T00:00:00.000Z"
     },
     {
       "author": "Thomas Gazagnaire",
@@ -232,22 +260,16 @@
       "date": "2026-11-09T00:00:00.000Z"
     },
     {
-      "author": "Thomas Gazagnaire",
-      "title": "console: making OCaml command-line tools look good",
-      "url": "https://gazagnaire.org/blog/2026-11-02-console.html",
-      "date": "2026-11-02T00:00:00.000Z"
+      "author": "Anil Madhavapeddy",
+      "title": "Was software just always too complex for humans?",
+      "url": "https://anil.recoil.org/notes/software-too-complex-for-humans",
+      "date": "2026-11-22T00:00:00.000Z"
     },
     {
       "author": "Anil Madhavapeddy",
-      "title": ".plan-26-45: Welcome to the House of Fun",
-      "url": "https://anil.recoil.org/notes/2026w45",
-      "date": "2026-11-08T00:00:00.000Z"
-    },
-    {
-      "author": "Anil Madhavapeddy",
-      "title": "Tessera wins the OpenUK software of the year award",
-      "url": "https://anil.recoil.org/notes/openuk-tessera-award",
-      "date": "2026-11-06T00:00:00.000Z"
+      "title": ".plan-26-47: One ring to rule them all, but not on Windows",
+      "url": "https://anil.recoil.org/notes/2026w47",
+      "date": "2026-11-22T00:00:00.000Z"
     },
     {
       "author": "Filippo Valsorda <feed@filippo.io>",
@@ -263,15 +285,15 @@
     },
     {
       "author": "Ian Duncan",
-      "title": "Who Owns the Machines?",
-      "url": "https://iankduncan.com/personal/2026-10-15-who-owns-the-machines/",
-      "date": "2026-10-15T00:00:00.000Z"
+      "title": "Pretending Everything Is Normal",
+      "url": "https://iankduncan.com/commentary/2026-11-23-the-cowardice-of-pretending-everything-is-normal/",
+      "date": "2026-11-23T00:00:00.000Z"
     },
     {
       "author": "Ian Duncan",
-      "title": "Sex, AI, and the Apocalypse",
-      "url": "https://iankduncan.com/personal/2026-09-16-sex-ai-and-the-apocalypse/",
-      "date": "2026-09-16T00:00:00.000Z"
+      "title": "Borrowing at 17% to Avoid a Draft",
+      "url": "https://iankduncan.com/commentary/2026-11-20-borrowing-to-avoid-a-draft/",
+      "date": "2026-11-20T00:00:00.000Z"
     },
     {
       "author": "Jepsen",
@@ -287,25 +309,25 @@
     },
     {
       "author": "Matthias Endler",
+      "title": "Why OTTO Chose Rust",
+      "url": "https://corrode.dev/blog/otto-rust-interview/",
+      "date": "2026-11-18T00:00:00.000Z"
+    },
+    {
+      "author": "Matthias Endler",
       "title": "Thinking in Traits",
       "url": "https://corrode.dev/blog/thinking-in-traits/",
       "date": "2026-11-02T00:00:00.000Z"
     },
     {
-      "author": "Matthias Endler",
-      "title": "Local Reasoning in Rust",
-      "url": "https://corrode.dev/blog/local-reasoning-in-rust/",
-      "date": "2026-10-02T00:00:00.000Z"
+      "title": "When in doubt, flail about",
+      "url": "https://seangoedecke.com/when-in-doubt-flail-about/",
+      "date": "2026-11-23T00:00:00.000Z"
     },
     {
-      "title": "How to find meaning in large tech companies",
-      "url": "https://seangoedecke.com/how-to-find-meaning-in-large-tech-companies/",
-      "date": "2026-11-14T00:00:00.000Z"
-    },
-    {
-      "title": "Glue work is still harmful in the age of AI",
-      "url": "https://seangoedecke.com/glue-work-is-still-harmful-in-the-age-of-ai/",
-      "date": "2026-11-11T00:00:00.000Z"
+      "title": "Notes on OpenAI's perplexity reveal",
+      "url": "https://seangoedecke.com/notes-on-openais-perplexity-reveal/",
+      "date": "2026-11-23T00:00:00.000Z"
     },
     {
       "title": "Analyze Git Logs in Style With DuckDB",
@@ -340,24 +362,24 @@
       "date": "2026-10-26T18:45:00.000Z"
     },
     {
+      "title": "Abolish Lock Poisoning",
+      "url": "https://lucumr.pocoo.org/2026/11/25/poisoning/",
+      "date": "2026-11-25T00:00:00.000Z"
+    },
+    {
       "title": "AI and Irontown",
       "url": "https://lucumr.pocoo.org/2026/11/9/irontown/",
       "date": "2026-11-09T00:00:00.000Z"
     },
     {
-      "title": "Custom Voices With Qwen3-TTS",
-      "url": "https://lucumr.pocoo.org/2026/10/29/qwen3-custom-voices/",
-      "date": "2026-10-29T00:00:00.000Z"
+      "title": "Quoting Scott Aaronson",
+      "url": "https://simonwillison.net/2026/Nov/25/scott-aaronson/",
+      "date": "2026-11-25T23:26:32.000Z"
     },
     {
-      "title": "datasette-maplibre 0.1a0",
-      "url": "https://simonwillison.net/2026/Nov/15/datasette-maplibre/",
-      "date": "2026-11-15T23:58:36.000Z"
-    },
-    {
-      "title": "datasette 1.0a43",
-      "url": "https://simonwillison.net/2026/Nov/15/datasette/",
-      "date": "2026-11-15T23:20:27.000Z"
+      "title": "Three LLM inflection points in twelve months",
+      "url": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+      "date": "2026-11-24T23:02:07.000Z"
     },
     {
       "title": "Fool's Expertise",
@@ -371,15 +393,15 @@
     },
     {
       "author": "contact@herecomesthemoon.net (Mond)",
-      "title": "How my friends and I play Doppelkopf",
-      "url": "https://herecomesthemoon.net/2026/11/how-my-friends-and-i-play-doppelkopf/",
-      "date": "2026-11-16T00:00:00.000Z"
+      "title": "Interruptions",
+      "url": "https://herecomesthemoon.net/2026/11/interruptions/",
+      "date": "2026-11-25T00:00:00.000Z"
     },
     {
       "author": "contact@herecomesthemoon.net (Mond)",
-      "title": "You should learn to play Doppelkopf",
-      "url": "https://herecomesthemoon.net/2026/11/you-should-learn-to-play-doppelkopf/",
-      "date": "2026-11-15T00:00:00.000Z"
+      "title": "Chess without checks",
+      "url": "https://herecomesthemoon.net/2026/11/chess-without-checks/",
+      "date": "2026-11-24T00:00:00.000Z"
     },
     {
       "title": "'Trust but verify'; or, 'the correctness ratchet'",
@@ -392,14 +414,14 @@
       "date": "2026-10-14T00:00:00.000Z"
     },
     {
+      "title": "Re: Riemann",
+      "url": "https://borretti.me/article/re-riemann",
+      "date": "2026-11-20T13:00:00.000Z"
+    },
+    {
       "title": "ASI as a Black Box",
       "url": "https://borretti.me/article/asi-as-a-black-box",
       "date": "2026-11-15T13:00:00.000Z"
-    },
-    {
-      "title": "Taking AI Seriously",
-      "url": "https://borretti.me/article/taking-ai-seriously",
-      "date": "2026-11-14T13:00:00.000Z"
     }
   ]
 }

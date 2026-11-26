@@ -368,9 +368,10 @@
 
 @layer layout {
   body {
-    padding: 2ch;
+    padding: 0;
     text-align: left;
     hyphens: auto;
+    margin-block: 0;
     margin-inline: auto;
     overflow-wrap: break-word;
     container-type: inline-size;
@@ -381,7 +382,7 @@
     top: -100%;
     left: 1ch;
     padding: 0.5em 1em;
-    background: var(--text);
+    background: var(--accent);
     color: var(--background);
     z-index: 1000;
     font-family: var(--regular-font);
@@ -392,8 +393,12 @@
     top: 1ch;
   }
 
-  header {
+  body > header {
     margin-bottom: 2rem;
+    padding: 0.75rem 2ch;
+    background: var(--accent);
+    color: var(--background);
+    font-family: "GermaniaOne", serif;
 
     .site-name {
       display: none;
@@ -410,6 +415,7 @@
       gap: 2ch;
       align-items: baseline;
       flex-wrap: wrap;
+      font-size: 1.2rem;
 
       & a {
         font-style: normal;
@@ -451,6 +457,11 @@
 
       }
     }
+  }
+
+  body > main,
+  body > footer {
+    padding-inline: 2ch;
   }
 
   footer {

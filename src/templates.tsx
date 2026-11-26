@@ -32,6 +32,13 @@ function Fonts({ fonts }: { fonts: Map<string, string> }) {
 }
 
 @font-face {
+  font-family: 'GermaniaOne';
+  src: url('${font("GermaniaOne-Regular.woff2")}') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Cabin';
   src: url('${font("Cabin-Regular.woff2")}') format('woff2');
   font-weight: 400;
