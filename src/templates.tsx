@@ -216,6 +216,7 @@ function Base(
             <a href="/writing.html">Writing</a>
             <a href="/blogroll.html">Blogroll</a>
             <a href="/links.html">Links</a>
+
           </nav>
         </header>
 

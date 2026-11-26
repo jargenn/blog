@@ -42,6 +42,58 @@
     }
   }
 
+  @media (prefers-contrast: more) {
+    :root {
+      --muted: #767676;
+    }
+
+    a[href] {
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.15em;
+    }
+
+    :focus-visible {
+      outline: 3px solid currentColor;
+      outline-offset: 3px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :root {
+      --background: Canvas;
+      --lang-bg: Canvas;
+      --text: CanvasText;
+      --emphasis: CanvasText;
+      --muted: GrayText;
+      --accent: LinkText;
+    }
+
+    body > header {
+      background: Canvas;
+      color: CanvasText;
+      border-bottom: 1px solid CanvasText;
+    }
+
+    body > header nav a,
+    main a,
+    footer a {
+      color: LinkText;
+      text-decoration: underline;
+    }
+
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 3px;
+    }
+
+    figure,
+    article th,
+    article td,
+    .code-copy {
+      border-color: CanvasText;
+    }
+  }
+
   html {
     cursor: var(--cursor-default);
     box-sizing: border-box;
@@ -67,6 +119,11 @@
 
   a[href]:active {
     cursor: var(--cursor-pressed);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
 
   /* Keep the pressed cursor while the pointer is held down. The explicit
@@ -184,6 +241,7 @@
 
     header {
       margin-bottom: 0;
+      padding-bottom: 0.5em;
       display: flex;
       flex-direction: column;
     }
@@ -393,7 +451,7 @@
     top: 1ch;
   }
 
-  body > header {
+  body>header {
     margin-bottom: 2rem;
     padding: 0.75rem 2ch;
     background: var(--accent);
@@ -459,8 +517,8 @@
     }
   }
 
-  body > main,
-  body > footer {
+  body>main,
+  body>footer {
     padding-inline: 2ch;
   }
 
