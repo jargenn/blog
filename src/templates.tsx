@@ -223,7 +223,7 @@ function Base(
         <a class="skip-link" href="#main-content">Skip to content</a>
         <header>
           <nav aria-label="Main">
-            <a class="title" href="/">
+            <a class="title" href="/" aria-label="Home">
               <span class="site-name">
                 Lautaro
                 <br />
@@ -372,10 +372,20 @@ export function Page(
   js: string,
   fonts: Map<string, string>,
 ) {
+  const pageTitle = {
+    "": "About",
+    about: "About",
+    links: "Links",
+    reading: "Reading",
+    "404": "Page not found",
+    ai_transparency: "AI Transparency",
+    style_guidelines: "Style Guidelines",
+  }[name] ?? name;
+
   return (
     <Base
       path={`/${name}`}
-      title="Lautaro Acosta Quintana"
+      title={`${pageTitle} - Lautaro Acosta Quintana`}
       src={src}
       description={blurb}
       bundled_css={css}
@@ -438,7 +448,7 @@ export function BlogRoll(
   return (
     <Base
       path=""
-      title="Lautaro Acosta Quintana"
+      title="Blogroll - Lautaro Acosta Quintana"
       description={blurb}
       src="/src/templates.tsx"
       bundled_css={css}
@@ -446,6 +456,7 @@ export function BlogRoll(
       fonts={fonts}
     >
       <div class="normal-layout">
+        <h1>Blogroll</h1>
         <Raw unsafe={preamble.value} />
         <p class="blogroll-updated">
           Last updated at:{" "}
@@ -496,11 +507,11 @@ export function PostList(
         <div class="post-heading">
           <Time className="meta-row" date={post.iso_date} />
           <div class="post-content">
-            <h3>
+            <h2>
               <a class="post-title" href={post.path} rel="noopener">
                 {post.title}
               </a>
-            </h3>
+            </h2>
             {showTags && (
               <div class="tags">
                 <span aria-hidden="true">[</span>
@@ -517,7 +528,7 @@ export function PostList(
   return (
     <Base
       path=""
-      title="Lautaro Acosta Quintana"
+      title={`${title || "Writing"} - Lautaro Acosta Quintana`}
       description={blurb}
       src="/src/templates.tsx"
       bundled_css={css}

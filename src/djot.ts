@@ -78,6 +78,7 @@ export function render(
 ): HtmlString {
   let section: Section | undefined = undefined;
   let documentSideNotes: Record<string, Footnote> = {};
+  const renderedSideNotes = new Set<string>();
   let has_rendered_first_draft_h2 = false;
   let renderingHeading = false;
 
@@ -101,7 +102,9 @@ export function render(
       return "";
     }
 
-    const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(destination.hostname)}&sz=16`;
+    const favicon = `https://www.google.com/s2/favicons?domain=${
+      encodeURIComponent(destination.hostname)
+    }&sz=16`;
     return `<img class="external-link-favicon" src="${favicon}" width="14" height="14" loading="lazy" alt="" aria-hidden="true"/>`;
   };
 
@@ -324,12 +327,15 @@ export function render(
 
       const caption = (node as typeof node & { caption?: string }).caption ??
         node.attributes?.path;
-      const highlight = (node as typeof node & { highlight?: string }).highlight ??
-        node.attributes?.hl?.replace(/["\s]/g, "");
+      const highlight =
+        (node as typeof node & { highlight?: string }).highlight ??
+          node.attributes?.hl?.replace(/["\s]/g, "");
       if (node.attributes?.hl) delete node.attributes.hl;
       if (caption && node.attributes?.path) delete node.attributes.path;
 
-      return `<figure class="code-block"${highlight ? ` data-highlight-lines="${highlight}"` : ""} role="region" aria-label="${aria_label}">
+      return `<figure class="code-block"${
+        highlight ? ` data-highlight-lines="${highlight}"` : ""
+      } role="region" aria-label="${aria_label}">
         <button class="code-copy" type="button" aria-label="Copy code"><svg viewBox="0 0 24 24" aria-hidden="true" class="copy-icon" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
         ${
         r.renderAstNodeDefault({
@@ -337,7 +343,11 @@ export function render(
           lang: grammar_name,
         })
       }
-        ${caption ? `<figcaption><cite>${escapeHtmlText(caption)}</cite></figcaption>` : ""}
+        ${
+        caption
+          ? `<figcaption><cite>${escapeHtmlText(caption)}</cite></figcaption>`
+          : ""
+      }
       </figure>`;
     },
     span: (node: Span, r: HTMLRenderer) => {
@@ -389,28 +399,32 @@ export function render(
           r.footnoteIndex[label] = index;
         }
 
-        const refId = `sn-${index}`;
+        const toggleId = `sn-toggle-${index}`;
+        const firstReference = !renderedSideNotes.has(label);
         result +=
-          `<label for="${refId}" class="margin-toggle sidenote-number"></label>`;
-        result +=
-          `<input type="checkbox" id="${refId}" class="margin-toggle"/>`;
-
-        let sidenote_str = `<span class="sidenote-content">`;
-        const footnoteNode = documentSideNotes[label];
-
-        let sidenote_content = "";
-        if (footnoteNode.children) {
-          for (const child of footnoteNode.children) {
-            let childContent = r.renderAstNode(child);
-            childContent = childContent.replace(/<\/?p>/g, "");
-            sidenote_content += childContent;
-          }
+          `<label for="${toggleId}" class="margin-toggle sidenote-number" aria-label="Show footnote ${index}"></label>`;
+        if (firstReference) {
+          result +=
+            `<input type="checkbox" id="${toggleId}" class="margin-toggle" aria-label="Show footnote ${index}">`;
         }
-        sidenote_str += `${sidenote_content}</span>`;
 
-        render_data.sidenotes?.push(sidenote_content);
+        if (firstReference) {
+          renderedSideNotes.add(label);
+          const footnoteNode = documentSideNotes[label];
+          let sidenote_content = "";
+          if (footnoteNode.children) {
+            for (const child of footnoteNode.children) {
+              let childContent = r.renderAstNode(child);
+              childContent = childContent.replace(/<\/?p>/g, "");
+              sidenote_content += childContent;
+            }
+          }
 
-        result += sidenote_str;
+          const note =
+            `<span class="sidenote-content" role="doc-footnote">${sidenote_content}</span>`;
+          render_data.sidenotes?.push(sidenote_content);
+          result += note;
+        }
       }
 
       return result;
@@ -470,13 +484,14 @@ const get_string_content = function (node: AstNode): string {
 };
 
 function escapeHtmlText(text: string): string {
-  return text.replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  })[char]!);
+  return text.replace(/[&<>"']/g, (char) =>
+    ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[char]!);
 }
 
 const add_string_content = function (
