@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="630" viewBox="0 0 1260 630">
+  <rect width="1260" height="630" fill="#f6f1e8"/>
+  <path d="M0 480 Q315 400 630 480 T1260 480 V630 H0Z" fill="#e6ddcf"/>
+  <rect x="74" y="74" width="1112" height="482" rx="16" fill="none" stroke="#342f2a" stroke-width="3"/>
+  <text x="126" y="248" fill="#342f2a" font-family="Georgia,serif" font-size="74" font-weight="700">Lautaro Acosta Quintana</text>
+  <text x="130" y="326" fill="#51483f" font-family="Georgia,serif" font-size="34">Programming languages · Type systems · Backend engineering</text>
+  <text x="130" y="490" fill="#51483f" font-family="Georgia,serif" font-size="28">lautaroacosta.com</text>
+</svg>

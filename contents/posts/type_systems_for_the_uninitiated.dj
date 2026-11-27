@@ -1,5 +1,5 @@
 ---
- {"title":"Type Systems For The Uninitiated","stage":"finished","tags":["Python, Rust, Type Systems"],"date":"2026-11-06","abstract":"This is an informal exploration of type systems and their use, intended for to someone who already programs."}
+ {"title":"Type Systems For The Uninitiated","stage":"finished","tags":["Type Systems", "Rust", "Python", "Programming Languages"],"date":"2026-11-06","abstract":"An informal guide to type systems for programmers, covering type safety, type checking, subtyping, and the guarantees languages such as Rust and Python provide."}
 ---
 
 # Type Systems For The Uninitiated

@@ -112,9 +112,11 @@ export const Blog = {
     await Deno.mkdir("./dist/", { recursive: true });
 
     const posts = await collect_posts(ctx);
+    const published_posts = posts.filter((post) => post.stage === "finished");
     console.log(`\n[Building output]`);
 
     for (const post of posts) {
+      if (post.stage === "private") continue;
       await write_file(
         `dist/${post.path}`,
         html_ugly(PostPage({ post }, css_bundle, js_bundle, fonts)),
@@ -126,7 +128,7 @@ export const Blog = {
     );
 
     const map = new Map<string, Post[]>();
-    for (const post of visible_posts) {
+    for (const post of published_posts) {
       for (const tag of post.tags) {
         if (!tag) continue;
 
@@ -152,7 +154,7 @@ export const Blog = {
       );
     }
 
-    await write_file("./dist/feed.xml", feed_xml(visible_posts));
+    await write_file("./dist/feed.xml", feed_xml(published_posts));
     const about_html = await page_html("about");
     await write_file(
       "dist/index.html",
@@ -210,6 +212,31 @@ export const Blog = {
         ),
       );
     }
+
+    const sitemap_paths = [
+      "/",
+      "/writing.html",
+      "/links.html",
+      "/reading.html",
+      "/ai_transparency.html",
+      ...(blogroll ? ["/blogroll.html"] : []),
+      ...published_posts.map((post) => post.path),
+      ...[...map.keys()].map((tag) =>
+        `/t/${tag.toLowerCase().trim().replace(/\s+/g, "-")}.html`
+      ),
+    ];
+    const xml_escape = (value: string) => value.replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&apos;",
+    })[char]!);
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      sitemap_paths.map((path) => `  <url><loc>${xml_escape(`https://lautaroacosta.com${path}`)}</loc></url>`).join("\n") +
+      `\n</urlset>\n`;
+    await write_file("dist/sitemap.xml", sitemap);
 
     const t_fmt = performance.now();
     await new Deno.Command(Deno.execPath(), {

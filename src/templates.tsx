@@ -9,6 +9,9 @@ import { HtmlString } from "./HtmlString.ts";
 const site_url = "https://lautaroacosta.com";
 const github_url = "https://github.com/jargenn";
 const blurb = "Lautaro's Coppermind";
+const site_description =
+  "Lautaro Acosta Quintana writes about programming languages, type systems, and backend software engineering.";
+const social_image = `${site_url}/assets/social-card.svg`;
 
 // <a href="mailto:me+blog@lautaroacosta.com">
 //   <FooterIcon name="email" />
@@ -126,6 +129,9 @@ function Base(
     bundled_css,
     bundled_js,
     fonts,
+    schema_type = "WebPage",
+    image = social_image,
+    noindex = false,
   }: {
     children?: VNode[];
     src: string;
@@ -137,27 +143,42 @@ function Base(
     bundled_css: string;
     bundled_js: string;
     fonts: Map<string, string>;
+    schema_type?: "WebPage" | "Article" | "Person" | "CollectionPage";
+    image?: string;
+    noindex?: boolean;
   },
 ) {
   const def_title = date ? `${title} - Lautaro Acosta Quintana` : title;
   const post_url = `${site_url}${path}`;
   const page_url = `${github_url}/blog/edit/master${src}`;
-  const json_ld = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: title,
-    description,
-    datePublished: date,
-    author: {
+  const json_ld = schema_type === "Article"
+    ? {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: title,
+      description,
+      datePublished: date,
+      author: { "@type": "Person", name: "Lautaro Acosta Quintana", url: site_url },
+      url: post_url,
+      mainEntityOfPage: { "@type": "WebPage", "@id": post_url },
+    }
+    : schema_type === "Person"
+    ? {
+      "@context": "https://schema.org",
       "@type": "Person",
       name: "Lautaro Acosta Quintana",
-    },
-    url: post_url,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": post_url,
-    },
-  };
+      url: site_url,
+      description,
+      sameAs: [github_url, "https://linkedin.com/in/lautaro-acosta-quintana"],
+    }
+    : {
+      "@context": "https://schema.org",
+      "@type": schema_type,
+      name: title,
+      description,
+      url: post_url,
+      isPartOf: { "@type": "WebSite", name: "Lautaro Acosta Quintana", url: site_url },
+    };
 
   return (
     <html lang="en-US">
@@ -167,10 +188,11 @@ function Base(
         <title>{def_title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={post_url} />
+        {noindex && <meta name="robots" content="noindex,follow" />}
 
-        <meta property="og:type" content="article" />
+        <meta property="og:type" content={date ? "article" : "website"} />
         <meta property="og:title" content={def_title} />
-        <meta property="og:image" />
+        <meta property="og:image" content={image} />
         <meta property="og:image:width" content="1260" />
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en-us" />
@@ -179,7 +201,7 @@ function Base(
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={def_title} />
-        <meta name="twitter:image" />
+        <meta name="twitter:image" content={image} />
 
         <meta name="twitter:description" content={description} />
 
@@ -381,13 +403,23 @@ export function Page(
     ai_transparency: "AI Transparency",
     style_guidelines: "Style Guidelines",
   }[name] ?? name;
+  const descriptions: Record<string, string> = {
+    "": site_description,
+    about: site_description,
+    links: "A collection of links and resources Lautaro Acosta Quintana recommends.",
+    reading: "Books and articles Lautaro Acosta Quintana has read or is reading.",
+    ai_transparency: "How Lautaro Acosta Quintana uses AI in his writing and software work.",
+    style_guidelines: "Writing and style guidelines for Lautaro Acosta Quintana's site.",
+  };
 
   return (
     <Base
-      path={`/${name}`}
+      path={name && name !== "about" ? `/${name}.html` : "/"}
       title={`${pageTitle} - Lautaro Acosta Quintana`}
       src={src}
-      description={blurb}
+      description={descriptions[name] ?? site_description}
+      schema_type={name === "" || name === "about" ? "Person" : "WebPage"}
+      noindex={name === "404"}
       bundled_css={css}
       bundled_js={js}
       fonts={fonts}
@@ -447,9 +479,9 @@ export function BlogRoll(
 
   return (
     <Base
-      path=""
+      path="/blogroll.html"
       title="Blogroll - Lautaro Acosta Quintana"
-      description={blurb}
+      description="A curated blogroll of programming and software engineering writing, maintained by Lautaro Acosta Quintana."
       src="/src/templates.tsx"
       bundled_css={css}
       bundled_js={js}
@@ -527,9 +559,12 @@ export function PostList(
 
   return (
     <Base
-      path=""
+      path={title === "Writing" ? "/writing.html" : `/t/${title?.toLowerCase().trim().replace(/\s+/g, "-")}.html`}
       title={`${title || "Writing"} - Lautaro Acosta Quintana`}
-      description={blurb}
+      description={title === "Writing"
+        ? `Articles by Lautaro Acosta Quintana about programming languages, type systems, and backend engineering.`
+        : `Articles about ${title}, written by Lautaro Acosta Quintana.`}
+      schema_type="CollectionPage"
       src="/src/templates.tsx"
       bundled_css={css}
       bundled_js={js}
@@ -620,6 +655,8 @@ export function Post(
       path={post.path}
       date={post.iso_date.toISOString()}
       description={post.abstract}
+      schema_type="Article"
+      noindex={post.stage !== "finished"}
       bundled_css={css}
       bundled_js={js}
       fonts={fonts}
