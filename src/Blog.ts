@@ -85,6 +85,7 @@ export const Blog = {
     for (const path of paths) {
       await copy_path(path, asset_map);
     }
+    await build_script(asset_map);
     if (!clean) {
       await prune_assets(asset_map);
     }
@@ -240,7 +241,7 @@ export const Blog = {
       16,
     );
 
-    const watcher = Deno.watchFs("./contents", { recursive: true });
+    const watcher = Deno.watchFs(["./contents", "./src"], { recursive: true });
     try {
       for await (const event of watcher) {
         if (event.kind == "access") continue;
@@ -357,6 +358,39 @@ async function collect_posts(ctx: Ctx): Promise<Post[]> {
 
 function asset(path: string, asset_map: Map<string, string>): string {
   return "/" + (asset_map.get(path) ?? path);
+}
+
+async function build_script(asset_map: Map<string, string>): Promise<void> {
+  const check = await new Deno.Command(Deno.execPath(), {
+    args: ["check", "src/scripts.ts"],
+    stdout: "piped",
+    stderr: "piped",
+  }).output();
+
+  if (!check.success) {
+    throw new Error(new TextDecoder().decode(check.stderr));
+  }
+
+  const result = await new Deno.Command(Deno.execPath(), {
+    args: ["transpile", "src/scripts.ts"],
+    stdout: "piped",
+    stderr: "piped",
+  }).output();
+
+  if (!result.success) {
+    throw new Error(new TextDecoder().decode(result.stderr));
+  }
+
+  const code = result.stdout;
+  const hash_buffer = await crypto.subtle.digest("SHA-256", code);
+  const hash = Array.from(new Uint8Array(hash_buffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, 8);
+  const path = `dist/assets/scripts-${hash}.js`;
+
+  await write_file(path, code);
+  asset_map.set("scripts.js", path.replace("dist/", ""));
 }
 
 const HASHED_EXTENSIONS = new Set([".js", ".css", ".woff2"]);

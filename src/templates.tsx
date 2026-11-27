@@ -23,17 +23,35 @@ function Fonts({ fonts }: { fonts: Map<string, string> }) {
     const src = fonts.get(n) ?? `css/${n}`;
     return `/${src}`;
   };
+  const atkinsonFaces = (family: string, filenamePrefix: string) => {
+    const weights = [
+      ["ExtraLight", 200],
+      ["Light", 300],
+      ["Regular", 400],
+      ["Medium", 500],
+      ["SemiBold", 600],
+      ["Bold", 700],
+      ["ExtraBold", 800],
+    ] as const;
+    return weights.flatMap(([name, weight]) =>
+      [false, true].map((italic) => {
+        const suffix = `${name}${italic ? "Italic" : ""}.woff2`;
+        return `@font-face {
+  font-family: "${family}";
+  src: url("${font(`${filenamePrefix}-${suffix}`)}") format("woff2");
+  font-weight: ${weight};
+  font-style: ${italic ? "italic" : "normal"};
+  font-display: swap;
+}`;
+      })
+    ).join("\n");
+  };
   const style = `
+${atkinsonFaces("Atkinson Hyperlegible", "AtkinsonHyperlegibleNext")}
+${atkinsonFaces("Atkinson Hyperlegible Mono", "AtkinsonHyperlegibleMono")}
 @font-face {
   font-family: 'Iosevka';
   src: url('${font("Iosevka-Regular.woff2")}') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'GermaniaOne';
-  src: url('${font("GermaniaOne-Regular.woff2")}') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
@@ -212,13 +230,62 @@ function Base(
                 Acosta Quintana
               </span>
             </a>
-            <a href="/about.html">About</a>
-            <a href="/writing.html">Writing</a>
-            <a href="/blogroll.html">Blogroll</a>
-            <a href="/links.html">Links</a>
-
+            <a class="nav-link" href="/about.html">
+              <span>About</span>
+              <span class="nav-link-bold" aria-hidden="true">About</span>
+            </a>
+            <a class="nav-link" href="/writing.html">
+              <span>Writing</span>
+              <span class="nav-link-bold" aria-hidden="true">Writing</span>
+            </a>
+            <a class="nav-link" href="/blogroll.html">
+              <span>Blogroll</span>
+              <span class="nav-link-bold" aria-hidden="true">Blogroll</span>
+            </a>
+            <a class="nav-link" href="/links.html">
+              <span>Links</span>
+              <span class="nav-link-bold" aria-hidden="true">Links</span>
+            </a>
           </nav>
         </header>
+
+        <details class="reading-preferences">
+          <summary>Reading preferences</summary>
+          <div class="reading-preferences-controls">
+            <label>
+              Line spacing
+              <input
+                type="number"
+                name="line-height"
+                data-reading-preference="lineHeight"
+                min="1"
+                max="3"
+                step="0.1"
+                value="1.8"
+              />
+            </label>
+            <label>
+              Font
+              <select name="font" data-reading-preference="font">
+                <option value="et-book">ET Book</option>
+                <option value="cabin">Cabin</option>
+                <option value="atkinson">Atkinson Hyperlegible</option>
+                <option value="system">System</option>
+              </select>
+            </label>
+            <button
+              class="contrast-toggle"
+              type="button"
+              data-reading-preference="contrast"
+              aria-pressed="false"
+            >
+              High contrast
+            </button>
+            <button class="reading-preferences-reset" type="button">
+              Reset
+            </button>
+          </div>
+        </details>
 
         <main id="main-content">
           {children}
@@ -253,7 +320,11 @@ function Base(
             </a>
           </p>
           <p class="credit">
-            Icons by <a href="https://simpleicons.org">Simple Icons</a> - All the content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+            Icons by <a href="https://simpleicons.org">Simple Icons</a>{" "}
+            - All the content is licensed under{" "}
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+              CC BY-NC-SA 4.0
+            </a>.
           </p>
         </footer>
       </body>
@@ -414,7 +485,8 @@ export function PostList(
 
       return (
         <a class="tag" href={`/t/${tag_slug}.html`}>
-          {tagIndex > 0 ? "; " : ""}{tag}
+          {tagIndex > 0 ? "; " : ""}
+          {tag}
         </a>
       );
     });
@@ -453,7 +525,7 @@ export function PostList(
       fonts={fonts}
     >
       <div class="normal-layout">
-          {title && <h1>{title}</h1>}
+        {title && <h1>{title}</h1>}
         <ul class="post-list">
           {list_items}
         </ul>
@@ -633,4 +705,3 @@ function FeedEntry({ post }: { post: PostData }) {
     </entry>
   );
 }
-
