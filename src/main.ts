@@ -22,7 +22,10 @@ async function main() {
       break;
 
     case "watch":
-      await Blog.watch(!rest.includes("--no-clean"));
+      await Blog.watch(
+        !rest.includes("--no-clean"),
+        rest.includes("--blogroll"),
+      );
       break;
 
     case "serve": {

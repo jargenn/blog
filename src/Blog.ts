@@ -249,7 +249,7 @@ export const Blog = {
     ctx.print_stats();
   },
 
-  async watch(clean: boolean): Promise<void> {
+  async watch(clean: boolean, blogroll = false): Promise<void> {
     let signal = Promise.withResolvers();
     let first = true;
     (async () => {
@@ -260,7 +260,7 @@ export const Blog = {
         build_id += 1;
         await Blog.build(
           first ? clean : false,
-          true,
+          blogroll,
         );
         first = false;
       }

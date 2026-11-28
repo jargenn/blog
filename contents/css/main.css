@@ -58,12 +58,36 @@
   }
 
   :root[data-heavy-contrast="on"] {
-    --background: #fff;
-    --lang-bg: #fff;
-    --text: #000;
-    --emphasis: #000;
-    --muted: #333;
-    --accent: #003b8e;
+    --border-radius: 0;
+  }
+
+  :root[data-heavy-contrast="on"] .contrast-toggle[aria-pressed="true"] {
+    border: 3px double var(--text);
+    font-weight: 700;
+  }
+
+  :root[data-heavy-contrast="on"] figure.code-block {
+    border: 2px solid var(--text);
+    padding: 0.75rem;
+  }
+
+  :root[data-heavy-contrast="on"] article .sidenote-content {
+    border: 2px solid var(--text);
+    padding: 0.5rem 0.75rem;
+  }
+
+  :root[data-heavy-contrast="on"] article table {
+    border: 2px solid var(--text);
+  }
+
+  :root[data-heavy-contrast="on"] article th,
+  :root[data-heavy-contrast="on"] article td {
+    border: 1px solid var(--text);
+  }
+
+  :root[data-heavy-contrast="on"] article .katex-display {
+    border: 2px solid var(--text);
+    padding: 0.5rem;
   }
 
   @media (prefers-contrast: more) {
@@ -84,15 +108,6 @@
 
   @media (forced-colors: active) {
     :root {
-      --background: Canvas;
-      --lang-bg: Canvas;
-      --text: CanvasText;
-      --emphasis: CanvasText;
-      --muted: GrayText;
-      --accent: LinkText;
-    }
-
-    :root[data-heavy-contrast="on"] {
       --background: Canvas;
       --lang-bg: Canvas;
       --text: CanvasText;
@@ -669,8 +684,7 @@
     }
 
     .contrast-toggle[aria-pressed="true"] {
-      background: var(--accent);
-      color: var(--background);
+      border-width: 2px;
     }
   }
 

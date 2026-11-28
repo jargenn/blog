@@ -278,7 +278,7 @@ function Base(
               Line spacing
               <input
                 type="number"
-                name="line-height"
+                name="text-line-height"
                 data-reading-preference="lineHeight"
                 min="1"
                 max="3"

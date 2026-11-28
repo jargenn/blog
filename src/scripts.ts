@@ -52,7 +52,7 @@ const readingPreferences: Record<string, ReadingPreference> = {
       const lineHeight = Number(value);
       return Number.isFinite(lineHeight) && lineHeight >= 1 && lineHeight <= 3;
     },
-    property: "--reading-line-height",
+    property: "--text-line-height",
   },
   font: {
     default: "et-book",
