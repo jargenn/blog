@@ -272,18 +272,30 @@ function Base(
         </header>
 
         <details class="reading-preferences">
-          <summary>Reading preferences</summary>
+          <summary>Reading config</summary>
           <div class="reading-preferences-controls">
             <label>
-              Line spacing
+              Line spacing <output data-reading-display="lineHeight">1.8</output>
               <input
-                type="number"
+                type="range"
                 name="text-line-height"
                 data-reading-preference="lineHeight"
                 min="1"
                 max="3"
-                step="0.1"
+                step="0.05"
                 value="1.8"
+              />
+            </label>
+            <label>
+              Font size <output data-reading-display="fontSize">1.1rem</output>
+              <input
+                type="range"
+                name="text-font-size"
+                data-reading-preference="fontSize"
+                min="0.8"
+                max="1.6"
+                step="0.05"
+                value="1.1"
               />
             </label>
             <label>
@@ -295,14 +307,44 @@ function Base(
                 <option value="system">System</option>
               </select>
             </label>
-            <button
-              class="contrast-toggle"
-              type="button"
-              data-reading-preference="contrast"
-              aria-pressed="false"
-            >
-              High contrast
-            </button>
+            <div class="reading-preferences-toggles">
+              <button
+                type="button"
+                data-reading-preference="contrast"
+                role="switch"
+                aria-checked="false"
+                aria-label="Toggle high contrast"
+              >
+                <span>High contrast</span>
+                <span class="theme-switch-track" aria-hidden="true">
+                  <span class="theme-switch-thumb"></span>
+                </span>
+              </button>
+              <button
+                type="button"
+                data-reading-preference="animations"
+                role="switch"
+                aria-checked="true"
+                aria-label="Toggle animations"
+              >
+                <span>Animations</span>
+                <span class="theme-switch-track" aria-hidden="true">
+                  <span class="theme-switch-thumb"></span>
+                </span>
+              </button>
+              <button
+                type="button"
+                data-theme-toggle
+                role="switch"
+                aria-checked="false"
+                aria-label="Switch to dark mode"
+              >
+                <span data-theme-toggle-label>Dark mode</span>
+                <span class="theme-switch-track" aria-hidden="true">
+                  <span class="theme-switch-thumb"></span>
+                </span>
+              </button>
+            </div>
             <button class="reading-preferences-reset" type="button">
               Reset
             </button>

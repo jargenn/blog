@@ -7,6 +7,7 @@ type ReadingPreference = {
   values?: string[];
   validate?: (value: string) => boolean;
   property?: string;
+  unit?: string;
   attribute?: string;
 };
 
@@ -16,6 +17,11 @@ const CODE_THEMES: Record<Theme, string> = {
 };
 
 const html = document.documentElement;
+const reducedMotionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (callback: () => void) => { finished: Promise<void> };
+};
+const transitionDocument = document as ViewTransitionDocument;
 const arboriumScript = document.querySelector<HTMLScriptElement>(
   'script[src*="@arborium/arborium"]',
 );
@@ -37,6 +43,12 @@ for (
 
 function setTheme(theme: Theme) {
   html.dataset.theme = theme;
+  const themeToggle = document.querySelector<HTMLButtonElement>(
+    "[data-theme-toggle]",
+  );
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-checked", theme === "dark" ? "true" : "false");
+  }
 
   if (arboriumScript && arboriumApi?.highlightAll) {
     arboriumScript.dataset.theme = CODE_THEMES[theme];
@@ -54,6 +66,15 @@ const readingPreferences: Record<string, ReadingPreference> = {
     },
     property: "--text-line-height",
   },
+  fontSize: {
+    default: "1.1",
+    validate: (value) => {
+      const fontSize = Number(value);
+      return Number.isFinite(fontSize) && fontSize >= 0.8 && fontSize <= 1.6;
+    },
+    property: "--text-font-size",
+    unit: "rem",
+  },
   font: {
     default: "et-book",
     values: ["et-book", "cabin", "atkinson", "system"],
@@ -63,6 +84,11 @@ const readingPreferences: Record<string, ReadingPreference> = {
     default: "off",
     values: ["off", "on"],
     attribute: "data-heavy-contrast",
+  },
+  animations: {
+    default: reducedMotionPreference.matches ? "off" : "on",
+    values: ["on", "off"],
+    attribute: "data-animations",
   },
 };
 const preferenceKey = "reading-preferences";
@@ -79,7 +105,7 @@ function applyReadingPreference(name: string, value: string) {
   if (preference.validate && !preference.validate(value)) return;
 
   if (preference.property) {
-    html.style.setProperty(preference.property, value);
+    html.style.setProperty(preference.property, `${value}${preference.unit ?? ""}`);
   }
   if (preference.attribute) {
     html.setAttribute(preference.attribute, value);
@@ -87,7 +113,11 @@ function applyReadingPreference(name: string, value: string) {
   for (const control of preferenceControls) {
     if (control.dataset.readingPreference !== name) continue;
     if (control instanceof HTMLButtonElement) {
-      control.setAttribute("aria-pressed", value === "on" ? "true" : "false");
+      if (control.getAttribute("role") === "switch") {
+        control.setAttribute("aria-checked", value === "on" ? "true" : "false");
+      } else {
+        control.setAttribute("aria-pressed", value === "on" ? "true" : "false");
+      }
     } else if (
       control instanceof HTMLInputElement && control.type === "checkbox"
     ) {
@@ -95,6 +125,12 @@ function applyReadingPreference(name: string, value: string) {
     } else {
       control.value = value;
     }
+  }
+  for (const display of document.querySelectorAll<HTMLOutputElement>(
+    `[data-reading-display="${name}"]`,
+  )) {
+    display.value = name === "fontSize" ? `${value}rem` : value;
+    display.textContent = display.value;
   }
 }
 
@@ -116,6 +152,17 @@ for (const [name, preference] of Object.entries(readingPreferences)) {
   applyReadingPreference(name, value);
 }
 
+reducedMotionPreference.addEventListener("change", (event) => {
+  const systemDefault = event.matches ? "off" : "on";
+  readingPreferences.animations.default = systemDefault;
+  const hasSavedChoice = ["on", "off"].includes(
+    savedPreferences.animations ?? "",
+  );
+  if (!hasSavedChoice) {
+    applyReadingPreference("animations", systemDefault);
+  }
+});
+
 for (const control of preferenceControls) {
   const savePreference = (name: string | undefined, value: string) => {
     if (!name) return;
@@ -123,7 +170,27 @@ for (const control of preferenceControls) {
     if (!preference) return;
     if (preference.values && !preference.values.includes(value)) return;
     if (preference.validate && !preference.validate(value)) return;
-    applyReadingPreference(name, value);
+    const apply = () => applyReadingPreference(name, value);
+    const transition = name === "font" && html.dataset.animations !== "off"
+      ? transitionDocument.startViewTransition
+      : undefined;
+    if (transition) {
+      try {
+        const viewTransition = transition.call(transitionDocument, () => {
+          html.dataset.preferenceTransition = "font";
+          apply();
+        });
+        const cleanup = () => {
+          delete html.dataset.preferenceTransition;
+        };
+        void viewTransition.finished.then(cleanup, cleanup);
+      } catch {
+        delete html.dataset.preferenceTransition;
+        apply();
+      }
+    } else {
+      apply();
+    }
     try {
       savedPreferences[name] = value;
       localStorage.setItem(preferenceKey, JSON.stringify(savedPreferences));
@@ -135,15 +202,23 @@ for (const control of preferenceControls) {
   const name = control.dataset.readingPreference;
   if (control instanceof HTMLButtonElement) {
     control.addEventListener("click", () => {
-      const value = control.getAttribute("aria-pressed") === "true"
+      const stateAttribute = control.getAttribute("role") === "switch"
+        ? "aria-checked"
+        : "aria-pressed";
+      const value = control.getAttribute(stateAttribute) === "true"
         ? "off"
         : "on";
       savePreference(name, value);
     });
   } else {
-    control.addEventListener("change", () => {
+    const update = () => {
       savePreference(name, control.value);
-    });
+    };
+    const eventName = control instanceof HTMLInputElement &&
+        control.type === "range"
+      ? "input"
+      : "change";
+    control.addEventListener(eventName, update);
   }
 }
 
@@ -210,11 +285,65 @@ new MutationObserver(applyCodeLineHighlights).observe(document.body, {
 });
 
 const systemTheme = matchMedia("(prefers-color-scheme: dark)");
+function updateThemeLabel() {
+  const nextMode = systemTheme.matches ? "light" : "dark";
+  const toggle = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+  if (!toggle) return;
+  toggle.setAttribute("aria-label", `Switch to ${nextMode} mode`);
+  const label = toggle.querySelector("[data-theme-toggle-label]");
+  if (label) label.textContent = `${nextMode[0].toUpperCase()}${nextMode.slice(1)} mode`;
+}
+
+let savedTheme: Theme | null = null;
+try {
+  const storedTheme = localStorage.getItem("reading-theme");
+  if (storedTheme === "light" || storedTheme === "dark") {
+    savedTheme = storedTheme;
+  }
+} catch {
+  // Use the system theme when storage is unavailable.
+}
 systemTheme.addEventListener(
   "change",
-  (e) => setTheme(e.matches ? "dark" : "light"),
+  (e) => {
+    updateThemeLabel();
+    if (!savedTheme) setTheme(e.matches ? "dark" : "light");
+  },
 );
-setTheme(systemTheme.matches ? "dark" : "light");
+updateThemeLabel();
+setTheme(savedTheme ?? (systemTheme.matches ? "dark" : "light"));
+document.querySelector<HTMLButtonElement>("[data-theme-toggle]")
+  ?.addEventListener("click", () => {
+    const theme: Theme = html.dataset.theme === "dark" ? "light" : "dark";
+    savedTheme = theme;
+    const transition = html.dataset.animations === "off"
+      ? undefined
+      : transitionDocument.startViewTransition;
+    if (transition) {
+      html.style.setProperty("--theme-transition-x", "0px");
+      html.style.setProperty("--theme-transition-y", "0px");
+      html.style.setProperty(
+        "--theme-transition-radius",
+        `${Math.hypot(innerWidth, innerHeight)}px`,
+      );
+      const viewTransition = transition.call(transitionDocument, () => {
+        setTheme(theme);
+      });
+      const cleanup = () => {
+        html.style.removeProperty("--theme-transition-x");
+        html.style.removeProperty("--theme-transition-y");
+        html.style.removeProperty("--theme-transition-radius");
+      };
+      void viewTransition.finished.then(cleanup, cleanup);
+    } else {
+      setTheme(theme);
+    }
+    try {
+      localStorage.setItem("reading-theme", theme);
+    } catch {
+      // The selected theme still applies for this page.
+    }
+  });
 
 // :active is not guaranteed to repaint before a link navigates. Load the
 // cursor up front and own the pressed state for the whole pointer gesture.
